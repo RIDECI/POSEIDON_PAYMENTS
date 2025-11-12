@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASS }}
           subject: "Compilación exitosa - Backend RIDECI"
           body: "La etapa de compilación finalizó correctamente 😁"
-          to: "oscar.sporras@mail.escuelaing.edu.co"
+          to: "paco.andres03@gmail.com"
           from: ${{ secrets.EMAIL_USER }}
 
       - name: Notificar error de compilación
@@ -49,7 +49,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASS }}
           subject: "Error en compilación - Backend RIDECI ❌"
           body: "Hubo un error en la etapa de compilación. 🤮"
-          to: "oscar.sporras@mail.escuelaing.edu.co"
+          to: "paco.andres03@gmail.com"
           from: ${{ secrets.EMAIL_USER }}
 
   test:
@@ -78,7 +78,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASS }}
           subject: "Pruebas exitosas - Backend RIDECI ✅ "
           body: "Las pruebas se ejecutaron correctamente 😁"
-          to: "oscar.sporras@mail.escuelaing.edu.co"
+          to: "paco.andres03@gmail.com"
           from: ${{ secrets.EMAIL_USER }}
 
       - name: Notificar error en pruebas
@@ -91,7 +91,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASS }}
           subject: "Error en pruebas - Backend RIDECI ❌"
           body: "Hubo un error en la etapa de pruebas. 🤮"
-          to: "oscar.sporras@mail.escuelaing.edu.co"
+          to: "paco.andres03@gmail.com"
           from: ${{ secrets.EMAIL_USER }}
 
   deploy:
@@ -122,7 +122,7 @@ jobs:
           password: ${{ secrets.EMAIL_PASS }}
           subject: "Despliegue exitoso - Backend RIDECI ✨"
           body: "El despliegue se completó correctamente en Railway para la rama ${{ github.ref_name }}. 😁"
-          to: "oscar.sporras@mail.escuelaing.edu.co"
+          to: "paco.andres03@gmail.com"
           from: ${{ secrets.EMAIL_USER }}
 
       - name: Notificar error de despliegue
@@ -135,5 +135,5 @@ jobs:
           password: ${{ secrets.EMAIL_PASS }}
           subject: "Error en despliegue - Backend RIDECI ❌ "
           body: "El despliegue falló en Railway para la rama ${{ github.ref_name }}. 🤮"
-          to: "oscar.sporras@mail.escuelaing.edu.co"
+          to: "paco.andres03@gmail.com"
           from: ${{ secrets.EMAIL_USER }}
