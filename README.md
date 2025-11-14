@@ -216,26 +216,121 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 
 ## Diagramas del Módulo
 
+
+## Diagrama de Contexto
+
+![alt text](docs/uml/diagrama.png)
+
+
+---
+
+### Diagrama de Despliegue
+
+![DiagramaDespliegue](docs/uml/DiagramaDespliegue.png)
+
+
+---
+
+### Diagrama de Componentes General
+
+![alt text](docs/uml/DiagramaComponentesGeneral.png)
+
+
+---
+
 ### Diagrama de Componentes Específico
 
+![alt text](docs/uml/diagramaComponentesEspecificosPayment.png)
 
+El microservicio de pagos está construido bajo los principios de Clean Architecture, lo que garantiza bajo acoplamiento, alta cohesión, escalabilidad y facilidad de mantenimiento.
+El siguiente diagrama representa los componentes y relaciones internas y externas del sistema.
+
+#### Controllers
+El **PaymentController** actúa como punto de entrada.
+Sus responsabilidades son:
+- Recibir solicitudes HTTP desde el API Gateway.
+- Validar entradas básicas.
+- Delegar las operaciones a los casos de uso correspondientes.
+- Devolver respuestas adecuadas al cliente.
+#### Use Cases (Casos de Uso)
+Cada caso de uso contiene la lógica del dominio y representa una acción de negocio concreta:
+- **RefundPaymentUseCase:** Maneja reembolsos ante novedades o cancelaciones en viajes.
+- **AuthorizePaymentUseCase:** Valida identidad del usuario antes de operar con pagos.
+- **GetPaymentUseCase:** Obtiene información detallada de un pago.
+- **PutPaymentUseCase:** Actualiza un pago existente.
+- **ProcessPaymentUseCase:** Orquesta el procesamiento completo de un pago.
+- **GetPaymentStatusUseCase:** Consulta el estado actual del pago.
+- **CreatePaymentUseCase:** Registra un nuevo pago en el sistema.
+- **DeletePaymentUseCase:** Elimina pagos no definitivos.
+- **ApprovePaymentUseCase:** Una vez aprobado, genera una notificación hacia servicios externos.
+
+
+---
+#### **MapperPaymentAdapter**
+Este componente transforma objetos entre capas:
+- Entidades de dominio: DTOs
+- Entidades: Modelos de la base de datos
+- Estructuras internas: Estructuras externas
+
+Permite mantener un dominio limpio sin depender de formatos externos.
+#### Ports y Adapters
+**Ports**:
+Interfaces definidas dentro de la capa de dominio que especifican *qué* necesita el caso de uso del exterior.
+No contienen lógica técnica.
+El diagrama incluye:
+- **PaymentRepositoryPort**
+- **ApprovePaymentPort**
+- **AuthorizePaymentPort**
+- **CancelTravelPort**
+
+**Adapters**:
+Implementaciones concretas que cumplen con los Ports:
+- **PaymentRepository:** Acceso real a la base de datos MySQL.
+- **AdapterApprovePayment:** Comunicación con microservicio de Notificaciones.
+- **AdapterAuthorizePayment:** Integración con el microservicio de Autenticación.
+- **AdapterCancelTravel:** Comunicación con microservicio de Gestión de Viajes.
+- **PaymentAdapter (central):** Orquestador que coordina interacciones entre los casos de uso y los adaptadores.
+Los adapters permiten reemplazar tecnologías externas sin modificar la capa de dominio.
+### Repositorio
+### **PaymentRepository**
+Implementa el PaymentRepositoryPort y se encarga de:
+- Guardar pagos
+- Consultar pagos
+- Actualizar pagos
+- Eliminar registros
+
+Es una parte de la capa de infraestructura.
+
+#### Conexiones Externas
+**1. Microservicio de Notificaciones**:
+Utilizado para enviar notificaciones cuando un pago es aprobado.
+
+**2. Microservicio de Gestión de Viajes**:
+Se usa en operaciones como cancelación de viaje o reembolso.
+
+**3. Microservicio de Autenticación**:
+Valida la identidad del usuario antes de autorizar operaciones.
+
+**4. Base de Datos MySQL**:
+Almacena toda la información transaccional de pagos:
+
+---
+
+
+## Diagrama de Casos de Uso
+
+![alt text](docs/uml/DiagramaCasosUso.png)
 
 ---
 
 ### Diagrama de Clases
 
-
+![alt text](docs/uml/DiagramaClases.png)
 
 ---
 
 ### Diagrama de Bases de Datos
 
-
-
----
-
-### Diagrama de Despliegue Específico del Módulo
-
-
+![DiagramaBasesDatos](docs/uml/DiagramaBaseDeDatos.png)
 
 ---
