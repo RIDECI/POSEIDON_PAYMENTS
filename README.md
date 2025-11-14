@@ -226,7 +226,108 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 
 ### Diagrama de Despliegue
 
-![DiagramaDespliegue](docs/uml/DiagramaDespliegue.png)
+![DiagramaDespliegue](docs/uml/diagramaDespliegue.png)
+
+Este diagrama muestra la arquitectura de despliegue del sistema RIDECl, incluyendo la comunicación entre el cliente, los servicios backend, la base de datos y las herramientas CI/CD que soportan el ciclo de desarrollo.
+
+
+#### Cliente (Front-End)
+
+El cliente es una aplicación web desarrollada con:
+
+- **React**
+- **TypeScript**
+
+Se comunica con el sistema mediante:
+
+- **HTTPS (API Gateway)**
+- **WebSockets** para actualizaciones en tiempo real.
+
+---
+
+## 🚀 2. Railway — Backend (Payments)
+
+El backend principal está desplegado en **Railway**, específicamente el servicio:
+
+### **Payments**
+Funciones principales:
+- Gestión de pagos  
+- Manejo de transacciones  
+- Alertas emergentes  
+- Reportes  
+- Comunicación con otros módulos  
+
+Tecnologías internas:
+- **Spring Boot**
+- **Jacoco** (cobertura de código)
+- **SonarQube** (análisis de calidad)
+- **Docker**
+
+Este servicio actúa como nodo central, recibiendo solicitudes del cliente y coordinando operaciones con otros microservicios.
+
+---
+
+## 🧩 3. Microservicios Externos Conectados
+
+### **a) Autenticación (Usuarios)**
+Maneja:
+- Validación de credenciales  
+- Autorización  
+- Tokens y seguridad  
+
+### **b) Gestión de Viajes (Viajes)**
+Responsable de la lógica de:
+- Creación de viajes  
+- Actualización de estados  
+- Control de rutas o trayectos  
+
+### **c) Notificaciones (Email / App)**
+Encargado de:
+- Envío de correos  
+- Envío de alertas y notificaciones internas  
+
+Todos se comunican con el servicio Payments para ejecutar tareas específicas.
+
+---
+
+## 🗄️ 4. Base de Datos — MongoDB
+
+El servicio Payments se conecta a **MongoDB** para almacenar información financiera.
+
+Datos almacenados:
+- Monto  
+- Método de pago  
+- Estado  
+- Fecha de pago  
+- Transacción  
+
+*(El diagrama muestra un icono de PostgreSQL por error gráfico, pero el módulo está etiquetado como MongoDB.)*
+
+---
+
+## 🔁 5. CI/CD Tools
+
+El sistema cuenta con un pipeline de CI/CD compuesto por:
+
+- **Jacoco** (cobertura)
+- **SonarQube** (análisis de código)
+- **GitHub Actions** (automatización de pipeline y despliegue)
+
+Estas herramientas integran pruebas, validación y despliegue continuo del servicio Payments.
+
+---
+
+## 🔄 6. Flujo General del Sistema
+
+1. El usuario interactúa con la aplicación web.
+2. El cliente envía solicitudes al backend vía HTTPS o WebSocket.
+3. El servicio Payments procesa las solicitudes.
+4. Payments coordina con:
+   - Autenticación para validar usuarios
+   - Viajes para manejar lógica operativa
+   - Notificaciones para enviar alertas
+5. Payments almacena o consulta datos en MongoDB.
+6. El pipeline CI/CD garantiza calidad y despliegue automático.
 
 
 ---
@@ -272,31 +373,6 @@ PostgreSQL garantiza que cada transacción:
 - se guarda incluso si hay fallos de energía o del sistema (durabilidad)
 
 Esto evita pérdida de dinero, pagos duplicados o estados incorrectos.
-
----
-
-## 🔧 Flujo General
-
-1. El usuario interactúa con el **frontend**.
-2. El frontend envía solicitudes al **API Gateway**.
-3. El API Gateway dirige la solicitud hacia el **microservicio de Payments** (u otros servicios futuros).
-4. El microservicio ejecuta la lógica necesaria y consulta o actualiza la **base de datos PostgreSQL**.
-5. La respuesta vuelve al Gateway y finalmente al frontend.
-
----
-
-## 📦 Despliegue y DevOps
-
-- Despliegues automatizados con **GitHub Actions**  
-- Contenedores gestionados con **Docker**  
-- Orquestación con **Kubernetes (k8s)**  
-- Monitoreo de calidad con **SonarQube**  
-- Cobertura con **Jacoco**
-
----
-
-Si quieres, puedo generar también una **versión más detallada**, otra **más técnica**, o incluso una **explicación orientada a presentación**.
-
 
 
 ---
