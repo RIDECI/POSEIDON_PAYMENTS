@@ -233,7 +233,70 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 
 ### Diagrama de Componentes General
 
-![alt text](docs/uml/DiagramaComponentesGeneral.png)
+![alt text](docs/uml/diagramaComponentesGeneral.png)
+
+Este diagrama representa la arquitectura de componentes utilizada en el sistema, mostrando cómo interactúan el frontend, el API Gateway, los microservicios y las bases de datos, así como las tecnologías involucradas en cada parte.
+
+#### Frontend (RIDECI FRONT)
+El frontend está desarrollado con:
+
+- **TypeScript**
+- **React**
+- Desplegado en **Vercel**
+- Prototipado en **Figma**
+
+Este módulo se comunica directamente con el **API Gateway** para solicitar datos y ejecutar acciones dentro del sistema.
+
+#### API Gateway
+El **API Gateway** actúa como punto de entrada único para todas las solicitudes provenientes del frontend. 
+
+#### Microservicio de Payments
+Se encarga de gestionar todo lo relacionado con pagos y operaciones financieras dentro del sistema.
+
+Este microservicio se conecta directamente a la base de datos de pagos.
+
+
+####  Base de Datos — Payment DB
+Base de datos implementada en:
+
+**PostgreSQL** 
+
+PostgreSQL garantiza que cada transacción:
+
+- se completa toda o no se ejecuta nada (atomicidad)
+
+- no deja datos corruptos (consistencia)
+
+- no interfiere con otras transacciones simultáneas (aislamiento)
+
+- se guarda incluso si hay fallos de energía o del sistema (durabilidad)
+
+Esto evita pérdida de dinero, pagos duplicados o estados incorrectos.
+
+---
+
+## 🔧 Flujo General
+
+1. El usuario interactúa con el **frontend**.
+2. El frontend envía solicitudes al **API Gateway**.
+3. El API Gateway dirige la solicitud hacia el **microservicio de Payments** (u otros servicios futuros).
+4. El microservicio ejecuta la lógica necesaria y consulta o actualiza la **base de datos PostgreSQL**.
+5. La respuesta vuelve al Gateway y finalmente al frontend.
+
+---
+
+## 📦 Despliegue y DevOps
+
+- Despliegues automatizados con **GitHub Actions**  
+- Contenedores gestionados con **Docker**  
+- Orquestación con **Kubernetes (k8s)**  
+- Monitoreo de calidad con **SonarQube**  
+- Cobertura con **Jacoco**
+
+---
+
+Si quieres, puedo generar también una **versión más detallada**, otra **más técnica**, o incluso una **explicación orientada a presentación**.
+
 
 
 ---
