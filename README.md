@@ -243,13 +243,8 @@ Se comunica con el sistema mediante:
 - **HTTPS (API Gateway)**
 - **WebSockets** para actualizaciones en tiempo real.
 
----
 
-## 🚀 2. Railway — Backend (Payments)
-
-El backend principal está desplegado en **Railway**, específicamente el servicio:
-
-### **Payments**
+#### **Payments**
 Funciones principales:
 - Gestión de pagos  
 - Manejo de transacciones  
@@ -265,34 +260,32 @@ Tecnologías internas:
 
 Este servicio actúa como nodo central, recibiendo solicitudes del cliente y coordinando operaciones con otros microservicios.
 
----
 
-## 🧩 3. Microservicios Externos Conectados
+####  Microservicios Externos Conectados
 
-### **a) Autenticación (Usuarios)**
+**a) Autenticación (Usuarios)**
 Maneja:
 - Validación de credenciales  
 - Autorización  
 - Tokens y seguridad  
 
-### **b) Gestión de Viajes (Viajes)**
+**b) Gestión de Viajes (Viajes)**
 Responsable de la lógica de:
 - Creación de viajes  
 - Actualización de estados  
 - Control de rutas o trayectos  
 
-### **c) Notificaciones (Email / App)**
+**c) Notificaciones (Email / App)**
 Encargado de:
 - Envío de correos  
 - Envío de alertas y notificaciones internas  
 
 Todos se comunican con el servicio Payments para ejecutar tareas específicas.
 
----
 
-## 🗄️ 4. Base de Datos — MongoDB
+#### Base de Datos — MySQL
 
-El servicio Payments se conecta a **MongoDB** para almacenar información financiera.
+El servicio Payments se conecta a **MySQL** para almacenar información financiera.
 
 Datos almacenados:
 - Monto  
@@ -300,38 +293,6 @@ Datos almacenados:
 - Estado  
 - Fecha de pago  
 - Transacción  
-
-*(El diagrama muestra un icono de PostgreSQL por error gráfico, pero el módulo está etiquetado como MongoDB.)*
-
----
-
-## 🔁 5. CI/CD Tools
-
-El sistema cuenta con un pipeline de CI/CD compuesto por:
-
-- **Jacoco** (cobertura)
-- **SonarQube** (análisis de código)
-- **GitHub Actions** (automatización de pipeline y despliegue)
-
-Estas herramientas integran pruebas, validación y despliegue continuo del servicio Payments.
-
----
-
-## 🔄 6. Flujo General del Sistema
-
-1. El usuario interactúa con la aplicación web.
-2. El cliente envía solicitudes al backend vía HTTPS o WebSocket.
-3. El servicio Payments procesa las solicitudes.
-4. Payments coordina con:
-   - Autenticación para validar usuarios
-   - Viajes para manejar lógica operativa
-   - Notificaciones para enviar alertas
-5. Payments almacena o consulta datos en MongoDB.
-6. El pipeline CI/CD garantiza calidad y despliegue automático.
-
-
----
-
 ### Diagrama de Componentes General
 
 ![alt text](docs/uml/diagramaComponentesGeneral.png)
