@@ -431,6 +431,6 @@ Almacena toda la información transaccional de pagos:
 
 ### Diagrama de Bases de Datos
 
-![DiagramaBasesDatos](docs/uml/DiagramaBaseDeDatos.png)
+![alt text](docs/uml/DiagramaBaseDeDatos.png)
 
 ---
