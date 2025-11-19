@@ -416,7 +416,6 @@ Almacena toda la información transaccional de pagos:
 
 ---
 
-
 ## Diagrama de Casos de Uso
 
 ![alt text](docs/uml/DiagramaCasosUso.png)
