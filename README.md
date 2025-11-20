@@ -159,25 +159,47 @@ El backend de **POSEIDON_PAYMENTS** sigue una **arquitectura limpia y desacoplad
 ## Estructura de Capas
 
 ```
-📂 poseidon_backend
- ┣ 📂 domain/
- ┃ ┣ 📄 Entities/
- ┃ ┣ 📄 ValueObjects/
- ┃ ┣ 📄 Enums/
- ┃ ┣ 📄 Services/
- ┃ ┗ 📄 Events/
- ┣ 📂 application/
- ┃ ┣ 📄 UseCases/
- ┃ ┣ 📄 DTOs/
- ┃ ┣ 📄 Mappers/
- ┃ ┗ 📄 Exceptions/
- ┣ 📂 infrastructure/
- ┃ ┣ 📄 Controllers/
- ┃ ┣ 📄 Database/
- ┃ ┣ 📄 Repositories/
- ┃ ┣ 📄 Config/
- ┃ ┗ 📄 Security/
- ┗ 📄 pom.xml
+📂 POSEIDON_PAYMENTS
+ ┣ 📂 src/
+ ┃ ┣ 📂 main/
+ ┃ ┃ ┣ 📂 java/
+ ┃ ┃ ┃ ┗ 📂 edu/dosw/rideci/
+ ┃ ┃ ┃   ┣ 📄 POSEIDON_PAYMENTS.java
+ ┃ ┃ ┃   ┣ 📂 domain/
+ ┃ ┃ ┃   ┃ ┗ 📂 model/           
+ ┃ ┃ ┃   ┃    ┗ 📂 enums/  
+ ┃ ┃ ┃   ┃ ┗ 📂 service/  
+ ┃ ┃ ┃   ┣ 📂 application/
+ ┃ ┃ ┃   ┃ ┣ 📂 port/
+ ┃ ┃ ┃   ┃ ┃ ┣ 📂 in/          
+ ┃ ┃ ┃   ┃ ┃ ┗ 📂 out/        
+ ┃ ┃ ┃   ┃ ┣ 📂 events/
+ ┃ ┃ ┃   ┃ ┗ 📂 mapper/        
+ ┃ ┃ ┃   ┃ ┗ 📂 service/ 
+ ┃ ┃ ┃   ┣ 📂 exceptions/
+ ┃ ┃ ┃   ┣ 📂 infrastructure/
+ ┃ ┃ ┃   ┃ ┗ 📂 adapters/
+ ┃ ┃ ┃   ┃ ┃   ┗ 📂 persistence/ 
+ ┃ ┃ ┃   ┃ ┗  📂 configs/
+ ┃ ┃ ┃   ┃ ┗ 📂 controller/   
+ ┃ ┃ ┃   ┃ ┃  ┃  ┗ 📂 dto/ 
+ ┃ ┃ ┃   ┃ ┃  ┃  ┃  ┗ 📂 Request/ 
+ ┃ ┃ ┃   ┃ ┃  ┃  ┃  ┗ 📂 Response/ 
+ ┃ ┃ ┃   ┃ ┗ 📂 exceptions/
+ ┃ ┃ ┃   ┃ ┗ 📂 persistence/ 
+ ┃ ┃ ┃   ┃ ┃  ┃  ┗ 📂 Entity/ 
+ ┃ ┃ ┃   ┃ ┃  ┃  ┗ 📂 Repository/ 
+ ┃ ┃ ┃   ┃ ┃  ┃   ┗ 📂 mapper/ 
+ ┃ ┃ ┗ 📂 resources/
+ ┃ ┃   ┗ 📄 application.properties
+ ┣ 📂 test/
+ ┃ ┣ 📂 java/
+ ┃ ┃ ┗ 📂 edu/dosw/rideci/POSEIDON_PAYMENTS/
+ ┃ ┃   ┗ 📄  PoseidonPaymentsApplicationTests.java
+ ┣ 📂 docs/
+ ┣ 📄 pom.xml
+ ┣ 📄 mvnw / mvnw.cmd
+ ┗ 📄 README.md
 ```
 
 ---
