@@ -1,5 +1,7 @@
 package edu.dosw.rideci.application.port.in;
 
-public class ProcessPaymentUseCase {
-    
+import edu.dosw.rideci.domain.model.Transaction;
+
+public interface ProcessPaymentUseCase {
+    Transaction process(String id);
 }

@@ -1,5 +1,7 @@
 package edu.dosw.rideci.domain.service;
 
-public class PaymentStrategy {
-    
+import edu.dosw.rideci.domain.model.Transaction;
+
+public interface PaymentStrategy {
+    Transaction processPayment(Transaction transaction);
 }

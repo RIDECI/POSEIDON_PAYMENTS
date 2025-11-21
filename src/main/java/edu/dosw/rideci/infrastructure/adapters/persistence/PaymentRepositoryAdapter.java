@@ -1,0 +1,42 @@
+package edu.dosw.rideci.infrastructure.adapters.persistence;
+
+import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
+import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.infrastructure.persistence.Entity.TransactionEntity;
+import edu.dosw.rideci.infrastructure.persistence.Repository.mapper.TransactionMapper;
+import edu.dosw.rideci.infrastructure.persistence.Repository.TransactionJpaRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor
+public class PaymentRepositoryAdapter implements PaymentRepositoryPort {
+
+    private final TransactionJpaRepository repository;
+    private final TransactionMapper mapper;
+
+    @Override
+    public Transaction save(Transaction transaction) {
+        TransactionEntity entity = mapper.toEntity(transaction);
+        TransactionEntity saved = repository.save(entity);
+        return mapper.toDomain(saved);
+    }
+
+    @Override
+    public Optional<Transaction> findById(String id) {
+        return repository.findById(id).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Transaction> findAll() {
+        return repository.findAll().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public void deleteById(String id) {
+        repository.deleteById(id);
+    }
+}
