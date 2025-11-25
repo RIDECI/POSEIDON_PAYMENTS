@@ -9,6 +9,8 @@ import edu.dosw.rideci.infrastructure.persistence.Repository.TransactionJpaRepos
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +57,39 @@ public class PaymentRepositoryAdapter implements PaymentRepositoryPort {
     @Override
     public List<Transaction> findByStatus(TransactionStatus status) {
         return repository.findByStatus(status)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Transaction> findByBookingId(String bookingId) {
+        return repository.findByBookingId(bookingId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Transaction> findByPassengerId(String passengerId) {
+        return repository.findByPassengerId(passengerId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Transaction> findByCreatedAtDate(LocalDate date) {
+        LocalDateTime dateTime = date.atStartOfDay();
+        return repository.findByCreatedAtDate(dateTime)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Transaction> findActivePayments() {
+        return repository.findActivePayments()
                 .stream()
                 .map(mapper::toDomain)
                 .toList();

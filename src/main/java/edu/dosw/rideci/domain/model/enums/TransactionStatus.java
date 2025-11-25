@@ -8,5 +8,6 @@ public enum TransactionStatus {
     COMPLETED,
     FAILED,
     REFUNDED,
-    PENDING_CASH
+    PENDING_CASH,
+    CANCELLED
 }

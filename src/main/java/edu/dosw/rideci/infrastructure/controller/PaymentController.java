@@ -8,15 +8,22 @@ import edu.dosw.rideci.application.port.in.UpdatePaymentUseCase;
 import edu.dosw.rideci.application.port.in.AuthorizePaymentUseCase;
 import edu.dosw.rideci.application.port.in.ApprovePaymentUseCase;
 import edu.dosw.rideci.application.port.in.CompletePaymentUseCase;
+import edu.dosw.rideci.application.port.in.CancelPaymentUseCase;
 import edu.dosw.rideci.application.port.in.GetPaymentStatusUseCase;
+import edu.dosw.rideci.application.port.in.GetPaymentsByTripUseCase;
+import edu.dosw.rideci.application.port.in.GetPaymentsByUserUseCase;
+import edu.dosw.rideci.application.port.in.GetPaymentsByDateUseCase;
+import edu.dosw.rideci.application.port.in.GetActivePaymentsUseCase;
 import edu.dosw.rideci.domain.model.Transaction;
 import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import edu.dosw.rideci.infrastructure.controller.dto.Request.CreatePaymentRequest;
 import edu.dosw.rideci.infrastructure.controller.dto.Request.UpdatePaymentRequest;
 import edu.dosw.rideci.infrastructure.controller.dto.Response.TransactionResponse;
+import edu.dosw.rideci.infrastructure.controller.dto.Response.PaymentStatusResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -32,7 +39,12 @@ public class PaymentController {
     private final AuthorizePaymentUseCase authorizePaymentUseCase;
     private final ApprovePaymentUseCase approvePaymentUseCase;
     private final CompletePaymentUseCase completePaymentUseCase;
+    private final CancelPaymentUseCase cancelPaymentUseCase;
     private final GetPaymentStatusUseCase getPaymentStatusUseCase;
+    private final GetPaymentsByTripUseCase getPaymentsByTripUseCase;
+    private final GetPaymentsByUserUseCase getPaymentsByUserUseCase;
+    private final GetPaymentsByDateUseCase getPaymentsByDateUseCase;
+    private final GetActivePaymentsUseCase getActivePaymentsUseCase;
 
     @PostMapping("/create")
     public ResponseEntity<TransactionResponse> create(@RequestBody CreatePaymentRequest request) {
@@ -47,6 +59,43 @@ public class PaymentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{id}/status")
+    public ResponseEntity<PaymentStatusResponse> getPaymentStatus(@PathVariable String id) {
+        return getPaymentUseCase.getById(id)
+                .map(tx -> ResponseEntity.ok(PaymentStatusResponse.fromDomain(tx)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/trips/{id}")
+    public ResponseEntity<List<TransactionResponse>> getPaymentsByTrip(@PathVariable String id) {
+        List<Transaction> payments = getPaymentsByTripUseCase.getByTripId(id);
+
+        if (payments.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<TransactionResponse> response = payments.stream()
+                .map(TransactionResponse::fromDomain)
+                .toList();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<TransactionResponse>> getPaymentsByUser(@PathVariable String id) {
+        List<Transaction> payments = getPaymentsByUserUseCase.getByUserId(id);
+
+        if (payments.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<TransactionResponse> response = payments.stream()
+                .map(TransactionResponse::fromDomain)
+                .toList();
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/history")
     public ResponseEntity<List<TransactionResponse>> findAll() {
         List<Transaction> txList = getPaymentUseCase.findAll();
@@ -56,6 +105,43 @@ public class PaymentController {
         }
 
         List<TransactionResponse> response = txList.stream()
+                .map(TransactionResponse::fromDomain)
+                .toList();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/history/{date}")
+    public ResponseEntity<List<TransactionResponse>> getPaymentsByDate(@PathVariable String date) {
+        LocalDate localDate;
+        try {
+            localDate = LocalDate.parse(date);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<Transaction> payments = getPaymentsByDateUseCase.getByDate(localDate);
+
+        if (payments.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<TransactionResponse> response = payments.stream()
+                .map(TransactionResponse::fromDomain)
+                .toList();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<TransactionResponse>> getActivePayments() {
+        List<Transaction> payments = getActivePaymentsUseCase.getActivePayments();
+
+        if (payments.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<TransactionResponse> response = payments.stream()
                 .map(TransactionResponse::fromDomain)
                 .toList();
 
@@ -108,6 +194,12 @@ public class PaymentController {
     public ResponseEntity<TransactionResponse> completePayment(
             @PathVariable String id) {
         Transaction tx = completePaymentUseCase.complete(id);
+        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));
+    }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<TransactionResponse> cancelPayment(@PathVariable String id) {
+        Transaction tx = cancelPaymentUseCase.cancel(id);
         return ResponseEntity.ok(TransactionResponse.fromDomain(tx));
     }
 

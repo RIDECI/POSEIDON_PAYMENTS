@@ -6,5 +6,6 @@ public enum RefundStatus {
     COMPLETED,
     AUTHORIZED,
     APPROVED,
-    REJECTED
+    REJECTED,
+    CANCELLED
 }

@@ -78,3 +78,18 @@ CREATE TABLE IF NOT EXISTS cash_payment_confirmation (
     CONSTRAINT fk_cash_transaction
         FOREIGN KEY (transaction_id) REFERENCES transactions(id)
 );
+
+
+CREATE TABLE IF NOT EXISTS audit_logs (
+    id VARCHAR(100) PRIMARY KEY,
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id VARCHAR(100) NOT NULL,
+    action VARCHAR(50) NOT NULL,
+    user_id VARCHAR(100),
+    user_name VARCHAR(200),
+    description TEXT,
+    previous_state TEXT,
+    new_state TEXT,
+    ip_address VARCHAR(50),
+    timestamp TIMESTAMP NOT NULL
+);

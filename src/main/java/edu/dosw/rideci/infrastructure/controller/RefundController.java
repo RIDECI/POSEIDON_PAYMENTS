@@ -2,6 +2,7 @@ package edu.dosw.rideci.infrastructure.controller;
 
 import edu.dosw.rideci.application.port.in.RefundPaymentUseCase;
 import edu.dosw.rideci.domain.model.enums.RefundStatus;
+import edu.dosw.rideci.application.port.in.CancelRefundUseCase;
 import edu.dosw.rideci.application.port.in.DeleteRefundUseCase;
 import edu.dosw.rideci.application.port.in.GetRefundUseCase;
 import edu.dosw.rideci.application.port.in.GetRefundStatusUseCase;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class RefundController {
 
     private final RefundPaymentUseCase refundPaymentUseCase;
+    private final CancelRefundUseCase cancelRefundUseCase;
     private final DeleteRefundUseCase deleteRefundUseCase;
     private final GetRefundUseCase getRefundUseCase;
     private final GetRefundStatusUseCase getRefundStatusUseCase;
@@ -33,6 +35,12 @@ public class RefundController {
                 request.getAmount(),
                 request.getReason());
 
+        return ResponseEntity.ok(RefundResponse.fromDomain(refund));
+    }
+
+    @PatchMapping("/{id}/refund/cancel")
+    public ResponseEntity<RefundResponse> cancelRefund(@PathVariable String id) {
+        var refund = cancelRefundUseCase.cancel(id);
         return ResponseEntity.ok(RefundResponse.fromDomain(refund));
     }
 

@@ -1,25 +1,31 @@
 package edu.dosw.rideci.application.service;
 
 import edu.dosw.rideci.application.port.in.RefundPaymentUseCase;
+import edu.dosw.rideci.application.port.in.CreateAuditLogUseCase;
 import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
 import edu.dosw.rideci.application.port.out.RefundRepositoryPort;
+import edu.dosw.rideci.domain.model.AuditLog;
 import edu.dosw.rideci.domain.model.Refund;
 import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.AuditAction;
 import edu.dosw.rideci.domain.model.enums.RefundStatus;
 import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import edu.dosw.rideci.exceptions.RideciBusinessException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
 
     private final PaymentRepositoryPort paymentRepositoryPort;
     private final RefundRepositoryPort refundRepositoryPort;
+    private final CreateAuditLogUseCase createAuditLogUseCase;
 
     @Override
     public Refund refundPayment(String transactionId, Double amount, String reason) {
@@ -65,6 +71,27 @@ public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
                 .build();
 
         // 6. Guardar refund
-        return refundRepositoryPort.save(refund);
+        Refund savedRefund = refundRepositoryPort.save(refund);
+        
+        // Registrar auditoría
+        try {
+            createAuditLogUseCase.createAuditLog(AuditLog.builder()
+                    .entityType("Refund")
+                    .entityId(savedRefund.getId())
+                    .action(AuditAction.REFUND)
+                    .userId(tx.getPassengerId())
+                    .userName("Passenger")
+                    .description(String.format("Refund requested for transaction %s - Amount: %.2f - Reason: %s", 
+                                              transactionId, amount, reason))
+                    .newState(String.format("Status: %s, Amount: %.2f, Transaction: %s", 
+                                           savedRefund.getStatus(),
+                                           savedRefund.getRefundedAmount(),
+                                           savedRefund.getTransactionId()))
+                    .build());
+        } catch (Exception e) {
+            log.error("Failed to create audit log for refund: {}", savedRefund.getId(), e);
+        }
+        
+        return savedRefund;
     }
 }
