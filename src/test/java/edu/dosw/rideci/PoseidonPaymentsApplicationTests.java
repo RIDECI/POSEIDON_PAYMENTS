@@ -1,4 +1,4 @@
-package edu.dosw.rideci.POSEIDON_PAYMENTS;
+package edu.dosw.rideci;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
