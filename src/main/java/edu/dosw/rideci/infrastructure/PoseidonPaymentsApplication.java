@@ -1,9 +1,11 @@
-package edu.dosw.rideci.POSEIDON_PAYMENTS;
+package edu.dosw.rideci.infrastructure;
 
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@EnableRabbit
 public class PoseidonPaymentsApplication {
 
 	public static void main(String[] args) {
