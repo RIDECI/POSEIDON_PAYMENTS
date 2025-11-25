@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 public class TransactionMapper {
 
     public TransactionEntity toEntity(Transaction domain) {
-        if (domain == null) return null;
+        if (domain == null)
+            return null;
         return TransactionEntity.builder()
                 .id(domain.getId())
                 .bookingId(domain.getBookingId())
@@ -19,11 +20,14 @@ public class TransactionMapper {
                 .errorMessage(domain.getErrorMessage())
                 .attempts(domain.getAttempts())
                 .createdAt(domain.getCreatedAt())
+                .paymentMethod(domain.getPaymentMethod())
+                .extra(domain.getExtra())
                 .build();
     }
 
     public Transaction toDomain(TransactionEntity entity) {
-        if (entity == null) return null;
+        if (entity == null)
+            return null;
         return Transaction.builder()
                 .id(entity.getId())
                 .bookingId(entity.getBookingId())
@@ -34,6 +38,8 @@ public class TransactionMapper {
                 .errorMessage(entity.getErrorMessage())
                 .attempts(entity.getAttempts())
                 .createdAt(entity.getCreatedAt())
+                .paymentMethod(entity.getPaymentMethod())
+                .extra(entity.getExtra())
                 .build();
     }
 }

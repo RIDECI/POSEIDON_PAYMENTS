@@ -3,12 +3,18 @@ CREATE TABLE IF NOT EXISTS transactions (
     booking_id VARCHAR(100) NOT NULL,
     passenger_id VARCHAR(100) NOT NULL,
     amount NUMERIC(12,2) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    extra TEXT,
     status VARCHAR(30) NOT NULL,
     attempts INTEGER DEFAULT 0,
     error_message TEXT,
     receipt_code TEXT,
-    created_at TIMESTAMP
+    created_at TIMESTAMP,
+
+    CONSTRAINT uk_receipt_code UNIQUE (receipt_code),
+    CONSTRAINT uk_booking_id UNIQUE (booking_id)
 );
+
 
 CREATE TABLE IF NOT EXISTS refunds (
     id VARCHAR(100) PRIMARY KEY,
@@ -17,9 +23,15 @@ CREATE TABLE IF NOT EXISTS refunds (
     passenger_id VARCHAR(100),
     refunded_amount NUMERIC(12,2),
     reason TEXT,
+    status VARCHAR(30),
+    external_reference VARCHAR(100),
     request_at TIMESTAMP,
-    status VARCHAR(30)
+    completed_at TIMESTAMP,
+
+    CONSTRAINT fk_refunds_transaction
+        FOREIGN KEY (transaction_id) REFERENCES transactions(id)
 );
+
 
 CREATE TABLE IF NOT EXISTS payment_methods (
     id VARCHAR(100) PRIMARY KEY,
@@ -28,4 +40,41 @@ CREATE TABLE IF NOT EXISTS payment_methods (
     is_default BOOLEAN,
     is_active BOOLEAN,
     type VARCHAR(30)
+);
+
+
+CREATE TABLE IF NOT EXISTS payment_receipt (
+    id VARCHAR(100) PRIMARY KEY,
+    transaction_id VARCHAR(100),
+    receipt_code VARCHAR(50),
+    passenger_id VARCHAR(36),
+    driver_id VARCHAR(36),
+    booking_id VARCHAR(36),
+    amount NUMERIC(12,2) NOT NULL,
+    payment_method VARCHAR(10),
+    transaction_method VARCHAR(20),
+    payment_details TEXT,
+    issued_at TIMESTAMP,
+    download_url VARCHAR(255),
+
+    CONSTRAINT fk_receipt_transaction
+        FOREIGN KEY (transaction_id) REFERENCES transactions(id),
+
+    CONSTRAINT uk_receipt_code UNIQUE (receipt_code)
+);
+
+
+CREATE TABLE IF NOT EXISTS cash_payment_confirmation (
+    id VARCHAR(100) PRIMARY KEY,
+    transaction_id VARCHAR(36),
+    booking_id VARCHAR(36),
+    driver_id VARCHAR(36),
+    passenger_id VARCHAR(36),
+    amount NUMERIC(12,2) NOT NULL,
+    confirmed BOOLEAN DEFAULT false,
+    confirmed_at TIMESTAMP,
+    observations TEXT,
+
+    CONSTRAINT fk_cash_transaction
+        FOREIGN KEY (transaction_id) REFERENCES transactions(id)
 );

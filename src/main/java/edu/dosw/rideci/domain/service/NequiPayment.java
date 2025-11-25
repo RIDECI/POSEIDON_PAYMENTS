@@ -6,16 +6,32 @@ import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 public class NequiPayment implements PaymentStrategy {
 
     @Override
-    public Transaction processPayment(Transaction transaction) {
-        transaction.setStatus(TransactionStatus.PROCESSING);
-        try {
-            // Aquí iría la integración real con Nequi (client HTTP)
-            transaction.setReceiptCode("NEQUI-" + transaction.getId());
-            transaction.setStatus(TransactionStatus.COMPLETED);
-        } catch (Exception ex) {
-            transaction.setStatus(TransactionStatus.FAILED);
-            transaction.setErrorMessage(ex.getMessage());
+    public Transaction processPayment(Transaction tx) {
+
+        String phone = tx.getReceiptCode(); // recibimos número de celular simulado
+
+        switch (phone) {
+
+            case "3001234567": // éxito
+                tx.setStatus(TransactionStatus.PROCESSING);
+                tx.setReceiptCode("NEQUI-" + tx.getId());
+                break;
+
+            case "3999999999": // sin fondos
+                tx.setStatus(TransactionStatus.FAILED);
+                tx.setErrorMessage("INSUFFICIENT_FUNDS");
+                break;
+
+            case "3111111111": // token inválido
+                tx.setStatus(TransactionStatus.FAILED);
+                tx.setErrorMessage("INVALID_TOKEN");
+                break;
+
+            default: // rechazado
+                tx.setStatus(TransactionStatus.FAILED);
+                tx.setErrorMessage("REJECTED");
+                break;
         }
-        return transaction;
+        return tx;
     }
 }

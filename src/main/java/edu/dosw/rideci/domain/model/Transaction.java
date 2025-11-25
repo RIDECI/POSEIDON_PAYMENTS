@@ -1,5 +1,6 @@
 package edu.dosw.rideci.domain.model;
 
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,4 +23,6 @@ public class Transaction {
     private String errorMessage;
     private Integer attempts;
     private LocalDateTime createdAt;
+    private PaymentMethodType paymentMethod; 
+    private String extra;
 }

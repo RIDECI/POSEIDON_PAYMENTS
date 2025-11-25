@@ -1,5 +1,10 @@
 package edu.dosw.rideci.domain.model.enums;
 
-public class RefundStatus {
-    
+public enum RefundStatus {
+    REQUESTED,
+    PROCESSING,
+    COMPLETED,
+    AUTHORIZED,
+    APPROVED,
+    REJECTED
 }

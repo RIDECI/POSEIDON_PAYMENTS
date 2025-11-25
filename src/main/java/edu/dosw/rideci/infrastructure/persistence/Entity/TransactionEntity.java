@@ -1,5 +1,6 @@
 package edu.dosw.rideci.infrastructure.persistence.Entity;
 
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +19,7 @@ public class TransactionEntity {
     @Id
     private String id;
 
-    @Column(name = "booking_id", nullable = false)
+    @Column(name = "booking_id", nullable = false, unique = true)
     private String bookingId;
 
     @Column(name = "passenger_id", nullable = false)
@@ -26,12 +27,12 @@ public class TransactionEntity {
 
     @Column(nullable = false)
     private Double amount;
-    
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 
-    @Column(name = "receipt_code")
+    @Column(name = "receipt_code", unique = true)
     private String receiptCode;
 
     @Column(name = "error_message")
@@ -41,4 +42,12 @@ public class TransactionEntity {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PaymentMethodType paymentMethod;
+
+    @Column(nullable = false)
+    private String extra;
+
 }

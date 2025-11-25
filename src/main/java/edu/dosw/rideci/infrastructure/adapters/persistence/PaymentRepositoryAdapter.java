@@ -2,6 +2,7 @@ package edu.dosw.rideci.infrastructure.adapters.persistence;
 
 import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
 import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import edu.dosw.rideci.infrastructure.persistence.Entity.TransactionEntity;
 import edu.dosw.rideci.infrastructure.persistence.Repository.mapper.TransactionMapper;
 import edu.dosw.rideci.infrastructure.persistence.Repository.TransactionJpaRepository;
@@ -27,16 +28,36 @@ public class PaymentRepositoryAdapter implements PaymentRepositoryPort {
 
     @Override
     public Optional<Transaction> findById(String id) {
-        return repository.findById(id).map(mapper::toDomain);
+        return repository
+                .findById(id)
+                .map(mapper::toDomain);
     }
 
     @Override
     public List<Transaction> findAll() {
-        return repository.findAll().stream().map(mapper::toDomain).toList();
+        return repository
+                .findAll()
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 
     @Override
     public void deleteById(String id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public boolean existsById(String id) {
+        return repository.existsById(id);
+    }
+
+    @Override
+    public List<Transaction> findByStatus(TransactionStatus status) {
+        return repository.findByStatus(status)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
 }

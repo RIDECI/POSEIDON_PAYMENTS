@@ -1,5 +1,5 @@
 package edu.dosw.rideci.application.port.in;
 
-public class DeletePaymentUseCase {
-    
+public interface DeletePaymentUseCase {
+    boolean deleteById(String id);
 }

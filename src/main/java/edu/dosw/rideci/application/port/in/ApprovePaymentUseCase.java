@@ -1,5 +1,7 @@
 package edu.dosw.rideci.application.port.in;
 
-public class ApprovePaymentUseCase {
-    
+import edu.dosw.rideci.domain.model.Transaction;
+
+public interface ApprovePaymentUseCase {
+    Transaction approve(String id);
 }

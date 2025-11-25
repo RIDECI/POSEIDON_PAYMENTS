@@ -1,5 +1,5 @@
 package edu.dosw.rideci.application.port.out;
 
-public class NotificationPort {
+public interface NotificationPort {
     
 }

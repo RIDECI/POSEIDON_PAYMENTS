@@ -9,4 +9,5 @@ public class CashPayment implements PaymentStrategy {
         transaction.setStatus(TransactionStatus.PENDING_CASH);
         return transaction;
     }
+
 }

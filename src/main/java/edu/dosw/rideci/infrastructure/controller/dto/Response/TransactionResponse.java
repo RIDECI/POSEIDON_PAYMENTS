@@ -1,6 +1,7 @@
 package edu.dosw.rideci.infrastructure.controller.dto.Response;
 
 import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,9 +15,12 @@ public class TransactionResponse {
     private String status;
     private String receiptCode;
     private String errorMessage;
+    private PaymentMethodType paymentMethod;
+    private String extra;
 
     public static TransactionResponse fromDomain(Transaction t) {
-        if (t == null) return null;
+        if (t == null)
+            return null;
         return TransactionResponse.builder()
                 .id(t.getId())
                 .bookingId(t.getBookingId())
@@ -25,6 +29,9 @@ public class TransactionResponse {
                 .status(t.getStatus() != null ? t.getStatus().name() : null)
                 .receiptCode(t.getReceiptCode())
                 .errorMessage(t.getErrorMessage())
+                .paymentMethod(t.getPaymentMethod())
+                .extra(t.getExtra())
                 .build();
+
     }
 }

@@ -241,7 +241,7 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 
 ## Diagrama de Contexto
 
-![alt text](docs/uml/diagrama.png)
+![alt text](docs/uml/diagramaContexto.png)
 
 
 ---
@@ -440,18 +440,18 @@ Almacena toda la información transaccional de pagos:
 
 ## Diagrama de Casos de Uso
 
-![alt text](docs/uml/DiagramaCasosUso.png)
+![alt text](docs/uml/diagramaCasosUso.png)
 
 ---
 
 ### Diagrama de Clases
 
-![alt text](docs/uml/DiagramaClases.png)
+![alt text](docs/uml/diagramaClases.png)
 
 ---
 
 ### Diagrama de Bases de Datos
 
-![alt text](docs/uml/DiagramaBaseDeDatos.png)
+![alt text](docs/uml/diagramaBaseDeDatos.png)
 
 ---
