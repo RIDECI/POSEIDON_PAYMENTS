@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: edu.dosw.rideci.PoseidonPaymentsApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.466 s -- in edu.dosw.rideci.PoseidonPaymentsApplicationTests
