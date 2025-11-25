@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.infrastructure.controller.dto.Response;
+package edu.dosw.rideci.infrastructure.controller.dto.Response;
 
 import edu.dosw.rideci.domain.model.AuditLog;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.application.port.out;
+package edu.dosw.rideci.application.port.out;
 
 import edu.dosw.rideci.domain.model.AuditLog;
 

@@ -35,14 +35,14 @@ public class ApprovePaymentUseCaseImpl implements ApprovePaymentUseCase {
             throw new IllegalStateException("Solo se pueden aprobar pagos procesados");
         }
 
-        // Regla #3: Debe tener recibo válido
+        // Regla #3: Debe tener recibo vÃ¡lido
         if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {
             throw new IllegalArgumentException("receiptCode requerido para aprobar el pago");
         }
 
         // Regla #4: CASH no se aprueba
         if (tx.getPaymentMethod() == PaymentMethodType.CASH) {
-            throw new IllegalStateException("Los pagos CASH no requieren aprobación");
+            throw new IllegalStateException("Los pagos CASH no requieren aprobaciÃ³n");
         }
 
         // Regla #5: No aprobar dos veces
@@ -50,14 +50,14 @@ public class ApprovePaymentUseCaseImpl implements ApprovePaymentUseCase {
             throw new IllegalStateException("Solo se pueden aprobar una vez un");
         }
 
-        // Regla #6: Monto válido
+        // Regla #6: Monto vÃ¡lido
         if (tx.getAmount() == null || tx.getAmount() <= 0) {
-            throw new IllegalStateException("Monto inválido para aprobación");
+            throw new IllegalStateException("Monto invÃ¡lido para aprobaciÃ³n");
         }
 
         // Regla #7: bookingId obligatorio
         if (tx.getBookingId() == null) {
-            throw new IllegalArgumentException("La transacción no tiene bookingId asignado");
+            throw new IllegalArgumentException("La transacciÃ³n no tiene bookingId asignado");
         }
 
         // Marcar como aprobado en metadatos (sin cambiar status)
@@ -67,7 +67,7 @@ public class ApprovePaymentUseCaseImpl implements ApprovePaymentUseCase {
 
         Transaction approvedTx = repository.save(tx);
         
-        // Registrar auditoría
+        // Registrar auditorÃ­a
         try {
             createAuditLogUseCase.createAuditLog(AuditLog.builder()
                     .entityType("Transaction")

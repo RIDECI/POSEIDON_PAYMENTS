@@ -20,7 +20,7 @@ public class DeletePaymentUseCaseImpl implements DeletePaymentUseCase {
             return false;
         }
 
-        // FUTURA VALIDACIÓN (solo eliminar transacciones FAILED)
+        // FUTURA VALIDACIÃ“N (solo eliminar transacciones FAILED)
         //
         // Transaction tx = repository.findById(id)
         //         .orElse(null);

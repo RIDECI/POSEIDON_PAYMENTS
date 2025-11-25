@@ -16,17 +16,17 @@ public class ProcessPaymentUseCaseImpl implements ProcessPaymentUseCase {
 
     private final PaymentRepositoryPort repository;
     private final PaymentMethodFactory factory;
-    private final AuthorizePaymentPort authorizationPort; // 🔥 FALTABA ESTO
+    private final AuthorizePaymentPort authorizationPort; // ðŸ”¥ FALTABA ESTO
 
     @Override
     public Transaction process(String id) {
 
-        // 1. Validación externa (port OUT)
+        // 1. ValidaciÃ³n externa (port OUT)
         if (!authorizationPort.isAuthorized(id)) {
             throw new IllegalStateException("Payment must be authorized before processing");
         }
 
-        // 2. Buscar transacción
+        // 2. Buscar transacciÃ³n
         Transaction tx = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
 
@@ -39,7 +39,7 @@ public class ProcessPaymentUseCaseImpl implements ProcessPaymentUseCase {
         tx.setStatus(TransactionStatus.PROCESSING);
         repository.save(tx);
 
-        // 5. Ejecutar estrategia (PayU, Nequi, BreB, Cash…)
+        // 5. Ejecutar estrategia (PayU, Nequi, BreB, Cashâ€¦)
         PaymentStrategy strategy = factory.createStrategy(tx.getPaymentMethod());
         tx = strategy.processPayment(tx);
 

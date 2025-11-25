@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.infrastructure.controller;
+package edu.dosw.rideci.infrastructure.controller;
 
 import edu.dosw.rideci.application.port.in.ProcessWebhookUseCase;
 import edu.dosw.rideci.application.port.in.UpdatePaymentByWebhookUseCase;

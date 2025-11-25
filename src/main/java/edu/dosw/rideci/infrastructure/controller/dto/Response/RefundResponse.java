@@ -18,7 +18,7 @@ public class RefundResponse {
     private Double refundedAmount;
     private RefundStatus status;
     private String reason;
-    private LocalDateTime requestAt; // ← FALTABA
+    private LocalDateTime requestAt; // â† FALTABA
 
     public static RefundResponse fromDomain(Refund r) {
         if (r == null)
@@ -32,7 +32,7 @@ public class RefundResponse {
                 .refundedAmount(r.getRefundedAmount())
                 .status(r.getStatus())
                 .reason(r.getReason())
-                .requestAt(r.getRequestAt()) // ← AGREGADO
+                .requestAt(r.getRequestAt()) // â† AGREGADO
                 .build();
     }
 }

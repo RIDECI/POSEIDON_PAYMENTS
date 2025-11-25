@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.application.service;
+package edu.dosw.rideci.application.service;
 
 import edu.dosw.rideci.application.port.in.GetAuditLogByIdUseCase;
 import edu.dosw.rideci.application.port.out.AuditLogRepositoryPort;

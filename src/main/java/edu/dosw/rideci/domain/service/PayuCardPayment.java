@@ -8,7 +8,7 @@ public class PayuCardPayment implements PaymentStrategy {
     @Override
     public Transaction processPayment(Transaction tx) {
 
-        String cardNumber = tx.getReceiptCode(); // reutilizamos receiptCode para almacenar temporalmente el número de tarjeta
+        String cardNumber = tx.getReceiptCode(); // reutilizamos receiptCode para almacenar temporalmente el nÃºmero de tarjeta
 
         if (cardNumber == null) {
             tx.setStatus(TransactionStatus.FAILED);

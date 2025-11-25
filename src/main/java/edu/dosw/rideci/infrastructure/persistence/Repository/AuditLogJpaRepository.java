@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.infrastructure.persistence.Repository;
+package edu.dosw.rideci.infrastructure.persistence.Repository;
 
 import edu.dosw.rideci.infrastructure.persistence.Entity.AuditLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

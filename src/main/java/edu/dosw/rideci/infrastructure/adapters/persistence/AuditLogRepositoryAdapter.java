@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.infrastructure.adapters.persistence;
+package edu.dosw.rideci.infrastructure.adapters.persistence;
 
 import edu.dosw.rideci.application.port.out.AuditLogRepositoryPort;
 import edu.dosw.rideci.domain.model.AuditLog;

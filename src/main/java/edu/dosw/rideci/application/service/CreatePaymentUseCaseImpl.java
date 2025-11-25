@@ -27,7 +27,7 @@ public class CreatePaymentUseCaseImpl implements CreatePaymentUseCase {
         tx.setCreatedAt(LocalDateTime.now());
         Transaction savedTransaction = paymentRepositoryPort.save(tx);
         
-        // Registrar auditoría
+        // Registrar auditorÃ­a
         try {
             createAuditLogUseCase.createAuditLog(AuditLog.builder()
                     .entityType("Transaction")

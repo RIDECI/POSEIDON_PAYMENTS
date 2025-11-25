@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.infrastructure.controller.dto.Request;
+package edu.dosw.rideci.infrastructure.controller.dto.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

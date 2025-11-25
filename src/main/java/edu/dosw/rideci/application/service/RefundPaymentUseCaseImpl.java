@@ -30,7 +30,7 @@ public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
     @Override
     public Refund refundPayment(String transactionId, Double amount, String reason) {
 
-        // 1. Verificar si existe la transacción
+        // 1. Verificar si existe la transacciÃ³n
         Transaction tx = paymentRepositoryPort.findById(transactionId)
                 .orElseThrow(() -> new RideciBusinessException("Transaction not found: " + transactionId));
 
@@ -41,7 +41,7 @@ public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
             );
         }
 
-        // 3. Validar si ya existe un refund para esa transacción
+        // 3. Validar si ya existe un refund para esa transacciÃ³n
         Refund existing = refundRepositoryPort.findByTransactionId(transactionId);
         if (existing != null) {
             throw new RideciBusinessException("This transaction already has a refund request");
@@ -73,7 +73,7 @@ public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
         // 6. Guardar refund
         Refund savedRefund = refundRepositoryPort.save(refund);
         
-        // Registrar auditoría
+        // Registrar auditorÃ­a
         try {
             createAuditLogUseCase.createAuditLog(AuditLog.builder()
                     .entityType("Refund")

@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.infrastructure.persistence.Entity;
+package edu.dosw.rideci.infrastructure.persistence.Entity;
 
 import edu.dosw.rideci.domain.model.enums.AuditAction;
 import jakarta.persistence.*;

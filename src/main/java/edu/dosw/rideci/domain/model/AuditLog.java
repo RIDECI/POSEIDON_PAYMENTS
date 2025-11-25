@@ -1,4 +1,4 @@
-﻿package edu.dosw.rideci.domain.model;
+package edu.dosw.rideci.domain.model;
 
 import edu.dosw.rideci.domain.model.enums.AuditAction;
 import lombok.AllArgsConstructor;

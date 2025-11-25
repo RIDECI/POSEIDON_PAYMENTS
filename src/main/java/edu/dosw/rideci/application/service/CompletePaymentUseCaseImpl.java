@@ -25,16 +25,16 @@ public class CompletePaymentUseCaseImpl implements CompletePaymentUseCase {
             throw new IllegalStateException("Solo se pueden completar pagos en estado APPROVED");
         }
 
-        // 2. El monto debe ser válido
+        // 2. El monto debe ser vÃ¡lido
         if (tx.getAmount() == null || tx.getAmount() <= 0) {
-            throw new IllegalArgumentException("Monto inválido para completar el pago");
+            throw new IllegalArgumentException("Monto invÃ¡lido para completar el pago");
         }
 
-        // 3. CASH requiere lógica especial
+        // 3. CASH requiere lÃ³gica especial
         if (tx.getPaymentMethod() == PaymentMethodType.CASH) {
             // CASH no usa receiptCode
         } else {
-            // 4. Digitales requieren receiptCode válido
+            // 4. Digitales requieren receiptCode vÃ¡lido
             if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {
                 throw new IllegalArgumentException("receiptCode requerido para pagos digitales");
             }
@@ -48,7 +48,7 @@ public class CompletePaymentUseCaseImpl implements CompletePaymentUseCase {
         // 6. Finalmente actualizar estado
         tx.setStatus(TransactionStatus.COMPLETED);
 
-        // Añadimos metadata
+        // AÃ±adimos metadata
         tx.setExtra((tx.getExtra() != null ? tx.getExtra() : "") + "|COMPLETED:true");
 
         return repository.save(tx);
