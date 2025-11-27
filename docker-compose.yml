@@ -20,12 +20,12 @@ services:
     build: .
     container_name: poseidon-payments
     ports:
-      - "8081:8080"
+      - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/rideci_payments   
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/rideci_payments
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: Admin
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8081
     depends_on:
       - postgres
     networks:
