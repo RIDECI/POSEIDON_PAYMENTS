@@ -11,5 +11,4 @@ public class PoseidonPaymentsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PoseidonPaymentsApplication.class, args);
 	}
-
 }

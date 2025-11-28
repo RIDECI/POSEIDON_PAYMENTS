@@ -1,6 +1,6 @@
-# POSEIDON_PAYMENTS
+# POSEIDON_PAYMENTS_BACKEND
 
-## Desarrolladores
+## Desarrolladores 
 
 * Deisy Lorena Guzman Cabrales
 * Diego Fernando Chavarro Castillo
@@ -10,20 +10,83 @@
 
 ---
 
+**Descripción:**
+
+Es el componente encargado de gestionar todas las operaciones financieras dentro de RidECI. Administra el registro, procesamiento y consulta de pagos realizados por los pasajeros hacia los conductores o hacia la plataforma, ya sea a través de medios digitales (Nequi, tarjeta) o en efectivo.
+Además, controla transacciones, estados de pago, reembolsos, comprobantes y conciliación, garantizando seguridad, trazabilidad e integridad de la información económica del sistema
+
+---
+
+## Funcionamiento del Módulo de Pagos:
+
+###  Procesamiento de pagos
+- Registra los pagos asociados a reservas o viajes confirmados.
+- Procesa pagos mediante Nequi, tarjeta, Llaves Bre-B o efectivo.
+- Valida los datos del pago antes de autorizarlo (monto, método, usuarios).
+- Actualiza el estado del pago: PENDIENTE → AUTORIZADO → PROCESADO → APROBADO → COMPLETADO.
+- Genera comprobantes digitales para cada transacción realizada.
+
+### Gestión de transacciones
+- Consulta el historial de transacciones filtrado por usuario, viaje o fecha.
+- Registra todos los eventos del ciclo de vida del pago para auditoría.
+- Detecta pagos duplicados, fallidos o inconsistentes.
+- Integra con el módulo de reservas para confirmar o liberar cupos automáticamente.
+
+### Reembolsos
+- Permite solicitar reembolsos desde una reserva o viaje cancelado.
+- Gestiona todo el flujo del reembolso:
+  - AUTORIZAR
+  - PROCESAR
+  - APROBAR
+  - COMPLETAR
+- Valida que el pago cumpla las políticas de devolución.
+- Registra el reembolso como transacción independiente del pago original.
+
+### Notificaciones
+- Envía notificaciones cuando un pago sea aprobado, fallido o reembolsado.
+- Se integra con el módulo de notificaciones para alertas en tiempo real.
+
+### Restricciones de negocio
+- No se procesa un pago sin una reserva o viaje asociado.
+- Los reembolsos solo aplican si el pago original está en estado COMPLETADO.
+- No se avanza al siguiente estado del pago sin completar el anterior.
+- Los pagos en efectivo deben ser confirmados manualmente.
+- No se permite modificar una transacción completada; únicamente se puede reembolsar.
+
+---
+# Modulo Necesarios:
+
+**Autenticación:**
+
+Se utiliza para gestionar la información de los usuarios y roles. Permite listar usuarios, aprobarlos, rechazarlos, bloquearlos, obtener detalles de un usuario, entre otras acciones.
+
+
+**Manejo de viajes:**
+
+Se requiere para conocer el estado de los viajes (inicio, finalización) y también para calcular el monto que los usuarios deben pagar por cada servicio
+
+**Notificaciones:**
+
+Encargado de enviar notificaciones a los usuarios sobre confirmaciones, rechazos o cualquier inconveniente relacionado con pagos o viajes.
+
+
+---
+
 ## Tabla de Contenidos
 
 * [ Estrategia de Versionamiento y Branching](#-estrategia-de-versionamiento-y-branching)
 
-  * [ Estrategia de Ramas (Git Flow)](#-estrategia-de-ramas-git-flow)
-  * [ Convenciones de Nomenclatura](#-convenciones-de-nomenclatura)
-  * [ Convenciones de Commits](#-convenciones-de-commits)
+    * [ Estrategia de Ramas (Git Flow)](#-estrategia-de-ramas-git-flow)
+    * [ Convenciones de Nomenclatura](#-convenciones-de-nomenclatura)
+    * [ Convenciones de Commits](#-convenciones-de-commits)
 * [ Arquitectura del Proyecto](#-arquitectura-del-proyecto)
 
-  * [ Estructura de Capas](#️-estructura-de-capas)
+    * [ Estructura de Capas](#️-estructura-de-capas)
 * [ Tecnologías Utilizadas](#️-tecnologías-utilizadas)
 * [ Arquitectura Limpia - Organización de Capas](#️-arquitectura-limpia---organización-de-capas)
 * [Diagramas del Módulo](#diagramas-del-módulo)
-
+* - [Ejecución Local](#ejecución-local)  
+* - [Calidad y CI/CD](#calidad-y-cicd)
 
 ---
 
@@ -57,14 +120,14 @@ Se implementa una estrategia de versionamiento basada en **GitFlow**, garantizan
 ### Feature Branches
 
 ```
-feature/[nombre-funcionalidad]-hades_[codigo-jira]
+feature/[nombre-funcionalidad]-atenea_[codigo-jira]
 ```
 
 **Ejemplos:**
 
 ```
-- feature/authentication-module-hades_23
-- feature/security-service-hades_41
+- feature/authentication-module-atenea_23
+- feature/security-service-atenea_41
 ```
 
 **Reglas:**
@@ -147,7 +210,7 @@ hotfix/[descripcion-breve-del-fix]
 
 ## Arquitectura del Proyecto
 
-El backend de **POSEIDON_PAYMENTS** sigue una **arquitectura limpia y desacoplada**, priorizando:
+El backend de **ATENEA_ADMINISTRATION_BACKEND** sigue una **arquitectura limpia y desacoplada**, priorizando:
 
 * Separación de responsabilidades
 * Mantenibilidad
@@ -159,25 +222,43 @@ El backend de **POSEIDON_PAYMENTS** sigue una **arquitectura limpia y desacoplad
 ## Estructura de Capas
 
 ```
-📂 poseidon_backend
- ┣ 📂 domain/
- ┃ ┣ 📄 Entities/
- ┃ ┣ 📄 ValueObjects/
- ┃ ┣ 📄 Enums/
- ┃ ┣ 📄 Services/
- ┃ ┗ 📄 Events/
- ┣ 📂 application/
- ┃ ┣ 📄 UseCases/
- ┃ ┣ 📄 DTOs/
- ┃ ┣ 📄 Mappers/
- ┃ ┗ 📄 Exceptions/
- ┣ 📂 infrastructure/
- ┃ ┣ 📄 Controllers/
- ┃ ┣ 📄 Database/
- ┃ ┣ 📄 Repositories/
- ┃ ┣ 📄 Config/
- ┃ ┗ 📄 Security/
- ┗ 📄 pom.xml
+📂 poseidon_Payments
+ 📂 src/
+  ┣ 📂 main/
+  ┃ ┣ 📂 java/
+  ┃ ┃ ┗ 📂 edu/dosw/rideci/
+  ┃ ┃ ┃ ┣ 📂 application/
+  ┃ ┃ ┃ ┃ ┣ 📂 events/
+  ┃ ┃ ┃ ┃ ┃ ┣ 📂 command/
+  ┃ ┃ ┃ ┃ ┃ ┗ 📂 listener/
+  ┃ ┃ ┃ ┃ ┣ 📂 exceptions/
+  ┃ ┃ ┃ ┃ ┣ 📂 port/
+  ┃ ┃ ┃ ┃ ┃ ┣ 📂 in/
+  ┃ ┃ ┃ ┃ ┃ ┗ 📂 out/
+  ┃ ┃ ┃ ┃ ┗ 📂 service/
+  ┃ ┃ ┃
+  ┃ ┃ ┃ ┣ 📂 domain/
+  ┃ ┃ ┃ ┃ ┗ 📂 model/
+  ┃ ┃ ┃ ┃ ┃ ┣ 📂 enums/
+  ┃ ┃ ┃ ┃ ┃ ┗ 📂 valueobjects/
+  ┃ ┃ ┃
+  ┃ ┃ ┃ ┣ 📂 infrastructure/
+  ┃ ┃ ┃ ┃ ┣ 📂 adapters/
+  ┃ ┃ ┃ ┃ ┃ ┣ 📂 messaging/
+  ┃ ┃ ┃ ┃ ┃ ┗ 📂 persistence/
+  ┃ ┃ ┃ ┃ ┣ 📂 configs/
+  ┃ ┃ ┃ ┃ ┣ 📂 controller/
+  ┃ ┃ ┃ ┃ ┃ ┗ 📂 dto/
+  ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂 Request/
+  ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📂 Response/
+  ┃ ┃ ┃ ┃ ┣ 📂 exceptions/
+  ┃ ┃ ┃ ┃ ┗ 📂 persistence/
+  ┃ ┃ ┃ ┃ ┃ ┣ 📂 Entity/
+  ┃ ┃ ┃ ┃ ┃ ┗ 📂 Repository/
+  ┃ ┃ ┃ ┃ ┃ ┃  ┗ 📂 Mapper/
+  ┃ ┃ ┃
+  ┃ ┃ ┃ ┗ 📄 PoseidonPaymentsApplication.java
+
 ```
 
 ---
@@ -217,208 +298,120 @@ Implementa los **detalles técnicos**: controladores REST, persistencia, configu
 ## Diagramas del Módulo
 
 
-## Diagrama de Contexto
-
-![alt text](docs/uml/diagrama.png)
-
-
----
-
-### Diagrama de Despliegue
+### Diagrama de Despliegue 
 
 ![DiagramaDespliegue](docs/uml/diagramaDespliegue.png)
 
-Este diagrama muestra la arquitectura de despliegue del sistema RIDECl, incluyendo la comunicación entre el cliente, los servicios backend, la base de datos y las herramientas CI/CD que soportan el ciclo de desarrollo.
+
+### Backend y Despliegue
+
+- Desarrollado en Java con Spring Boot.
+
+- Desplegado automáticamente en Railway mediante un pipeline de CI/CD con GitHub Actions.
+
+##  Almacenamiento en PostgreSQL
+
+El microservicio de Pagos utiliza **PostgreSQL** como base de datos principal para almacenar información crítica relacionada con las operaciones financieras.  
+Los datos almacenados incluyen:
+
+ 1. Transacciones de Pago
+ 2. Reembolsos
+ 3. Auditoría y Eventos
+ 4. Métodos de Pago Asociados
+ 5. Relación con Viajes y Reservas
+
+PostgreSQL asegura **consistencia, integridad referencial y trazabilidad**, esenciales para el manejo seguro de operaciones financieras dentro de la plataforma RidECI.
 
 
-#### Cliente (Front-End)
+### Calidad del Código
 
-El cliente es una aplicación web desarrollada con:
+- Integra JaCoCo para medir cobertura de pruebas.
 
-- **React**
-- **TypeScript**
+- Utiliza SonarQube para análisis estático y detección de vulnerabilidades.
 
-Se comunica con el sistema mediante:
+## Funcionalidades Principales del Módulo de Pagos
 
-- **HTTPS (API Gateway)**
-- **WebSockets** para actualizaciones en tiempo real.
+- Gestión de Pagos
 
+- Gestión de Reembolsos
 
-#### **Payments**
-Funciones principales:
-- Gestión de pagos  
-- Manejo de transacciones  
-- Alertas emergentes  
-- Reportes  
-- Comunicación con otros módulos  
+- Consultas y Auditoría
 
-Tecnologías internas:
-- **Spring Boot**
-- **Jacoco** (cobertura de código)
-- **SonarQube** (análisis de calidad)
-- **Docker**
+- Seguridad y Validaciones
 
-Este servicio actúa como nodo central, recibiendo solicitudes del cliente y coordinando operaciones con otros microservicios.
+---
 
-
-####  Microservicios Externos Conectados
-
-**a) Autenticación (Usuarios)**
-Maneja:
-- Validación de credenciales  
-- Autorización  
-- Tokens y seguridad  
-
-**b) Gestión de Viajes (Viajes)**
-Responsable de la lógica de:
-- Creación de viajes  
-- Actualización de estados  
-- Control de rutas o trayectos  
-
-**c) Notificaciones (Email / App)**
-Encargado de:
-- Envío de correos  
-- Envío de alertas y notificaciones internas  
-
-Todos se comunican con el servicio Payments para ejecutar tareas específicas.
-
-
-#### Base de Datos — MySQL
-
-El servicio Payments se conecta a **MySQL** para almacenar información financiera.
-
-Datos almacenados:
-- Monto  
-- Método de pago  
-- Estado  
-- Fecha de pago  
-- Transacción  
 ### Diagrama de Componentes General
 
-![alt text](docs/uml/diagramaComponentesGeneral.png)
-
-Este diagrama representa la arquitectura de componentes utilizada en el sistema, mostrando cómo interactúan el frontend, el API Gateway, los microservicios y las bases de datos, así como las tecnologías involucradas en cada parte.
-
-#### Frontend (RIDECI FRONT)
-El frontend está desarrollado con:
-
-- **TypeScript**
-- **React**
-- Desplegado en **Vercel**
-- Prototipado en **Figma**
-
-Este módulo se comunica directamente con el **API Gateway** para solicitar datos y ejecutar acciones dentro del sistema.
-
-#### API Gateway
-El **API Gateway** actúa como punto de entrada único para todas las solicitudes provenientes del frontend. 
-
-#### Microservicio de Payments
-Se encarga de gestionar todo lo relacionado con pagos y operaciones financieras dentro del sistema.
-
-Este microservicio se conecta directamente a la base de datos de pagos.
+![alt text](docs/uml/DiagramaComponentesGeneral.png)
 
 
-####  Base de Datos — Payment DB
-Base de datos implementada en:
+#### **Frontend:** 
+ 
+Desarrollado en TypeScript y desplegado en Vercel".
 
-**PostgreSQL** 
 
-PostgreSQL garantiza que cada transacción:
+#### **API Gateway:** 
 
-- se completa toda o no se ejecuta nada (atomicidad)
+Centraliza y gestiona las comunicaciones entre los componentes.
 
-- no deja datos corruptos (consistencia)
 
-- no interfiere con otras transacciones simultáneas (aislamiento)
+#### **Backend:** 
 
-- se guarda incluso si hay fallos de energía o del sistema (durabilidad)
+Gestiona la lógica de pagos, integrando JaCoco SonarQube para garantizar calidad de código y funcione de manera correcta para los conductores, viajes y usuarios.
 
-Esto evita pérdida de dinero, pagos duplicados o estados incorrectos.
+Ademas usamos un Pipeline para validar que todo funcione como debe funcionar.
+
+Desplieguemos en Railway para construir el Docker, usamos Swagger y PostMan para probar y spring boot para gestionar el proyecto de manera eficiente mediante una API REST flexible.
+
+#### **Base de datos:** 
+
+Utiliza PostgreSQL para almacenar datos institucionales.
 
 
 ---
 
-### Diagrama de Componentes Específico
+### Diagrama de Componentes Específico 
 
-![alt text](docs/uml/diagramaComponentesEspecificosPayment.png)
+![alt text](docs/uml/diagramaComponentesEspecificos.png)
 
-El microservicio de pagos está construido bajo los principios de Clean Architecture, lo que garantiza bajo acoplamiento, alta cohesión, escalabilidad y facilidad de mantenimiento.
-El siguiente diagrama representa los componentes y relaciones internas y externas del sistema.
+El módulo de Pagos usa Arquitectura Hexagonal para mantener la lógica de negocio
+independiente de frameworks y detalles técnicos. Esto facilita pruebas, actualizaciones y despliegues ágiles.
 
-#### Controllers
-El **PaymentController** actúa como punto de entrada.
-Sus responsabilidades son:
-- Recibir solicitudes HTTP desde el API Gateway.
-- Validar entradas básicas.
-- Delegar las operaciones a los casos de uso correspondientes.
-- Devolver respuestas adecuadas al cliente.
-#### Use Cases (Casos de Uso)
-Cada caso de uso contiene la lógica del dominio y representa una acción de negocio concreta:
-- **RefundPaymentUseCase:** Maneja reembolsos ante novedades o cancelaciones en viajes.
-- **AuthorizePaymentUseCase:** Valida identidad del usuario antes de operar con pagos.
-- **GetPaymentUseCase:** Obtiene información detallada de un pago.
-- **PutPaymentUseCase:** Actualiza un pago existente.
-- **ProcessPaymentUseCase:** Orquesta el procesamiento completo de un pago.
-- **GetPaymentStatusUseCase:** Consulta el estado actual del pago.
-- **CreatePaymentUseCase:** Registra un nuevo pago en el sistema.
-- **DeletePaymentUseCase:** Elimina pagos no definitivos.
-- **ApprovePaymentUseCase:** Una vez aprobado, genera una notificación hacia servicios externos.
+### Estructura y flujo
 
+El frontend en React y TypeScript llama controladores que invocan casos de uso. Los casos de uso contienen la lógica central: aprobación de conductores, suspensión de usuarios y generación de reportes. Los casos de uso sólo dependen de puertos, manteniendo el core aislado.
 
----
-#### **MapperPaymentAdapter**
-Este componente transforma objetos entre capas:
-- Entidades de dominio: DTOs
-- Entidades: Modelos de la base de datos
-- Estructuras internas: Estructuras externas
+### Puertos y adaptadores
 
-Permite mantener un dominio limpio sin depender de formatos externos.
-#### Ports y Adapters
-**Ports**:
-Interfaces definidas dentro de la capa de dominio que especifican *qué* necesita el caso de uso del exterior.
-No contienen lógica técnica.
-El diagrama incluye:
-- **PaymentRepositoryPort**
-- **ApprovePaymentPort**
-- **AuthorizePaymentPort**
-- **CancelTravelPort**
+Los puertos definen contratos para persistencia, publicación de eventos y notificaciones. Los adaptadores implementan esos contratos integrando con MongoDB, RabbitMQ y servicios externos de autenticación y reputación. Esto permite sustituir o simular implementaciones en pruebas.
 
-**Adapters**:
-Implementaciones concretas que cumplen con los Ports:
-- **PaymentRepository:** Acceso real a la base de datos MySQL.
-- **AdapterApprovePayment:** Comunicación con microservicio de Notificaciones.
-- **AdapterAuthorizePayment:** Integración con el microservicio de Autenticación.
-- **AdapterCancelTravel:** Comunicación con microservicio de Gestión de Viajes.
-- **PaymentAdapter (central):** Orquestador que coordina interacciones entre los casos de uso y los adaptadores.
-Los adapters permiten reemplazar tecnologías externas sin modificar la capa de dominio.
-### Repositorio
-### **PaymentRepository**
-Implementa el PaymentRepositoryPort y se encarga de:
-- Guardar pagos
-- Consultar pagos
-- Actualizar pagos
-- Eliminar registros
+### Auditoría y eventos
 
-Es una parte de la capa de infraestructura.
+Todas las acciones administrativas se registran en auditoría y se propagan como eventos con identificadores de correlación y comandos para idempotencia y trazabilidad. El procesamiento asíncrono evita bloquear la operación principal.
 
-#### Conexiones Externas
-**1. Microservicio de Notificaciones**:
-Utilizado para enviar notificaciones cuando un pago es aprobado.
+### Políticas y extensibilidad
 
-**2. Microservicio de Gestión de Viajes**:
-Se usa en operaciones como cancelación de viaje o reembolso.
+Las políticas de publicación se evalúan con un factory de estrategias. El patrón strategy permite añadir reglas como días permitidos, roles o excepciones sin tocar el core y facilita pruebas unitarias de cada regla.
 
-**3. Microservicio de Autenticación**:
-Valida la identidad del usuario antes de autorizar operaciones.
+### Ejemplo de flujo
 
-**4. Base de Datos MySQL**:
-Almacena toda la información transaccional de pagos:
+Al aprobar un conductor el flujo va del frontend al caso de uso, que actualiza el repositorio, registra la acción en auditoría y publica un evento. Listeners consumen el evento para notificaciones, actualizaciones de reputación o generación de reportes sin impactar la operación inicial.
+
 
 ---
+
 
 ## Diagrama de Casos de Uso
 
 ![alt text](docs/uml/DiagramaCasosUso.png)
+
+Las transacciones en el **Módulo de Pagos de RIDECI** permiten a los pasajeros realizar pagos seguros por sus viajes a través de Nequi, tarjeta, Llaves Bre-B o efectivo, y permiten a los conductores recibirlos de manera confiable.  
+
+El sistema gestiona el ciclo completo de cada transacción, desde su creación hasta su autorización, procesamiento, aprobación y finalización, asegurando que cada operación quede correctamente registrada y asociada al viaje correspondiente.
+
+Además, este módulo administra solicitudes de reembolso y ejecuta todo su flujo operativo (autorizar, procesar, aprobar y completar), siguiendo las políticas institucionales.  
+También permite consultar el historial de pagos, generar comprobantes digitales, detectar inconsistencias, evitar duplicidad de transacciones y almacenar registros de auditoría para garantizar trazabilidad y seguridad financiera.
 
 ---
 
@@ -426,10 +419,184 @@ Almacena toda la información transaccional de pagos:
 
 ![alt text](docs/uml/DiagramaClases.png)
 
+
+## Patrones de diseño:
+
+### Strategy
+
+Representado por la interfaz PaymentStrategy y sus implementaciones (BreBPayment, NequiPayment, CashPayment, CardPayment). Permite definir diferentes algoritmos para procesar pagos según el método, intercambiables en tiempo de ejecución.
+
+### Factory Method / Factory
+
+Representado por PaymentMethodFactory que crea instancias concretas de PaymentStrategy según el tipo de pago (PaymentMethodType). Centraliza la lógica de creación de objetos para desacoplar al cliente de las implementaciones concretas.
+
+### Command 
+
+No se ve reflejado en el diagrama de clases pero se uso para los eventos ya que modela una accion la cual tenemos que
+consumir para que sea ejecutado y sirva como por ejemplo con los eventos de inicio y fin de un viaje para 
+que el administrador pueda actuar según la situación. 
+
+---
+## 🧱 Principios SOLID aplicados al microservicio de Pagos
+
+### **Single Responsibility Principle (SRP)**
+
+Cada componente del microservicio está diseñado para cumplir una única responsabilidad.  
+Los controladores manejan únicamente la entrada HTTP, los casos de uso contienen solo la lógica de negocio,  
+los adaptadores se concentran en la infraestructura, y los mapeadores se encargan exclusivamente de transformar datos.  
+Esto garantiza clases pequeñas, claras y fáciles de mantener.
+
+---
+
+### **Open/Closed Principle (OCP)**
+
+El sistema permite extender nuevas funcionalidades sin modificar lo existente.  
+Es posible añadir nuevos métodos de pago, nuevas reglas de reembolso o nuevos pasos del flujo sin alterar el código ya implementado.  
+La arquitectura facilita que el sistema crezca sin introducir regresiones.
+
+---
+
+### **Liskov Substitution Principle (LSP)**
+
+Las clases que representan comportamientos similares pueden sustituirse entre sí sin romper el sistema.  
+Las estrategias de pago funcionan de forma intercambiable y cualquier implementación puede utilizarse sin afectar la lógica del dominio.  
+Esto ayuda a que el sistema sea flexible y adaptable a nuevos métodos.
+
+---
+
+### **Interface Segregation Principle (ISP)**
+
+Las interfaces están divididas en contratos pequeños y específicos.  
+Cada caso de uso define únicamente lo necesario para la operación que representa,  
+evitando interfaces grandes, difíciles de implementar o con responsabilidades mezcladas.  
+Los componentes solo dependen de lo que realmente necesitan.
+
+---
+
+### **Dependency Inversion Principle (DIP)**
+
+El dominio depende exclusivamente de abstracciones y no de implementaciones concretas.  
+Los casos de uso trabajan con interfaces que representan repositorios u operaciones externas,  
+mientras que la infraestructura implementa estas interfaces sin afectar la lógica de negocio.  
+Esto permite modificar tecnología, persistencia o framework sin tocar el dominio.
+
 ---
 
 ### Diagrama de Bases de Datos
 
-![alt text](docs/uml/DiagramaBaseDeDatos.png)
+![DiagramaBasesDatos](docs/uml/diagramaBaseDeDatos.png)
+
+La estructura relacional normalizada en Tercera Forma Normal (3NF) permite: 
+
+- Eliminar redundancia de datos mediante tablas especializadas 
+- Garantizar integridad referencial a través de foreign keys 
+- Facilitar auditoría con registros inmutables de cada transacción 
+- Optimizar consultas mediante índices estratégicamente ubicados 
+Las cinco tablas principales son: 
+- TRANSACTION: Tabla central que registra todas las transacciones de pago (Nequi y efectivo), con códigos únicos de comprobante y referencias a servicios externos. 
+- PAYMENT_METHOD: Almacena los métodos de pago Nequi guardados por los usuarios para reutilización futura, encriptando datos sensibles. 
+- REFUND: Registra los reembolsos procesados, manteniendo trazabilidad completa mediante relación con la transacción original. 
+- CASH_PAYMENT_CONFIRMATION: Exclusiva para pagos en efectivo, permite al conductor confirmar la recepción del dinero con timestamp y observaciones. 
+- PAYMENT_RECEIPT: Almacena los comprobantes de pago generados automáticamente, incluyendo un snapshot completo de la información en formato JSON para preservar el estado exacto al momento de emisión. 
+
 
 ---
+
+
+## Diagrama de Contexto
+
+![alt text](docs/uml/DiagramaContexto.png)
+
+El Módulo de  Pagos permite a los pasajeros gestionar sus viajes desde el pago.
+
+Pasajeros:
+Pueden realizar pagos de viajes, además de buscar, reservar, cancelar y calificar a los conductores.
+
+Administrador:
+Tiene la capacidad de monitorear y hacer seguimiento a todas las transacciones de pago realizadas en la plataforma.
+
+Conductores:
+Reciben pagos y pueden recibir calificaciones y recomendaciones de los pasajeros, que podrían influir en futuros pagos o viajes.
+
+---
+
+# Ejecución Local
+
+
+## Requesitos
+- Java 17
+- Maven 3.X
+- Docker + Docker Compose
+- Puerto disponiblo 8081
+
+
+## Ejecución con Maven 
+
+### 1. Clonar el repositorio
+`git clone https://github.com/RIDECI/POSEIDON_PAYMENTS`
+
+`cd POSEIDON_PAYMENTS`
+
+### 2. Compilar y ejecutar pruebas
+`./mvn clean test`
+
+### 3. Ejecutar la aplicación
+`./mvnw spring-boot:run`
+
+Aplicación disponible en: 
+`http://loocalhost:8081`
+
+Ejecucionón con Docker / Docker Compose
+
+`docker build -t atenea-admin-backend .`
+
+`docker-compose up -d`
+
+### 4. Prueba de Ejecución Local:
+
+[Ver video demostrativo](https://youtu.be/tH6q9IGOvrw)
+
+PostGresSQL y backend se levantan automáticamente con la configuración existente
+
+## Calidad y CI/CD
+
+Incluye:
+
+### GitHub Actions
+
+-Ejecución de pruebas
+
+-Reporte Jacoco
+   
+-Análisis SonarQube
+   
+### Jacoco
+
+-Cobertura mínima requerida
+   
+### SonarQube
+
+-Análisis de bugs, vulnerabilidades y code smells
+
+
+---
+
+# Prueba JACOCO
+
+---
+
+
+---
+
+# Prueba SonarQube
+
+---
+
+
+
+## DOCKERIZACIÓN DE LA APPI
+
+[Ver video demostrativo](https://youtu.be/tH6q9IGOvrw)
+
+---
+
