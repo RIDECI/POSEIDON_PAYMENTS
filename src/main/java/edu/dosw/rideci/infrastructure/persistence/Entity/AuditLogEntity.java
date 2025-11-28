@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "audit_logs")
@@ -16,7 +17,6 @@ import java.time.LocalDateTime;
 public class AuditLogEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "entity_type", nullable = false)
@@ -51,9 +51,11 @@ public class AuditLogEntity {
     private LocalDateTime timestamp;
 
     @PrePersist
-    protected void onCreate() {
-        if (timestamp == null) {
+    public void prePersist() {
+        if (id == null)
+            id = UUID.randomUUID().toString();
+        if (timestamp == null)
             timestamp = LocalDateTime.now();
-        }
     }
+
 }

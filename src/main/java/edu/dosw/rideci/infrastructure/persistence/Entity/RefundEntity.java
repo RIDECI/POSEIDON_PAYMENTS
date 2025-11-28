@@ -30,6 +30,7 @@ public class RefundEntity {
     @Column(name = "refunded_amount")
     private Double refundedAmount;
 
+    @Column(columnDefinition = "TEXT")
     private String reason;
 
     @Enumerated(EnumType.STRING)
