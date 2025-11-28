@@ -1,5 +1,7 @@
 package edu.dosw.rideci.infrastructure.controller.dto.Response;
 
+import java.time.LocalDateTime;
+
 import edu.dosw.rideci.domain.model.Transaction;
 import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import lombok.Builder;
@@ -17,6 +19,7 @@ public class TransactionResponse {
     private String errorMessage;
     private PaymentMethodType paymentMethod;
     private String extra;
+    private LocalDateTime createdAt;
 
     public static TransactionResponse fromDomain(Transaction t) {
         if (t == null)
@@ -31,6 +34,7 @@ public class TransactionResponse {
                 .errorMessage(t.getErrorMessage())
                 .paymentMethod(t.getPaymentMethod())
                 .extra(t.getExtra())
+                .createdAt(t.getCreatedAt())
                 .build();
 
     }

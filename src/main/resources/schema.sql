@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS transactions (
     CONSTRAINT uk_booking_id UNIQUE (booking_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS refunds (
     id VARCHAR(100) PRIMARY KEY,
     transaction_id VARCHAR(100),
