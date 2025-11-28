@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegisterPaymentFailureUseCaseImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">POSEIDON_PAYMENTS</a> &gt; <a href="index.source.html" class="el_package">edu.dosw.rideci.application.service</a> &gt; <span class="el_source">RegisterPaymentFailureUseCaseImpl.java</span></div><h1>RegisterPaymentFailureUseCaseImpl.java</h1><pre class="source lang-java linenums">package edu.dosw.rideci.application.service;
+
+import org.springframework.stereotype.Service;
+
+import edu.dosw.rideci.application.port.in.RegisterPaymentFailureUseCase;
+import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
+import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.TransactionStatus;
+import edu.dosw.rideci.exceptions.RideciBusinessException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+<span class="fc" id="L13">@Slf4j</span>
+@Service
+<span class="fc" id="L15">@RequiredArgsConstructor</span>
+public class RegisterPaymentFailureUseCaseImpl implements RegisterPaymentFailureUseCase {
+
+    private final PaymentRepositoryPort paymentRepositoryPort;
+    private static final int MAX_ATTEMPTS = 3;
+
+    @Override
+    public Transaction registerFailure(String paymentId, String errorMessage, String errorCode) {
+<span class="nc" id="L23">        log.error(&quot;Registering payment failure for payment: {} - Error: {} (Code: {})&quot;, </span>
+                  paymentId, errorMessage, errorCode);
+        
+<span class="nc" id="L26">        Transaction payment = paymentRepositoryPort.findById(paymentId)</span>
+<span class="nc" id="L27">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Payment not found: &quot; + paymentId));</span>
+
+        // Incrementar intentos
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        int currentAttempts = payment.getAttempts() != null ? payment.getAttempts() : 0;</span>
+<span class="nc" id="L31">        payment.setAttempts(currentAttempts + 1);</span>
+
+        // Actualizar mensaje de error
+<span class="nc" id="L34">        String fullErrorMessage = String.format(&quot;[%s] %s (Attempt %d/%d)&quot;, </span>
+<span class="nc" id="L35">                                                errorCode, errorMessage, payment.getAttempts(), MAX_ATTEMPTS);</span>
+<span class="nc" id="L36">        payment.setErrorMessage(fullErrorMessage);</span>
+
+        // Si alcanzó el máximo de intentos, marcar como FAILED
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (payment.getAttempts() &gt;= MAX_ATTEMPTS) {</span>
+<span class="nc" id="L40">            log.warn(&quot;Payment {} has reached maximum attempts ({}). Marking as FAILED&quot;, </span>
+<span class="nc" id="L41">                     paymentId, MAX_ATTEMPTS);</span>
+<span class="nc" id="L42">            payment.setStatus(TransactionStatus.FAILED);</span>
+        } else {
+<span class="nc" id="L44">            log.info(&quot;Payment {} failure registered. Attempts: {}/{}&quot;, </span>
+<span class="nc" id="L45">                     paymentId, payment.getAttempts(), MAX_ATTEMPTS);</span>
+        }
+
+<span class="nc" id="L48">        return paymentRepositoryPort.save(payment);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

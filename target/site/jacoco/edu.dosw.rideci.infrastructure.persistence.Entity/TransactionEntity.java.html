@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionEntity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">POSEIDON_PAYMENTS</a> &gt; <a href="index.source.html" class="el_package">edu.dosw.rideci.infrastructure.persistence.Entity</a> &gt; <span class="el_source">TransactionEntity.java</span></div><h1>TransactionEntity.java</h1><pre class="source lang-java linenums">package edu.dosw.rideci.infrastructure.persistence.Entity;
+
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
+import edu.dosw.rideci.domain.model.enums.TransactionStatus;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = &quot;transactions&quot;)
+@Getter
+<span class="nc" id="L13">@Setter</span>
+<span class="nc" id="L14">@Builder</span>
+<span class="nc" id="L15">@NoArgsConstructor</span>
+<span class="nc" id="L16">@AllArgsConstructor</span>
+public class TransactionEntity {
+
+    @Id
+<span class="nc" id="L20">    private String id;</span>
+
+    @Column(name = &quot;booking_id&quot;, nullable = false)
+<span class="nc" id="L23">    private String bookingId;</span>
+
+    @Column(name = &quot;passenger_id&quot;, nullable = false)
+<span class="nc" id="L26">    private String passengerId;</span>
+
+    @Column(nullable = false)
+<span class="nc" id="L29">    private Double amount;</span>
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+<span class="nc" id="L33">    private TransactionStatus status;</span>
+
+    @Column(name = &quot;receipt_code&quot;, unique = true)
+<span class="nc" id="L36">    private String receiptCode;</span>
+
+    @Column(name = &quot;error_message&quot;)
+<span class="nc" id="L39">    private String errorMessage;</span>
+
+<span class="nc" id="L41">    private Integer attempts;</span>
+
+    @Column(name = &quot;created_at&quot;)
+<span class="nc" id="L44">    private LocalDateTime createdAt;</span>
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+<span class="nc" id="L48">    private PaymentMethodType paymentMethod;</span>
+
+    @Column
+<span class="nc" id="L51">    private String extra;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

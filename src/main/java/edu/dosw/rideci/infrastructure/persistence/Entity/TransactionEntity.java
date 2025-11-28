@@ -19,7 +19,7 @@ public class TransactionEntity {
     @Id
     private String id;
 
-    @Column(name = "booking_id", nullable = false, unique = true)
+    @Column(name = "booking_id", nullable = false)
     private String bookingId;
 
     @Column(name = "passenger_id", nullable = false)
@@ -47,7 +47,7 @@ public class TransactionEntity {
     @Enumerated(EnumType.STRING)
     private PaymentMethodType paymentMethod;
 
-    @Column(nullable = false)
+    @Column
     private String extra;
 
 }

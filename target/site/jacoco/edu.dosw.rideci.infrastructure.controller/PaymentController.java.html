@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PaymentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">POSEIDON_PAYMENTS</a> &gt; <a href="index.source.html" class="el_package">edu.dosw.rideci.infrastructure.controller</a> &gt; <span class="el_source">PaymentController.java</span></div><h1>PaymentController.java</h1><pre class="source lang-java linenums">package edu.dosw.rideci.infrastructure.controller;
+
+import edu.dosw.rideci.application.port.in.CreatePaymentUseCase;
+import edu.dosw.rideci.application.port.in.DeletePaymentUseCase;
+import edu.dosw.rideci.application.port.in.ProcessPaymentUseCase;
+import edu.dosw.rideci.application.port.in.GetPaymentUseCase;
+import edu.dosw.rideci.application.port.in.UpdatePaymentUseCase;
+import edu.dosw.rideci.application.port.in.AuthorizePaymentUseCase;
+import edu.dosw.rideci.application.port.in.ApprovePaymentUseCase;
+import edu.dosw.rideci.application.port.in.CompletePaymentUseCase;
+import edu.dosw.rideci.application.port.in.CancelPaymentUseCase;
+import edu.dosw.rideci.application.port.in.GetPaymentStatusUseCase;
+import edu.dosw.rideci.application.port.in.GetPaymentsByTripUseCase;
+import edu.dosw.rideci.application.port.in.GetPaymentsByUserUseCase;
+import edu.dosw.rideci.application.port.in.GetPaymentsByDateUseCase;
+import edu.dosw.rideci.application.port.in.GetActivePaymentsUseCase;
+import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.TransactionStatus;
+import edu.dosw.rideci.infrastructure.controller.dto.Request.CreatePaymentRequest;
+import edu.dosw.rideci.infrastructure.controller.dto.Request.UpdatePaymentRequest;
+import edu.dosw.rideci.infrastructure.controller.dto.Response.TransactionResponse;
+import edu.dosw.rideci.infrastructure.controller.dto.Response.PaymentStatusResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/payments&quot;)
+<span class="fc" id="L31">@RequiredArgsConstructor</span>
+public class PaymentController {
+
+    private final CreatePaymentUseCase createPaymentUseCase;
+    private final ProcessPaymentUseCase processPaymentUseCase;
+    private final GetPaymentUseCase getPaymentUseCase;
+    private final DeletePaymentUseCase deletePaymentUseCase;
+    private final UpdatePaymentUseCase updatePaymentUseCase;
+    private final AuthorizePaymentUseCase authorizePaymentUseCase;
+    private final ApprovePaymentUseCase approvePaymentUseCase;
+    private final CompletePaymentUseCase completePaymentUseCase;
+    private final CancelPaymentUseCase cancelPaymentUseCase;
+    private final GetPaymentStatusUseCase getPaymentStatusUseCase;
+    private final GetPaymentsByTripUseCase getPaymentsByTripUseCase;
+    private final GetPaymentsByUserUseCase getPaymentsByUserUseCase;
+    private final GetPaymentsByDateUseCase getPaymentsByDateUseCase;
+    private final GetActivePaymentsUseCase getActivePaymentsUseCase;
+
+    @PostMapping(&quot;/create&quot;)
+    public ResponseEntity&lt;TransactionResponse&gt; create(@RequestBody CreatePaymentRequest request) {
+<span class="nc" id="L51">        Transaction tx = createPaymentUseCase.create(request.toDomain());</span>
+<span class="nc" id="L52">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;TransactionResponse&gt; getById(@PathVariable String id) {
+<span class="nc" id="L57">        return getPaymentUseCase.getById(id)</span>
+<span class="nc" id="L58">                .map(tx -&gt; ResponseEntity.ok(TransactionResponse.fromDomain(tx)))</span>
+<span class="nc" id="L59">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    @GetMapping(&quot;/{id}/status&quot;)
+    public ResponseEntity&lt;PaymentStatusResponse&gt; getPaymentStatus(@PathVariable String id) {
+<span class="nc" id="L64">        return getPaymentUseCase.getById(id)</span>
+<span class="nc" id="L65">                .map(tx -&gt; ResponseEntity.ok(PaymentStatusResponse.fromDomain(tx)))</span>
+<span class="nc" id="L66">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    @GetMapping(&quot;/trips/{id}&quot;)
+    public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getPaymentsByTrip(@PathVariable String id) {
+<span class="nc" id="L71">        List&lt;Transaction&gt; payments = getPaymentsByTripUseCase.getByTripId(id);</span>
+
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (payments.isEmpty()) {</span>
+<span class="nc" id="L74">            return ResponseEntity.noContent().build();</span>
+        }
+
+<span class="nc" id="L77">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
+<span class="nc" id="L78">                .map(TransactionResponse::fromDomain)</span>
+<span class="nc" id="L79">                .toList();</span>
+
+<span class="nc" id="L81">        return ResponseEntity.ok(response);</span>
+    }
+
+    @GetMapping(&quot;/user/{id}&quot;)
+    public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getPaymentsByUser(@PathVariable String id) {
+<span class="nc" id="L86">        List&lt;Transaction&gt; payments = getPaymentsByUserUseCase.getByUserId(id);</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (payments.isEmpty()) {</span>
+<span class="nc" id="L89">            return ResponseEntity.noContent().build();</span>
+        }
+
+<span class="nc" id="L92">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
+<span class="nc" id="L93">                .map(TransactionResponse::fromDomain)</span>
+<span class="nc" id="L94">                .toList();</span>
+
+<span class="nc" id="L96">        return ResponseEntity.ok(response);</span>
+    }
+
+    @GetMapping(&quot;/history&quot;)
+    public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; findAll() {
+<span class="nc" id="L101">        List&lt;Transaction&gt; txList = getPaymentUseCase.findAll();</span>
+
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (txList.isEmpty()) {</span>
+<span class="nc" id="L104">            return ResponseEntity.noContent().build();</span>
+        }
+
+<span class="nc" id="L107">        List&lt;TransactionResponse&gt; response = txList.stream()</span>
+<span class="nc" id="L108">                .map(TransactionResponse::fromDomain)</span>
+<span class="nc" id="L109">                .toList();</span>
+
+<span class="nc" id="L111">        return ResponseEntity.ok(response);</span>
+    }
+
+    @GetMapping(&quot;/history/{date}&quot;)
+    public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getPaymentsByDate(@PathVariable String date) {
+        LocalDate localDate;
+        try {
+<span class="nc" id="L118">            localDate = LocalDate.parse(date);</span>
+<span class="nc" id="L119">        } catch (Exception e) {</span>
+<span class="nc" id="L120">            return ResponseEntity.badRequest().build();</span>
+<span class="nc" id="L121">        }</span>
+
+<span class="nc" id="L123">        List&lt;Transaction&gt; payments = getPaymentsByDateUseCase.getByDate(localDate);</span>
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (payments.isEmpty()) {</span>
+<span class="nc" id="L126">            return ResponseEntity.noContent().build();</span>
+        }
+
+<span class="nc" id="L129">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
+<span class="nc" id="L130">                .map(TransactionResponse::fromDomain)</span>
+<span class="nc" id="L131">                .toList();</span>
+
+<span class="nc" id="L133">        return ResponseEntity.ok(response);</span>
+    }
+
+    @GetMapping(&quot;/active&quot;)
+    public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getActivePayments() {
+<span class="nc" id="L138">        List&lt;Transaction&gt; payments = getActivePaymentsUseCase.getActivePayments();</span>
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (payments.isEmpty()) {</span>
+<span class="nc" id="L141">            return ResponseEntity.noContent().build();</span>
+        }
+
+<span class="nc" id="L144">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
+<span class="nc" id="L145">                .map(TransactionResponse::fromDomain)</span>
+<span class="nc" id="L146">                .toList();</span>
+
+<span class="nc" id="L148">        return ResponseEntity.ok(response);</span>
+    }
+
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deletePayment(@PathVariable String id) {
+
+<span class="nc" id="L154">        boolean deleted = deletePaymentUseCase.deleteById(id);</span>
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (deleted) {</span>
+<span class="nc" id="L157">            return ResponseEntity.noContent().build(); // 204</span>
+        } else {
+<span class="nc" id="L159">            return ResponseEntity.notFound().build(); // 404</span>
+        }
+    }
+
+    @PatchMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;TransactionResponse&gt; updatePayment(
+            @PathVariable String id,
+            @RequestBody UpdatePaymentRequest request) {
+<span class="nc" id="L167">        Transaction updated = updatePaymentUseCase.updatePartial(id, request);</span>
+<span class="nc" id="L168">        return ResponseEntity.ok(TransactionResponse.fromDomain(updated));</span>
+    }
+
+    @PatchMapping(&quot;/{id}/authorize&quot;)
+    public ResponseEntity&lt;TransactionResponse&gt; authorizePayment(
+            @PathVariable String id,
+            @RequestParam boolean authorized) {
+<span class="nc" id="L175">        Transaction tx = authorizePaymentUseCase.authorize(id, authorized);</span>
+<span class="nc" id="L176">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+    }
+
+    @PatchMapping(&quot;/{id}/process&quot;)
+    public ResponseEntity&lt;TransactionResponse&gt; processPayment(
+            @PathVariable String id) {
+<span class="nc" id="L182">        Transaction tx = processPaymentUseCase.process(id);</span>
+<span class="nc" id="L183">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+    }
+
+    @PatchMapping(&quot;/{id}/approve&quot;)
+    public ResponseEntity&lt;TransactionResponse&gt; approvePayment(
+            @PathVariable String id) {
+<span class="nc" id="L189">        Transaction tx = approvePaymentUseCase.approve(id);</span>
+<span class="nc" id="L190">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+    }
+
+    @PatchMapping(&quot;/{id}/complete&quot;)
+    public ResponseEntity&lt;TransactionResponse&gt; completePayment(
+            @PathVariable String id) {
+<span class="nc" id="L196">        Transaction tx = completePaymentUseCase.complete(id);</span>
+<span class="nc" id="L197">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+    }
+
+    @PatchMapping(&quot;/{id}/cancel&quot;)
+    public ResponseEntity&lt;TransactionResponse&gt; cancelPayment(@PathVariable String id) {
+<span class="nc" id="L202">        Transaction tx = cancelPaymentUseCase.cancel(id);</span>
+<span class="nc" id="L203">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+    }
+
+    @GetMapping(&quot;/status/{status}&quot;)
+    public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getByStatus(@PathVariable String status) {
+        TransactionStatus st;
+
+        try {
+<span class="nc" id="L211">            st = TransactionStatus.valueOf(status.toUpperCase());</span>
+<span class="nc" id="L212">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L213">            return ResponseEntity.badRequest().build();</span>
+<span class="nc" id="L214">        }</span>
+
+<span class="nc" id="L216">        List&lt;Transaction&gt; list = getPaymentStatusUseCase.findByStatus(st);</span>
+
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (list.isEmpty()) {</span>
+<span class="nc" id="L219">            return ResponseEntity.noContent().build();</span>
+        }
+
+<span class="nc" id="L222">        return ResponseEntity.ok(</span>
+<span class="nc" id="L223">                list.stream().map(TransactionResponse::fromDomain).toList());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

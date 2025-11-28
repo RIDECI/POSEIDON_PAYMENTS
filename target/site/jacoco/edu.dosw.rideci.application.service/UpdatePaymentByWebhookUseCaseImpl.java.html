@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdatePaymentByWebhookUseCaseImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">POSEIDON_PAYMENTS</a> &gt; <a href="index.source.html" class="el_package">edu.dosw.rideci.application.service</a> &gt; <span class="el_source">UpdatePaymentByWebhookUseCaseImpl.java</span></div><h1>UpdatePaymentByWebhookUseCaseImpl.java</h1><pre class="source lang-java linenums">package edu.dosw.rideci.application.service;
+
+import org.springframework.stereotype.Service;
+
+import edu.dosw.rideci.application.port.in.UpdatePaymentByWebhookUseCase;
+import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
+import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.TransactionStatus;
+import edu.dosw.rideci.exceptions.RideciBusinessException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+<span class="fc" id="L13">@Slf4j</span>
+@Service
+<span class="fc" id="L15">@RequiredArgsConstructor</span>
+public class UpdatePaymentByWebhookUseCaseImpl implements UpdatePaymentByWebhookUseCase {
+
+    private final PaymentRepositoryPort paymentRepositoryPort;
+
+    @Override
+    public Transaction updateByWebhook(String provider, String paymentId, String status,
+                                      String receiptCode, String errorMessage, String metadata) {
+<span class="nc" id="L23">        log.info(&quot;Updating payment {} via webhook from provider: {}&quot;, paymentId, provider);</span>
+        
+<span class="nc" id="L25">        Transaction payment = paymentRepositoryPort.findById(paymentId)</span>
+<span class="nc" id="L26">                .orElseThrow(() -&gt; {</span>
+<span class="nc" id="L27">                    log.error(&quot;Payment not found for webhook update: {}&quot;, paymentId);</span>
+<span class="nc" id="L28">                    return new RideciBusinessException(&quot;Payment not found: &quot; + paymentId);</span>
+                });
+
+<span class="nc" id="L31">        log.info(&quot;Current payment status: {}, requested status: {}&quot;, payment.getStatus(), status);</span>
+
+        // Validar que el pago no esté en estado final
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (payment.getStatus() == TransactionStatus.COMPLETED) {</span>
+<span class="nc" id="L35">            log.warn(&quot;Cannot update completed payment: {}&quot;, paymentId);</span>
+<span class="nc" id="L36">            throw new RideciBusinessException(&quot;Cannot update completed payment&quot;);</span>
+        }
+
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (payment.getStatus() == TransactionStatus.REFUNDED) {</span>
+<span class="nc" id="L40">            log.warn(&quot;Cannot update refunded payment: {}&quot;, paymentId);</span>
+<span class="nc" id="L41">            throw new RideciBusinessException(&quot;Cannot update refunded payment&quot;);</span>
+        }
+
+        // Actualizar estado si se proporciona
+<span class="nc bnc" id="L45" title="All 4 branches missed.">        if (status != null &amp;&amp; !status.isEmpty()) {</span>
+<span class="nc" id="L46">            TransactionStatus newStatus = mapProviderStatus(provider, status);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            if (newStatus != null) {</span>
+<span class="nc" id="L48">                payment.setStatus(newStatus);</span>
+<span class="nc" id="L49">                log.info(&quot;Payment status updated: {} -&gt; {}&quot;, paymentId, newStatus);</span>
+            }
+        }
+
+        // Actualizar código de recibo si se proporciona
+<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (receiptCode != null &amp;&amp; !receiptCode.isEmpty()) {</span>
+<span class="nc" id="L55">            payment.setReceiptCode(receiptCode);</span>
+<span class="nc" id="L56">            log.info(&quot;Receipt code updated for payment: {}&quot;, paymentId);</span>
+        }
+
+        // Actualizar mensaje de error si se proporciona
+<span class="nc bnc" id="L60" title="All 4 branches missed.">        if (errorMessage != null &amp;&amp; !errorMessage.isEmpty()) {</span>
+<span class="nc" id="L61">            payment.setErrorMessage(errorMessage);</span>
+<span class="nc" id="L62">            log.warn(&quot;Error message set for payment {}: {}&quot;, paymentId, errorMessage);</span>
+        }
+
+        // Actualizar metadata adicional
+<span class="nc bnc" id="L66" title="All 4 branches missed.">        if (metadata != null &amp;&amp; !metadata.isEmpty()) {</span>
+<span class="nc" id="L67">            payment.setExtra(metadata);</span>
+        }
+
+<span class="nc" id="L70">        Transaction updatedPayment = paymentRepositoryPort.save(payment);</span>
+<span class="nc" id="L71">        log.info(&quot;Payment {} updated successfully via webhook&quot;, paymentId);</span>
+        
+<span class="nc" id="L73">        return updatedPayment;</span>
+    }
+
+    private TransactionStatus mapProviderStatus(String provider, String status) {
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (status == null) {</span>
+<span class="nc" id="L78">            return null;</span>
+        }
+
+<span class="nc" id="L81">        String normalizedStatus = status.toUpperCase();</span>
+        
+<span class="nc bnc" id="L83" title="All 9 branches missed.">        return switch (normalizedStatus) {</span>
+<span class="nc" id="L84">            case &quot;PENDING&quot;, &quot;PENDING_PAYMENT&quot;, &quot;WAITING&quot; -&gt; TransactionStatus.PENDING;</span>
+<span class="nc" id="L85">            case &quot;AUTHORIZED&quot;, &quot;PRE_AUTHORIZED&quot; -&gt; TransactionStatus.AUTHORIZED;</span>
+<span class="nc" id="L86">            case &quot;PROCESSING&quot;, &quot;IN_PROCESS&quot; -&gt; TransactionStatus.PROCESSING;</span>
+<span class="nc" id="L87">            case &quot;APPROVED&quot;, &quot;ACCEPTED&quot; -&gt; TransactionStatus.APPROVED;</span>
+<span class="nc" id="L88">            case &quot;COMPLETED&quot;, &quot;SUCCESS&quot;, &quot;PAID&quot; -&gt; TransactionStatus.COMPLETED;</span>
+<span class="nc" id="L89">            case &quot;FAILED&quot;, &quot;REJECTED&quot;, &quot;ERROR&quot; -&gt; TransactionStatus.FAILED;</span>
+<span class="nc" id="L90">            case &quot;REFUNDED&quot;, &quot;REFUND&quot; -&gt; TransactionStatus.REFUNDED;</span>
+<span class="nc" id="L91">            case &quot;CANCELLED&quot;, &quot;CANCELED&quot; -&gt; TransactionStatus.CANCELLED;</span>
+            default -&gt; {
+<span class="nc" id="L93">                log.warn(&quot;Unknown status from provider {}: {}&quot;, provider, status);</span>
+<span class="nc" id="L94">                yield null;</span>
+            }
+        };
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
