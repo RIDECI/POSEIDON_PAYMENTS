@@ -20,17 +20,17 @@ public class CompleteRefundUseCaseImpl implements CompleteRefundUseCase {
     @Override
     public Refund complete(String refundId) {
 
-<span class="nc" id="L23">        Refund refund = refundRepositoryPort.findById(refundId)</span>
-<span class="nc" id="L24">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Refund not found: &quot; + refundId));</span>
+<span class="fc" id="L23">        Refund refund = refundRepositoryPort.findById(refundId)</span>
+<span class="fc" id="L24">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Refund not found: &quot; + refundId));</span>
 
-<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (refund.getStatus() != RefundStatus.APPROVED) {</span>
-<span class="nc" id="L27">            throw new RideciBusinessException(&quot;Refund must be APPROVED to be completed&quot;);</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (refund.getStatus() != RefundStatus.APPROVED) {</span>
+<span class="fc" id="L27">            throw new RideciBusinessException(&quot;Refund must be APPROVED to be completed&quot;);</span>
         }
 
-<span class="nc" id="L30">        refund.setStatus(RefundStatus.COMPLETED);</span>
-<span class="nc" id="L31">        refund.setCompletedAt(LocalDateTime.now());</span>
+<span class="fc" id="L30">        refund.setStatus(RefundStatus.COMPLETED);</span>
+<span class="fc" id="L31">        refund.setCompletedAt(LocalDateTime.now());</span>
 
-<span class="nc" id="L33">        return refundRepositoryPort.save(refund);</span>
+<span class="fc" id="L33">        return refundRepositoryPort.save(refund);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

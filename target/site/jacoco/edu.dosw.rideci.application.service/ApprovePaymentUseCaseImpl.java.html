@@ -25,69 +25,61 @@ public class ApprovePaymentUseCaseImpl implements ApprovePaymentUseCase {
     @Override
     public Transaction approve(String id) {
 
-<span class="nc" id="L28">        Transaction tx = repository.findById(id)</span>
-<span class="nc" id="L29">                .orElseThrow(() -&gt; new RuntimeException(&quot;Transaction not found&quot;));</span>
+<span class="fc" id="L28">        Transaction tx = repository.findById(id)</span>
+<span class="fc" id="L29">                .orElseThrow(() -&gt; new RuntimeException(&quot;Transaction not found&quot;));</span>
 
-<span class="nc" id="L31">        TransactionStatus previousStatus = tx.getStatus();</span>
+<span class="fc" id="L31">        TransactionStatus previousStatus = tx.getStatus();</span>
 
-        // Regla #2: Debe estar procesado
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (tx.getStatus() != TransactionStatus.PROCESSING) {</span>
-<span class="nc" id="L35">            throw new IllegalStateException(&quot;Solo se pueden aprobar pagos procesados&quot;);</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if (tx.getStatus() != TransactionStatus.PROCESSING) {</span>
+<span class="fc" id="L34">            throw new IllegalStateException(&quot;Solo se pueden aprobar pagos procesados&quot;);</span>
         }
 
-        // Regla #3: Debe tener recibo vÃ¡lido
-<span class="nc bnc" id="L39" title="All 4 branches missed.">        if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {</span>
-<span class="nc" id="L40">            throw new IllegalArgumentException(&quot;receiptCode requerido para aprobar el pago&quot;);</span>
+<span class="pc bpc" id="L37" title="1 of 4 branches missed.">        if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {</span>
+<span class="fc" id="L38">            throw new IllegalArgumentException(&quot;receiptCode requerido para aprobar el pago&quot;);</span>
         }
 
-        // Regla #4: CASH no se aprueba
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (tx.getPaymentMethod() == PaymentMethodType.CASH) {</span>
-<span class="nc" id="L45">            throw new IllegalStateException(&quot;Los pagos CASH no requieren aprobaciÃ³n&quot;);</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (tx.getPaymentMethod() == PaymentMethodType.CASH) {</span>
+<span class="fc" id="L42">            throw new IllegalStateException(&quot;Los pagos CASH no requieren aprobaciÃ³n&quot;);</span>
         }
 
-        // Regla #5: No aprobar dos veces
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (tx.getStatus() == TransactionStatus.AUTHORIZED) {</span>
-<span class="nc" id="L50">            throw new IllegalStateException(&quot;Solo se pueden aprobar una vez un&quot;);</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (tx.getStatus() == TransactionStatus.AUTHORIZED) {</span>
+<span class="nc" id="L46">            throw new IllegalStateException(&quot;Solo se pueden aprobar una vez un&quot;);</span>
         }
 
-        // Regla #6: Monto vÃ¡lido
-<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (tx.getAmount() == null || tx.getAmount() &lt;= 0) {</span>
-<span class="nc" id="L55">            throw new IllegalStateException(&quot;Monto invÃ¡lido para aprobaciÃ³n&quot;);</span>
+<span class="pc bpc" id="L49" title="1 of 4 branches missed.">        if (tx.getAmount() == null || tx.getAmount() &lt;= 0) {</span>
+<span class="fc" id="L50">            throw new IllegalStateException(&quot;Monto invÃ¡lido para aprobaciÃ³n&quot;);</span>
         }
 
-        // Regla #7: bookingId obligatorio
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (tx.getBookingId() == null) {</span>
-<span class="nc" id="L60">            throw new IllegalArgumentException(&quot;La transacciÃ³n no tiene bookingId asignado&quot;);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (tx.getBookingId() == null) {</span>
+<span class="fc" id="L54">            throw new IllegalArgumentException(&quot;La transacciÃ³n no tiene bookingId asignado&quot;);</span>
         }
 
-        // Marcar como aprobado en metadatos (sin cambiar status)
-<span class="nc" id="L64">        tx.setStatus(TransactionStatus.APPROVED);</span>
+<span class="fc" id="L57">        tx.setStatus(TransactionStatus.APPROVED);</span>
 
-<span class="nc" id="L66">        approvalPort.logApproval(tx.getId());</span>
+<span class="fc" id="L59">        approvalPort.logApproval(tx.getId());</span>
 
-<span class="nc" id="L68">        Transaction approvedTx = repository.save(tx);</span>
+<span class="fc" id="L61">        Transaction approvedTx = repository.save(tx);</span>
         
-        // Registrar auditorÃ­a
         try {
-<span class="nc" id="L72">            createAuditLogUseCase.createAuditLog(AuditLog.builder()</span>
-<span class="nc" id="L73">                    .entityType(&quot;Transaction&quot;)</span>
-<span class="nc" id="L74">                    .entityId(approvedTx.getId())</span>
-<span class="nc" id="L75">                    .action(AuditAction.APPROVE)</span>
-<span class="nc" id="L76">                    .userId(&quot;SYSTEM&quot;)</span>
-<span class="nc" id="L77">                    .userName(&quot;Payment System&quot;)</span>
-<span class="nc" id="L78">                    .description(String.format(&quot;Payment approved for booking %s - Receipt: %s&quot;, </span>
-<span class="nc" id="L79">                                              approvedTx.getBookingId(), </span>
-<span class="nc" id="L80">                                              approvedTx.getReceiptCode()))</span>
-<span class="nc" id="L81">                    .previousState(String.format(&quot;Status: %s&quot;, previousStatus))</span>
-<span class="nc" id="L82">                    .newState(String.format(&quot;Status: %s, Receipt: %s&quot;, </span>
-<span class="nc" id="L83">                                           approvedTx.getStatus(),</span>
-<span class="nc" id="L84">                                           approvedTx.getReceiptCode()))</span>
-<span class="nc" id="L85">                    .build());</span>
-<span class="nc" id="L86">        } catch (Exception e) {</span>
-<span class="nc" id="L87">            log.error(&quot;Failed to create audit log for payment approval: {}&quot;, approvedTx.getId(), e);</span>
-<span class="nc" id="L88">        }</span>
+<span class="fc" id="L64">            createAuditLogUseCase.createAuditLog(AuditLog.builder()</span>
+<span class="fc" id="L65">                    .entityType(&quot;Transaction&quot;)</span>
+<span class="fc" id="L66">                    .entityId(approvedTx.getId())</span>
+<span class="fc" id="L67">                    .action(AuditAction.APPROVE)</span>
+<span class="fc" id="L68">                    .userId(&quot;SYSTEM&quot;)</span>
+<span class="fc" id="L69">                    .userName(&quot;Payment System&quot;)</span>
+<span class="fc" id="L70">                    .description(String.format(&quot;Payment approved for booking %s - Receipt: %s&quot;, </span>
+<span class="fc" id="L71">                                              approvedTx.getBookingId(), </span>
+<span class="fc" id="L72">                                              approvedTx.getReceiptCode()))</span>
+<span class="fc" id="L73">                    .previousState(String.format(&quot;Status: %s&quot;, previousStatus))</span>
+<span class="fc" id="L74">                    .newState(String.format(&quot;Status: %s, Receipt: %s&quot;, </span>
+<span class="fc" id="L75">                                           approvedTx.getStatus(),</span>
+<span class="fc" id="L76">                                           approvedTx.getReceiptCode()))</span>
+<span class="fc" id="L77">                    .build());</span>
+<span class="nc" id="L78">        } catch (Exception e) {</span>
+<span class="nc" id="L79">            log.error(&quot;Failed to create audit log for payment approval: {}&quot;, approvedTx.getId(), e);</span>
+<span class="fc" id="L80">        }</span>
 
-<span class="nc" id="L90">        return approvedTx;</span>
+<span class="fc" id="L82">        return approvedTx;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

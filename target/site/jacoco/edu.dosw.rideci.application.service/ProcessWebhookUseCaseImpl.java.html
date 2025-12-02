@@ -20,61 +20,57 @@ public class ProcessWebhookUseCaseImpl implements ProcessWebhookUseCase {
     @Override
     public Transaction processWebhook(String provider, String transactionId, String externalReference,
                                      String status, Double amount, String paymentMethod, String metadata) {
-<span class="nc" id="L23">        log.info(&quot;Processing webhook from provider: {} for transaction: {}&quot;, provider, transactionId);</span>
+<span class="fc" id="L23">        log.info(&quot;Processing webhook from provider: {} for transaction: {}&quot;, provider, transactionId);</span>
         
-<span class="nc bnc" id="L25" title="All 4 branches missed.">        if (transactionId == null || transactionId.isEmpty()) {</span>
-<span class="nc" id="L26">            log.error(&quot;Transaction ID is required for webhook processing&quot;);</span>
-<span class="nc" id="L27">            throw new RideciBusinessException(&quot;Transaction ID is required&quot;);</span>
+<span class="pc bpc" id="L25" title="1 of 4 branches missed.">        if (transactionId == null || transactionId.isEmpty()) {</span>
+<span class="fc" id="L26">            log.error(&quot;Transaction ID is required for webhook processing&quot;);</span>
+<span class="fc" id="L27">            throw new RideciBusinessException(&quot;Transaction ID is required&quot;);</span>
         }
 
-        // Buscar el pago por ID o referencia externa
-<span class="nc" id="L31">        Transaction payment = paymentRepositoryPort.findById(transactionId)</span>
-<span class="nc" id="L32">                .orElseThrow(() -&gt; {</span>
-<span class="nc" id="L33">                    log.error(&quot;Payment not found for webhook: {}&quot;, transactionId);</span>
-<span class="nc" id="L34">                    return new RideciBusinessException(&quot;Payment not found: &quot; + transactionId);</span>
+<span class="fc" id="L30">        Transaction payment = paymentRepositoryPort.findById(transactionId)</span>
+<span class="fc" id="L31">                .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L32">                    log.error(&quot;Payment not found for webhook: {}&quot;, transactionId);</span>
+<span class="fc" id="L33">                    return new RideciBusinessException(&quot;Payment not found: &quot; + transactionId);</span>
                 });
 
-<span class="nc" id="L37">        log.info(&quot;Current payment status: {} - Webhook status: {}&quot;, payment.getStatus(), status);</span>
+<span class="fc" id="L36">        log.info(&quot;Current payment status: {} - Webhook status: {}&quot;, payment.getStatus(), status);</span>
 
-        // Mapear el estado del proveedor al estado interno
-<span class="nc" id="L40">        TransactionStatus newStatus = mapProviderStatus(provider, status);</span>
+<span class="fc" id="L38">        TransactionStatus newStatus = mapProviderStatus(provider, status);</span>
         
-<span class="nc bnc" id="L42" title="All 4 branches missed.">        if (newStatus != null &amp;&amp; !payment.getStatus().equals(newStatus)) {</span>
-<span class="nc" id="L43">            payment.setStatus(newStatus);</span>
-<span class="nc" id="L44">            log.info(&quot;Payment status updated from webhook: {} -&gt; {}&quot;, transactionId, newStatus);</span>
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">        if (newStatus != null &amp;&amp; !payment.getStatus().equals(newStatus)) {</span>
+<span class="fc" id="L41">            payment.setStatus(newStatus);</span>
+<span class="fc" id="L42">            log.info(&quot;Payment status updated from webhook: {} -&gt; {}&quot;, transactionId, newStatus);</span>
         }
 
-        // Actualizar metadata adicional si viene en el webhook
-<span class="nc bnc" id="L48" title="All 4 branches missed.">        if (metadata != null &amp;&amp; !metadata.isEmpty()) {</span>
-<span class="nc" id="L49">            payment.setExtra(metadata);</span>
+<span class="pc bpc" id="L45" title="1 of 4 branches missed.">        if (metadata != null &amp;&amp; !metadata.isEmpty()) {</span>
+<span class="fc" id="L46">            payment.setExtra(metadata);</span>
         }
 
-<span class="nc" id="L52">        Transaction updatedPayment = paymentRepositoryPort.save(payment);</span>
-<span class="nc" id="L53">        log.info(&quot;Webhook processed successfully for payment: {}&quot;, transactionId);</span>
+<span class="fc" id="L49">        Transaction updatedPayment = paymentRepositoryPort.save(payment);</span>
+<span class="fc" id="L50">        log.info(&quot;Webhook processed successfully for payment: {}&quot;, transactionId);</span>
         
-<span class="nc" id="L55">        return updatedPayment;</span>
+<span class="fc" id="L52">        return updatedPayment;</span>
     }
 
     private TransactionStatus mapProviderStatus(String provider, String status) {
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (status == null) {</span>
-<span class="nc" id="L60">            return null;</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (status == null) {</span>
+<span class="nc" id="L57">            return null;</span>
         }
 
-<span class="nc" id="L63">        String normalizedStatus = status.toUpperCase();</span>
+<span class="fc" id="L60">        String normalizedStatus = status.toUpperCase();</span>
         
-        // Mapeo genérico de estados comunes
-<span class="nc bnc" id="L66" title="All 9 branches missed.">        return switch (normalizedStatus) {</span>
-<span class="nc" id="L67">            case &quot;PENDING&quot;, &quot;PENDING_PAYMENT&quot;, &quot;WAITING&quot; -&gt; TransactionStatus.PENDING;</span>
-<span class="nc" id="L68">            case &quot;AUTHORIZED&quot;, &quot;PRE_AUTHORIZED&quot; -&gt; TransactionStatus.AUTHORIZED;</span>
-<span class="nc" id="L69">            case &quot;PROCESSING&quot;, &quot;IN_PROCESS&quot; -&gt; TransactionStatus.PROCESSING;</span>
-<span class="nc" id="L70">            case &quot;APPROVED&quot;, &quot;ACCEPTED&quot; -&gt; TransactionStatus.APPROVED;</span>
-<span class="nc" id="L71">            case &quot;COMPLETED&quot;, &quot;SUCCESS&quot;, &quot;PAID&quot; -&gt; TransactionStatus.COMPLETED;</span>
-<span class="nc" id="L72">            case &quot;FAILED&quot;, &quot;REJECTED&quot;, &quot;ERROR&quot; -&gt; TransactionStatus.FAILED;</span>
-<span class="nc" id="L73">            case &quot;REFUNDED&quot;, &quot;REFUND&quot; -&gt; TransactionStatus.REFUNDED;</span>
-<span class="nc" id="L74">            case &quot;CANCELLED&quot;, &quot;CANCELED&quot; -&gt; TransactionStatus.CANCELLED;</span>
+<span class="pc bpc" id="L62" title="7 of 9 branches missed.">        return switch (normalizedStatus) {</span>
+<span class="nc" id="L63">            case &quot;PENDING&quot;, &quot;PENDING_PAYMENT&quot;, &quot;WAITING&quot; -&gt; TransactionStatus.PENDING;</span>
+<span class="nc" id="L64">            case &quot;AUTHORIZED&quot;, &quot;PRE_AUTHORIZED&quot; -&gt; TransactionStatus.AUTHORIZED;</span>
+<span class="nc" id="L65">            case &quot;PROCESSING&quot;, &quot;IN_PROCESS&quot; -&gt; TransactionStatus.PROCESSING;</span>
+<span class="nc" id="L66">            case &quot;APPROVED&quot;, &quot;ACCEPTED&quot; -&gt; TransactionStatus.APPROVED;</span>
+<span class="fc" id="L67">            case &quot;COMPLETED&quot;, &quot;SUCCESS&quot;, &quot;PAID&quot; -&gt; TransactionStatus.COMPLETED;</span>
+<span class="nc" id="L68">            case &quot;FAILED&quot;, &quot;REJECTED&quot;, &quot;ERROR&quot; -&gt; TransactionStatus.FAILED;</span>
+<span class="nc" id="L69">            case &quot;REFUNDED&quot;, &quot;REFUND&quot; -&gt; TransactionStatus.REFUNDED;</span>
+<span class="nc" id="L70">            case &quot;CANCELLED&quot;, &quot;CANCELED&quot; -&gt; TransactionStatus.CANCELLED;</span>
             default -&gt; {
-<span class="nc" id="L76">                log.warn(&quot;Unknown status from provider {}: {}&quot;, provider, status);</span>
-<span class="nc" id="L77">                yield null;</span>
+<span class="fc" id="L72">                log.warn(&quot;Unknown status from provider {}: {}&quot;, provider, status);</span>
+<span class="fc" id="L73">                yield null;</span>
             }
         };
     }

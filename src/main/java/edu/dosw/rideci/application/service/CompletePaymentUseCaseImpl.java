@@ -20,35 +20,27 @@ public class CompletePaymentUseCaseImpl implements CompletePaymentUseCase {
         Transaction tx = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
 
-        // 1. Debe estar APPROVED
+        if (tx.getStatus() == TransactionStatus.COMPLETED) {
+            throw new IllegalStateException("El pago ya fue completado previamente");
+        }
+
         if (tx.getStatus() != TransactionStatus.APPROVED) {
             throw new IllegalStateException("Solo se pueden completar pagos en estado APPROVED");
         }
 
-        // 2. El monto debe ser vÃ¡lido
         if (tx.getAmount() == null || tx.getAmount() <= 0) {
-            throw new IllegalArgumentException("Monto invÃ¡lido para completar el pago");
+            throw new IllegalArgumentException("Monto inválido para completar el pago");
         }
 
-        // 3. CASH requiere lÃ³gica especial
         if (tx.getPaymentMethod() == PaymentMethodType.CASH) {
-            // CASH no usa receiptCode
         } else {
-            // 4. Digitales requieren receiptCode vÃ¡lido
             if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {
                 throw new IllegalArgumentException("receiptCode requerido para pagos digitales");
             }
         }
 
-        // 5. Evitar completar dos veces
-        if (tx.getStatus() == TransactionStatus.COMPLETED) {
-            throw new IllegalStateException("El pago ya fue completado previamente");
-        }
-
-        // 6. Finalmente actualizar estado
         tx.setStatus(TransactionStatus.COMPLETED);
 
-        // AÃ±adimos metadata
         tx.setExtra((tx.getExtra() != null ? tx.getExtra() : "") + "|COMPLETED:true");
 
         return repository.save(tx);

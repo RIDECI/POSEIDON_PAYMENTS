@@ -92,3 +92,18 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     ip_address VARCHAR(50),
     timestamp TIMESTAMP NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS payment_suspensions (
+    id VARCHAR(100) PRIMARY KEY,
+
+    transaction_id VARCHAR(100) NOT NULL,
+    reason VARCHAR(1000),
+    status VARCHAR(50),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    expires_at TIMESTAMP,
+    admin_id VARCHAR(100),
+    CONSTRAINT fk_payment_suspension_transaction
+        FOREIGN KEY (transaction_id) REFERENCES transactions(id)
+);
+

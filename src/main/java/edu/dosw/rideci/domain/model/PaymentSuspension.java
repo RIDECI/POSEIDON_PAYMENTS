@@ -1,4 +1,3 @@
-// package edu.dosw.rideci.domain.model;
 package edu.dosw.rideci.domain.model;
 
 import edu.dosw.rideci.domain.model.enums.SuspensionStatus;
@@ -21,5 +20,5 @@ public class PaymentSuspension {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime expiresAt;
-    private String adminId; // opcional: admin que creó/modificó
+    private String adminId; 
 }

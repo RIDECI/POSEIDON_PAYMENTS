@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.7</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>edu.dosw.rideci</groupId>
-	<artifactId>POSEIDON_PAYMENTS</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>POSEIDON_PAYMENTS</name>
-	<description>Final Project DOSW</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-	 <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.7</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>edu.dosw.rideci</groupId>
+    <artifactId>POSEIDON_PAYMENTS</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>POSEIDON_PAYMENTS</name>
+    <description>Final Project DOSW</description>
+
+    <properties>
         <java.version>17</java.version>
-        <sonar.host.url>http://localhost:9004</sonar.host.url>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+            <!-- INCLUSIONES = mismas que Jacoco -->
+        <sonar.inclusions>
+            **/application/service/**, 
+            **/infrastructure/controller/**
+        </sonar.inclusions>
+
+        <!-- EXCLUSIONES = mismas que Jacoco -->
+        <sonar.exclusions>
+            **/infrastructure/controller/dto/**,
+            **/infrastructure/adapters/messaging/**,
+            **/PoseidonPaymentsApplication.class
+        </sonar.exclusions>
     </properties>
 
     <dependencies>
-        <!-- WEB (Controllers y REST API) -->
+
+        <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-		<dependency>
+        <!-- MAPSTRUCT -->
+        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>1.5.5.Final</version>
             <scope>provided</scope>
-        </dependency>
-
-		 <dependency>
-            <groupId>com.rabbitmq</groupId>
-            <artifactId>amqp-client</artifactId>
-            <version>5.27.1</version>
         </dependency>
 
         <dependency>
@@ -57,24 +57,33 @@
             <version>1.5.5.Final</version>
             <scope>provided</scope>
         </dependency>
-		<dependency>
+
+        <!-- RabbitMQ -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.27.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
-        <!-- JPA (Repositorios y conexión a BD) -->
+
+        <!-- JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- POSTGRESQL -->
+        <!-- POSTGRES -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- VALIDACIONES (DTOs) -->
+        <!-- VALIDATION -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
@@ -95,27 +104,27 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- TESTING -->
+        <!-- TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- H2 Database for tests -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- JUNIT -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.12.2</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- JACKSON Java Time -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
@@ -125,13 +134,20 @@
 
     <build>
         <plugins>
-            <!-- COMPILADOR -->
+
+            <!-- Sonar -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
+            </plugin>
+
+            <!-- COMPILER -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <!-- Alineado a Java 17 -->
                     <release>${java.version}</release>
                     <annotationProcessorPaths>
                         <path>
@@ -148,14 +164,8 @@
                 </configuration>
             </plugin>
 
+            <!-- Spring Boot Plugin -->
             <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>4.0.0.4121</version>
-            </plugin>
-
-            <!-- EJECUCIÓN SPRING BOOT -->
-             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -168,12 +178,15 @@
                 </configuration>
             </plugin>
 
+            <!-- JACOCO FULL CONFIG -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
+
                 <executions>
-                    <!-- instrumentación antes de ejecutar tests -->
+
+                    <!-- Attach agent -->
                     <execution>
                         <id>prepare-agent</id>
                         <phase>initialize</phase>
@@ -185,7 +198,7 @@
                         </configuration>
                     </execution>
 
-                    <!-- generar report (HTML + XML) en verify -->
+                    <!-- Generate report -->
                     <execution>
                         <id>report</id>
                         <phase>verify</phase>
@@ -195,23 +208,27 @@
                         <configuration>
                             <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                             <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
+
                             <formats>
                                 <format>HTML</format>
                                 <format>XML</format>
                             </formats>
+
+                            <includes>
+                                <include>**/application/service/**</include>
+                                <include>**/infrastructure/controller/**</include>
+                            </includes>
+
+                            <!-- EXCLUSIONES CORRECTAS -->
                             <excludes>
-                                <exclude>**/model/**</exclude>
-                                <exclude>**/dto/**</exclude>
-                                <exclude>**/enums/**</exclude>
-                                <exclude>**/config/**</exclude>
-                                <exclude>**/mapper/**</exclude>
-                                <exclude>**/exception/**</exclude>
-                                <exclude>**/common/**</exclude>
+                                <exclude>**/infrastructure/controller/dto/**</exclude>
+                                <exclude>**/infrastructure/adapters/messaging/**</exclude>
                                 <exclude>**/PoseidonPaymentsApplication.class</exclude>
                             </excludes>
                         </configuration>
                     </execution>
-                    <!-- comprobar cobertura y poder fallar build si no cumple: fase verify -->
+
+                    <!-- Jacoco Check -->
                     <execution>
                         <id>jacoco-check</id>
                         <phase>verify</phase>
@@ -219,39 +236,53 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
+
                             <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+
                             <rules>
+
+                                <!-- Clase principal excluida -->
                                 <rule>
                                     <element>CLASS</element>
                                     <excludes>
                                         <exclude>edu/dosw/rideci/PoseidonPaymentsApplication</exclude>
                                     </excludes>
                                 </rule>
+
+                                <!-- Reglas por paquete -->
                                 <rule>
                                     <element>PACKAGE</element>
                                     <limits>
                                         <limit>
                                             <counter>CLASS</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.00</minimum>
+                                            <minimum>0.8</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
+
                             </rules>
+
+                            <!-- Includes -->
+                            <includes>
+                                <include>**/application/service/**</include>
+                                <include>**/infrastructure/controller/**</include>
+                            </includes>
+
+                            <!-- Misma exclusión que en el reporte -->
                             <excludes>
-                                <exclude>**/model/**</exclude>
-                                <exclude>**/dto/**</exclude>
-                                <exclude>**/enums/**</exclude>
-                                <exclude>**/config/*</exclude>
-                                <exclude>**/mapper/*</exclude>
-                                <exclude>**/exception/*</exclude>
-                                <exclude>**/common/*</exclude>
+                                <exclude>**/infrastructure/controller/dto/**</exclude>
+                                <exclude>**/infrastructure/adapters/messaging/**</exclude>
                                 <exclude>**/PoseidonPaymentsApplication.class</exclude>
                             </excludes>
+
                         </configuration>
                     </execution>
+
                 </executions>
+
             </plugin>
+
         </plugins>
     </build>
 

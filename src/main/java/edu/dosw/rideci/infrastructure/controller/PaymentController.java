@@ -154,9 +154,9 @@ public class PaymentController {
         boolean deleted = deletePaymentUseCase.deleteById(id);
 
         if (deleted) {
-            return ResponseEntity.noContent().build(); // 204
+            return ResponseEntity.noContent().build(); 
         } else {
-            return ResponseEntity.notFound().build(); // 404
+            return ResponseEntity.notFound().build(); 
         }
     }
 

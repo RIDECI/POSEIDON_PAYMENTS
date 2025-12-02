@@ -18,15 +18,15 @@ public class CreateAuditLogUseCaseImpl implements CreateAuditLogUseCase {
 
     @Override
     public AuditLog createAuditLog(AuditLog auditLog) {
-<span class="nc bnc" id="L21" title="All 2 branches missed.">        if (auditLog.getTimestamp() == null) {</span>
-<span class="nc" id="L22">            auditLog.setTimestamp(LocalDateTime.now());</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (auditLog.getTimestamp() == null) {</span>
+<span class="fc" id="L22">            auditLog.setTimestamp(LocalDateTime.now());</span>
         }
         
-<span class="nc" id="L25">        AuditLog saved = auditLogRepositoryPort.save(auditLog);</span>
-<span class="nc" id="L26">        log.debug(&quot;Audit log created: {} - {} on {}&quot;, </span>
-<span class="nc" id="L27">                  saved.getAction(), saved.getEntityType(), saved.getEntityId());</span>
+<span class="fc" id="L25">        AuditLog saved = auditLogRepositoryPort.save(auditLog);</span>
+<span class="fc" id="L26">        log.debug(&quot;Audit log created: {} - {} on {}&quot;, </span>
+<span class="fc" id="L27">                  saved.getAction(), saved.getEntityType(), saved.getEntityId());</span>
         
-<span class="nc" id="L29">        return saved;</span>
+<span class="fc" id="L29">        return saved;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

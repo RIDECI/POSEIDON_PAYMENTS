@@ -24,7 +24,6 @@ public class CompleteTripPaymentsUseCaseImpl implements CompleteTripPaymentsUseC
     public List<Transaction> completeTripPayments(String tripId) {
         log.info("Completing payments for trip: {}", tripId);
         
-        // Buscar todos los pagos del viaje
         List<Transaction> tripPayments = paymentRepositoryPort.findByBookingId(tripId);
         
         if (tripPayments.isEmpty()) {
@@ -32,7 +31,6 @@ public class CompleteTripPaymentsUseCaseImpl implements CompleteTripPaymentsUseC
             throw new RideciBusinessException("No payments found for trip: " + tripId);
         }
 
-        // Completar solo los pagos que estén en estado APPROVED
         List<Transaction> completedPayments = tripPayments.stream()
                 .filter(payment -> payment.getStatus() == TransactionStatus.APPROVED)
                 .map(payment -> {
@@ -43,7 +41,6 @@ public class CompleteTripPaymentsUseCaseImpl implements CompleteTripPaymentsUseC
 
         log.info("Completed {} payments for trip: {}", completedPayments.size(), tripId);
         
-        // Verificar si hay pagos pendientes
         long pendingPayments = tripPayments.stream()
                 .filter(p -> p.getStatus() != TransactionStatus.COMPLETED 
                           && p.getStatus() != TransactionStatus.CANCELLED

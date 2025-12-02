@@ -30,47 +30,47 @@ public class RefundController {
     public ResponseEntity&lt;RefundResponse&gt; refund(
             @PathVariable String id,
             @RequestBody RefundRequest request) {
-<span class="nc" id="L33">        var refund = refundPaymentUseCase.refundPayment(</span>
+<span class="fc" id="L33">        var refund = refundPaymentUseCase.refundPayment(</span>
                 id,
-<span class="nc" id="L35">                request.getAmount(),</span>
-<span class="nc" id="L36">                request.getReason());</span>
+<span class="fc" id="L35">                request.getAmount(),</span>
+<span class="fc" id="L36">                request.getReason());</span>
 
-<span class="nc" id="L38">        return ResponseEntity.ok(RefundResponse.fromDomain(refund));</span>
+<span class="fc" id="L38">        return ResponseEntity.ok(RefundResponse.fromDomain(refund));</span>
     }
 
     @PatchMapping(&quot;/{id}/refund/cancel&quot;)
     public ResponseEntity&lt;RefundResponse&gt; cancelRefund(@PathVariable String id) {
-<span class="nc" id="L43">        var refund = cancelRefundUseCase.cancel(id);</span>
-<span class="nc" id="L44">        return ResponseEntity.ok(RefundResponse.fromDomain(refund));</span>
+<span class="fc" id="L43">        var refund = cancelRefundUseCase.cancel(id);</span>
+<span class="fc" id="L44">        return ResponseEntity.ok(RefundResponse.fromDomain(refund));</span>
     }
 
     @DeleteMapping(&quot;/{id}/refund&quot;)
     public ResponseEntity&lt;Void&gt; deleteRefund(@PathVariable String id) {
 
-<span class="nc" id="L50">        boolean deleted = deleteRefundUseCase.deleteById(id);</span>
+<span class="fc" id="L50">        boolean deleted = deleteRefundUseCase.deleteById(id);</span>
 
-<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (!deleted) {</span>
-<span class="nc" id="L53">            return ResponseEntity.notFound().build();</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (!deleted) {</span>
+<span class="fc" id="L53">            return ResponseEntity.notFound().build();</span>
         }
 
-<span class="nc" id="L56">        return ResponseEntity.noContent().build();</span>
+<span class="fc" id="L56">        return ResponseEntity.noContent().build();</span>
     }
 
     @GetMapping(&quot;/{id}/refund&quot;)
     public ResponseEntity&lt;RefundResponse&gt; getRefundById(@PathVariable String id) {
-<span class="nc" id="L61">        return getRefundUseCase.getById(id)</span>
-<span class="nc" id="L62">                .map(refund -&gt; ResponseEntity.ok(RefundResponse.fromDomain(refund)))</span>
-<span class="nc" id="L63">                .orElse(ResponseEntity.notFound().build());</span>
+<span class="fc" id="L61">        return getRefundUseCase.getById(id)</span>
+<span class="fc" id="L62">                .map(refund -&gt; ResponseEntity.ok(RefundResponse.fromDomain(refund)))</span>
+<span class="fc" id="L63">                .orElse(ResponseEntity.notFound().build());</span>
     }
 
     @GetMapping(&quot;/refund&quot;)
     public ResponseEntity&lt;List&lt;RefundResponse&gt;&gt; getRefundHistory() {
-<span class="nc" id="L68">        var list = getRefundUseCase.getAll()</span>
-<span class="nc" id="L69">                .stream()</span>
-<span class="nc" id="L70">                .map(RefundResponse::fromDomain)</span>
-<span class="nc" id="L71">                .toList();</span>
+<span class="fc" id="L68">        var list = getRefundUseCase.getAll()</span>
+<span class="fc" id="L69">                .stream()</span>
+<span class="fc" id="L70">                .map(RefundResponse::fromDomain)</span>
+<span class="fc" id="L71">                .toList();</span>
 
-<span class="nc" id="L73">        return ResponseEntity.ok(list);</span>
+<span class="fc" id="L73">        return ResponseEntity.ok(list);</span>
     }
 
     @GetMapping(&quot;/statusR/{status}&quot;)
@@ -78,19 +78,19 @@ public class RefundController {
 
         RefundStatus st;
         try {
-<span class="nc" id="L81">            st = RefundStatus.valueOf(status.toUpperCase());</span>
-<span class="nc" id="L82">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L83">            return ResponseEntity.badRequest().build();</span>
-<span class="nc" id="L84">        }</span>
+<span class="fc" id="L81">            st = RefundStatus.valueOf(status.toUpperCase());</span>
+<span class="fc" id="L82">        } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L83">            return ResponseEntity.badRequest().build();</span>
+<span class="fc" id="L84">        }</span>
 
-<span class="nc" id="L86">        var list = getRefundStatusUseCase.findByStatus(st);</span>
+<span class="fc" id="L86">        var list = getRefundStatusUseCase.findByStatus(st);</span>
 
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (list.isEmpty()) {</span>
-<span class="nc" id="L89">            return ResponseEntity.noContent().build();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (list.isEmpty()) {</span>
+<span class="fc" id="L89">            return ResponseEntity.noContent().build();</span>
         }
 
-<span class="nc" id="L92">        return ResponseEntity.ok(</span>
-<span class="nc" id="L93">                list.stream().map(RefundResponse::fromDomain).toList());</span>
+<span class="fc" id="L92">        return ResponseEntity.ok(</span>
+<span class="fc" id="L93">                list.stream().map(RefundResponse::fromDomain).toList());</span>
     }
 
 }

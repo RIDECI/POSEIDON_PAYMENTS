@@ -24,7 +24,7 @@ public class CancelTripPaymentsUseCaseImpl implements CancelTripPaymentsUseCase 
     public List<Transaction> cancelTripPayments(String tripId) {
         log.info("Cancelling payments for trip: {}", tripId);
         
-        // Buscar todos los pagos del viaje
+        
         List<Transaction> tripPayments = paymentRepositoryPort.findByBookingId(tripId);
         
         if (tripPayments.isEmpty()) {
@@ -32,7 +32,7 @@ public class CancelTripPaymentsUseCaseImpl implements CancelTripPaymentsUseCase 
             throw new RideciBusinessException("No payments found for trip: " + tripId);
         }
 
-        // Cancelar solo los pagos que no estén en estado final
+        
         List<Transaction> cancelledPayments = tripPayments.stream()
                 .filter(payment -> canBeCancelled(payment.getStatus()))
                 .map(payment -> {

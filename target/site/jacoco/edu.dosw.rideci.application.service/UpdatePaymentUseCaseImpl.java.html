@@ -18,40 +18,40 @@ public class UpdatePaymentUseCaseImpl implements UpdatePaymentUseCase {
     @Override
     public Transaction updatePartial(String id, UpdatePaymentRequest req) {
 
-<span class="nc" id="L21">        Transaction tx = repository.findById(id)</span>
-<span class="nc" id="L22">                .orElseThrow(() -&gt; new RuntimeException(&quot;Payment not found&quot;));</span>
+<span class="fc" id="L21">        Transaction tx = repository.findById(id)</span>
+<span class="fc" id="L22">                .orElseThrow(() -&gt; new RuntimeException(&quot;Payment not found&quot;));</span>
 
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (tx.getStatus() != TransactionStatus.PENDING) {</span>
-<span class="nc" id="L25">            throw new IllegalStateException(</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (tx.getStatus() != TransactionStatus.PENDING) {</span>
+<span class="fc" id="L25">            throw new IllegalStateException(</span>
                     &quot;Solo se pueden modificar pagos con estado PENDING&quot;
             );
         }
 
-<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (req.getAmount() != null) {</span>
-<span class="nc" id="L31">            tx.setAmount(req.getAmount());</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (req.getAmount() != null) {</span>
+<span class="fc" id="L31">            tx.setAmount(req.getAmount());</span>
         }
 
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (req.getPaymentMethod() != null) {</span>
-<span class="nc" id="L35">            tx.setPaymentMethod(req.getPaymentMethod());</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (req.getPaymentMethod() != null) {</span>
+<span class="fc" id="L35">            tx.setPaymentMethod(req.getPaymentMethod());</span>
         }
 
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (req.getExtra() != null) {</span>
-<span class="nc" id="L39">            tx.setExtra(req.getExtra());</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (req.getExtra() != null) {</span>
+<span class="fc" id="L39">            tx.setExtra(req.getExtra());</span>
         }
 
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (req.getReceiptCode() != null) {</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (req.getReceiptCode() != null) {</span>
 
-<span class="nc bnc" id="L44" title="All 2 branches missed.">            if (tx.getPaymentMethod() == PaymentMethodType.CASH</span>
-<span class="nc bnc" id="L45" title="All 2 branches missed.">                    || req.getPaymentMethod() == PaymentMethodType.CASH) {</span>
-<span class="nc" id="L46">                throw new IllegalArgumentException(</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            if (tx.getPaymentMethod() == PaymentMethodType.CASH</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">                    || req.getPaymentMethod() == PaymentMethodType.CASH) {</span>
+<span class="fc" id="L46">                throw new IllegalArgumentException(</span>
                         &quot;receiptCode no permitido para pagos CASH&quot;
                 );
             }
 
-<span class="nc" id="L51">            tx.setReceiptCode(req.getReceiptCode());</span>
+<span class="fc" id="L51">            tx.setReceiptCode(req.getReceiptCode());</span>
         }
 
-<span class="nc" id="L54">        return repository.save(tx);</span>
+<span class="fc" id="L54">        return repository.save(tx);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

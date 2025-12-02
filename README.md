@@ -499,6 +499,20 @@ Las cinco tablas principales son:
 - CASH_PAYMENT_CONFIRMATION: Exclusiva para pagos en efectivo, permite al conductor confirmar la recepción del dinero con timestamp y observaciones. 
 - PAYMENT_RECEIPT: Almacena los comprobantes de pago generados automáticamente, incluyendo un snapshot completo de la información en formato JSON para preservar el estado exacto al momento de emisión. 
 
+---
+### Sequence Diagrams
+
+Los diagramas de secuencias estan enfocados en seguir la estructura limpia del proyecto siguiendo el el siguiente flujo:
+
+- Controller
+- Use Case
+- Repository Port
+- Repository Adapter
+- Mongo Repository 
+
+Luego usa la base de datos Mongo para evidenciar los documentos 
+
+📄 [Ver diagrama de secuencia](docs/pdf/diagramaSecuencias.pdf)
 
 ---
 
@@ -519,84 +533,96 @@ Conductores:
 Reciben pagos y pueden recibir calificaciones y recomendaciones de los pasajeros, que podrían influir en futuros pagos o viajes.
 
 ---
+# Getting Started
 
-# Ejecución Local
-
-
-## Requesitos
+### Requesitos
 - Java 17
 - Maven 3.X
 - Docker + Docker Compose
-- Puerto disponiblo 8081
+- Puerto disponiblo 8080
 
+### Clone & open repository
 
-## Ejecución con Maven 
-
-### 1. Clonar el repositorio
 `git clone https://github.com/RIDECI/POSEIDON_PAYMENTS`
 
 `cd POSEIDON_PAYMENTS`
 
-### 2. Compilar y ejecutar pruebas
-`./mvn clean test`
+### Dockerize the project
 
-### 3. Ejecutar la aplicación
-`./mvnw spring-boot:run`
+Dockerize before compile the project avoid configuration issues and ensure environment consistency.
 
-Aplicación disponible en: 
-`http://loocalhost:8081`
+``` bash
+docker compose up -d
+```
 
-Ejecucionón con Docker / Docker Compose
+[Ver video demostrativo]()
 
-`docker build -t atenea-admin-backend .`
+### Install dependencies & compile project
 
-`docker-compose up -d`
+Download dependencies and compile the source code.
 
-### 4. Prueba de Ejecución Local:
+``` bash
+mvn clean install
+```
 
-[Ver video demostrativo](https://youtu.be/tH6q9IGOvrw)
+``` bash
+mvn clean compile
+```
 
-PostGresSQL y backend se levantan automáticamente con la configuración existente
+### To run the project
+Start the Spring Boot server
 
-## Calidad y CI/CD
+``` bash
+docker-compose up --build -d   
+```
 
-Incluye:
+--- 
 
-### GitHub Actions
+#### Prueba de Ejecución Local:
 
--Ejecución de pruebas
+[Ver video demostrativo]()
 
--Reporte Jacoco
-   
--Análisis SonarQube
-   
-### Jacoco
-
--Cobertura mínima requerida
-   
-### SonarQube
-
--Análisis de bugs, vulnerabilidades y code smells
 
 
 ---
+# 🧪 Testing
 
-# Prueba JACOCO
+Testing is a essential part of the project functionability, this part will show the code coverage and code quality analazing with tools like JaCoCo and SonarQube.
 
----
-
-
----
-
-# Prueba SonarQube
+### 📊 Code Coverage (JaCoCo)
 
 ---
 
+[Ver video de cobertura y jacoco]()
+
+![JaCoCo](docs/imagenes/jacoco.png)
 
 
-## DOCKERIZACIÓN DE LA APPI
+![JaCoCo](docs/imagenes/jacocoCaseUse.png)
 
-[Ver video demostrativo](https://youtu.be/tH6q9IGOvrw)
+
+![JaCoCo](docs/imagenes/jacocoController.png)
+
+
+
+
+
+### 🔍 Static Analysis (SonarQube)
 
 ---
 
+[Ver video de cobertura de sonar]()
+
+![SonarQube](docs/imagenes/sonarQube.png)
+
+![SonarQube](docs/imagenes/sonarQubec.png)
+
+
+
+### 💻  Evidence Postman
+
+---
+
+[Ver video de cobertura de sonar]()
+
+**RIDECI** - Conectando a la comunidad para moverse de forma segura, económica y sostenible.

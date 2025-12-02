@@ -2,6 +2,7 @@ package edu.dosw.rideci.infrastructure.adapters.persistence;
 
 import edu.dosw.rideci.application.port.out.PaymentSuspensionRepositoryPort;
 import edu.dosw.rideci.domain.model.PaymentSuspension;
+import edu.dosw.rideci.domain.model.enums.SuspensionStatus;
 import edu.dosw.rideci.infrastructure.persistence.Entity.PaymentSuspensionEntity;
 import edu.dosw.rideci.infrastructure.persistence.Repository.PaymentSuspensionJpaRepository;
 import edu.dosw.rideci.infrastructure.persistence.Repository.mapper.PaymentSuspensionMapper;
@@ -32,7 +33,8 @@ public class PaymentSuspensionRepositoryAdapter implements PaymentSuspensionRepo
 
     @Override
     public Optional<PaymentSuspension> findActiveByTransactionId(String transactionId) {
-        return jpa.findByTransactionIdAndStatus(transactionId, "ACTIVE").map(mapper::toDomain);
+        return jpa.findByTransactionIdAndStatus(transactionId, SuspensionStatus.ACTIVE)
+                .map(mapper::toDomain);
     }
 
     @Override

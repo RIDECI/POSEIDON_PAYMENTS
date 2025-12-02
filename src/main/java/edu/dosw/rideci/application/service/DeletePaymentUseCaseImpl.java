@@ -2,8 +2,6 @@ package edu.dosw.rideci.application.service;
 
 import edu.dosw.rideci.application.port.in.DeletePaymentUseCase;
 import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
-import edu.dosw.rideci.domain.model.Transaction;
-import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -2,13 +2,11 @@
 
 import edu.dosw.rideci.application.port.in.DeletePaymentUseCase;
 import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
-import edu.dosw.rideci.domain.model.Transaction;
-import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-<span class="fc" id="L11">@RequiredArgsConstructor</span>
+<span class="fc" id="L9">@RequiredArgsConstructor</span>
 public class DeletePaymentUseCaseImpl implements DeletePaymentUseCase {
 
     private final PaymentRepositoryPort repository;
@@ -16,8 +14,8 @@ public class DeletePaymentUseCaseImpl implements DeletePaymentUseCase {
     @Override
     public boolean deleteById(String id) {
 
-<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (!repository.existsById(id)) {</span>
-<span class="nc" id="L20">            return false;</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (!repository.existsById(id)) {</span>
+<span class="fc" id="L18">            return false;</span>
         }
 
         // FUTURA VALIDACIÃ“N (solo eliminar transacciones FAILED)
@@ -35,8 +33,8 @@ public class DeletePaymentUseCaseImpl implements DeletePaymentUseCase {
         //     );
         // }
 
-<span class="nc" id="L38">        repository.deleteById(id);</span>
-<span class="nc" id="L39">        return true;</span>
+<span class="fc" id="L36">        repository.deleteById(id);</span>
+<span class="fc" id="L37">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

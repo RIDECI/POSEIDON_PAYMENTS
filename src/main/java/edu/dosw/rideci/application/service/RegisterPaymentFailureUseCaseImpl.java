@@ -26,16 +26,13 @@ public class RegisterPaymentFailureUseCaseImpl implements RegisterPaymentFailure
         Transaction payment = paymentRepositoryPort.findById(paymentId)
                 .orElseThrow(() -> new RideciBusinessException("Payment not found: " + paymentId));
 
-        // Incrementar intentos
         int currentAttempts = payment.getAttempts() != null ? payment.getAttempts() : 0;
         payment.setAttempts(currentAttempts + 1);
 
-        // Actualizar mensaje de error
         String fullErrorMessage = String.format("[%s] %s (Attempt %d/%d)", 
                                                 errorCode, errorMessage, payment.getAttempts(), MAX_ATTEMPTS);
         payment.setErrorMessage(fullErrorMessage);
 
-        // Si alcanzó el máximo de intentos, marcar como FAILED
         if (payment.getAttempts() >= MAX_ATTEMPTS) {
             log.warn("Payment {} has reached maximum attempts ({}). Marking as FAILED", 
                      paymentId, MAX_ATTEMPTS);

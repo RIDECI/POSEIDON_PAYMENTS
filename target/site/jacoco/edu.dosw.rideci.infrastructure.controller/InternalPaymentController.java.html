@@ -28,68 +28,68 @@ public class InternalPaymentController {
 
     @PatchMapping(&quot;/trips/{tripId}/cancel&quot;)
     public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; cancelTripPayments(@PathVariable String tripId) {
-<span class="nc" id="L31">        log.info(&quot;Received request to cancel payments for trip: {}&quot;, tripId);</span>
+<span class="fc" id="L31">        log.info(&quot;Received request to cancel payments for trip: {}&quot;, tripId);</span>
         
-<span class="nc" id="L33">        List&lt;Transaction&gt; cancelledPayments = cancelTripPaymentsUseCase.cancelTripPayments(tripId);</span>
+<span class="fc" id="L33">        List&lt;Transaction&gt; cancelledPayments = cancelTripPaymentsUseCase.cancelTripPayments(tripId);</span>
         
-<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (cancelledPayments.isEmpty()) {</span>
-<span class="nc" id="L36">            log.info(&quot;No payments were cancelled for trip: {}&quot;, tripId);</span>
-<span class="nc" id="L37">            return ResponseEntity.noContent().build();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (cancelledPayments.isEmpty()) {</span>
+<span class="fc" id="L36">            log.info(&quot;No payments were cancelled for trip: {}&quot;, tripId);</span>
+<span class="fc" id="L37">            return ResponseEntity.noContent().build();</span>
         }
         
-<span class="nc" id="L40">        List&lt;TransactionResponse&gt; response = cancelledPayments.stream()</span>
-<span class="nc" id="L41">                .map(TransactionResponse::fromDomain)</span>
-<span class="nc" id="L42">                .toList();</span>
+<span class="fc" id="L40">        List&lt;TransactionResponse&gt; response = cancelledPayments.stream()</span>
+<span class="fc" id="L41">                .map(TransactionResponse::fromDomain)</span>
+<span class="fc" id="L42">                .toList();</span>
         
-<span class="nc" id="L44">        return ResponseEntity.ok(response);</span>
+<span class="fc" id="L44">        return ResponseEntity.ok(response);</span>
     }
 
     @PatchMapping(&quot;/trips/{tripId}/complete&quot;)
     public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; completeTripPayments(@PathVariable String tripId) {
-<span class="nc" id="L49">        log.info(&quot;Received request to complete payments for trip: {}&quot;, tripId);</span>
+<span class="fc" id="L49">        log.info(&quot;Received request to complete payments for trip: {}&quot;, tripId);</span>
         
-<span class="nc" id="L51">        List&lt;Transaction&gt; completedPayments = completeTripPaymentsUseCase.completeTripPayments(tripId);</span>
+<span class="fc" id="L51">        List&lt;Transaction&gt; completedPayments = completeTripPaymentsUseCase.completeTripPayments(tripId);</span>
         
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (completedPayments.isEmpty()) {</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (completedPayments.isEmpty()) {</span>
 <span class="nc" id="L54">            log.info(&quot;No payments were completed for trip: {}&quot;, tripId);</span>
 <span class="nc" id="L55">            return ResponseEntity.noContent().build();</span>
         }
         
-<span class="nc" id="L58">        List&lt;TransactionResponse&gt; response = completedPayments.stream()</span>
-<span class="nc" id="L59">                .map(TransactionResponse::fromDomain)</span>
-<span class="nc" id="L60">                .toList();</span>
+<span class="fc" id="L58">        List&lt;TransactionResponse&gt; response = completedPayments.stream()</span>
+<span class="fc" id="L59">                .map(TransactionResponse::fromDomain)</span>
+<span class="fc" id="L60">                .toList();</span>
         
-<span class="nc" id="L62">        return ResponseEntity.ok(response);</span>
+<span class="fc" id="L62">        return ResponseEntity.ok(response);</span>
     }
 
     @GetMapping(&quot;/verify/{paymentId}&quot;)
     public ResponseEntity&lt;PaymentVerificationResponse&gt; verifyPaymentApproval(@PathVariable String paymentId) {
-<span class="nc" id="L67">        log.info(&quot;Received request to verify payment approval: {}&quot;, paymentId);</span>
+<span class="fc" id="L67">        log.info(&quot;Received request to verify payment approval: {}&quot;, paymentId);</span>
         
-<span class="nc" id="L69">        Transaction payment = verifyPaymentApprovalUseCase.verifyApproval(paymentId)</span>
-<span class="nc" id="L70">                .orElse(null);</span>
+<span class="fc" id="L69">        Transaction payment = verifyPaymentApprovalUseCase.verifyApproval(paymentId)</span>
+<span class="fc" id="L70">                .orElse(null);</span>
         
-<span class="nc" id="L72">        PaymentVerificationResponse response = PaymentVerificationResponse.fromDomain(payment);</span>
+<span class="fc" id="L72">        PaymentVerificationResponse response = PaymentVerificationResponse.fromDomain(payment);</span>
         
-<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (payment == null) {</span>
-<span class="nc" id="L75">            return ResponseEntity.notFound().build();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (payment == null) {</span>
+<span class="fc" id="L75">            return ResponseEntity.notFound().build();</span>
         }
         
-<span class="nc" id="L78">        return ResponseEntity.ok(response);</span>
+<span class="fc" id="L78">        return ResponseEntity.ok(response);</span>
     }
 
     @PostMapping(&quot;/failures&quot;)
     public ResponseEntity&lt;TransactionResponse&gt; registerPaymentFailure(
             @RequestBody PaymentFailureRequest request) {
-<span class="nc" id="L84">        log.info(&quot;Received request to register payment failure for: {}&quot;, request.getPaymentId());</span>
+<span class="fc" id="L84">        log.info(&quot;Received request to register payment failure for: {}&quot;, request.getPaymentId());</span>
         
-<span class="nc" id="L86">        Transaction updatedPayment = registerPaymentFailureUseCase.registerFailure(</span>
-<span class="nc" id="L87">                request.getPaymentId(),</span>
-<span class="nc" id="L88">                request.getErrorMessage(),</span>
-<span class="nc" id="L89">                request.getErrorCode()</span>
+<span class="fc" id="L86">        Transaction updatedPayment = registerPaymentFailureUseCase.registerFailure(</span>
+<span class="fc" id="L87">                request.getPaymentId(),</span>
+<span class="fc" id="L88">                request.getErrorMessage(),</span>
+<span class="fc" id="L89">                request.getErrorCode()</span>
         );
         
-<span class="nc" id="L92">        return ResponseEntity.ok(TransactionResponse.fromDomain(updatedPayment));</span>
+<span class="fc" id="L92">        return ResponseEntity.ok(TransactionResponse.fromDomain(updatedPayment));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -22,39 +22,36 @@ public class CompleteTripPaymentsUseCaseImpl implements CompleteTripPaymentsUseC
 
     @Override
     public List&lt;Transaction&gt; completeTripPayments(String tripId) {
-<span class="nc" id="L25">        log.info(&quot;Completing payments for trip: {}&quot;, tripId);</span>
+<span class="fc" id="L25">        log.info(&quot;Completing payments for trip: {}&quot;, tripId);</span>
         
-        // Buscar todos los pagos del viaje
-<span class="nc" id="L28">        List&lt;Transaction&gt; tripPayments = paymentRepositoryPort.findByBookingId(tripId);</span>
+<span class="fc" id="L27">        List&lt;Transaction&gt; tripPayments = paymentRepositoryPort.findByBookingId(tripId);</span>
         
-<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (tripPayments.isEmpty()) {</span>
-<span class="nc" id="L31">            log.warn(&quot;No payments found for trip: {}&quot;, tripId);</span>
-<span class="nc" id="L32">            throw new RideciBusinessException(&quot;No payments found for trip: &quot; + tripId);</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (tripPayments.isEmpty()) {</span>
+<span class="fc" id="L30">            log.warn(&quot;No payments found for trip: {}&quot;, tripId);</span>
+<span class="fc" id="L31">            throw new RideciBusinessException(&quot;No payments found for trip: &quot; + tripId);</span>
         }
 
-        // Completar solo los pagos que estén en estado APPROVED
-<span class="nc" id="L36">        List&lt;Transaction&gt; completedPayments = tripPayments.stream()</span>
-<span class="nc bnc" id="L37" title="All 2 branches missed.">                .filter(payment -&gt; payment.getStatus() == TransactionStatus.APPROVED)</span>
-<span class="nc" id="L38">                .map(payment -&gt; {</span>
-<span class="nc" id="L39">                    payment.setStatus(TransactionStatus.COMPLETED);</span>
-<span class="nc" id="L40">                    return paymentRepositoryPort.save(payment);</span>
+<span class="fc" id="L34">        List&lt;Transaction&gt; completedPayments = tripPayments.stream()</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                .filter(payment -&gt; payment.getStatus() == TransactionStatus.APPROVED)</span>
+<span class="fc" id="L36">                .map(payment -&gt; {</span>
+<span class="fc" id="L37">                    payment.setStatus(TransactionStatus.COMPLETED);</span>
+<span class="fc" id="L38">                    return paymentRepositoryPort.save(payment);</span>
                 })
-<span class="nc" id="L42">                .collect(Collectors.toList());</span>
+<span class="fc" id="L40">                .collect(Collectors.toList());</span>
 
-<span class="nc" id="L44">        log.info(&quot;Completed {} payments for trip: {}&quot;, completedPayments.size(), tripId);</span>
+<span class="fc" id="L42">        log.info(&quot;Completed {} payments for trip: {}&quot;, completedPayments.size(), tripId);</span>
         
-        // Verificar si hay pagos pendientes
-<span class="nc" id="L47">        long pendingPayments = tripPayments.stream()</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">                .filter(p -&gt; p.getStatus() != TransactionStatus.COMPLETED </span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">                          &amp;&amp; p.getStatus() != TransactionStatus.CANCELLED</span>
-<span class="nc bnc" id="L50" title="All 2 branches missed.">                          &amp;&amp; p.getStatus() != TransactionStatus.FAILED)</span>
-<span class="nc" id="L51">                .count();</span>
+<span class="fc" id="L44">        long pendingPayments = tripPayments.stream()</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">                .filter(p -&gt; p.getStatus() != TransactionStatus.COMPLETED </span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">                          &amp;&amp; p.getStatus() != TransactionStatus.CANCELLED</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                          &amp;&amp; p.getStatus() != TransactionStatus.FAILED)</span>
+<span class="fc" id="L48">                .count();</span>
                 
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (pendingPayments &gt; 0) {</span>
-<span class="nc" id="L54">            log.warn(&quot;Trip {} completed but has {} pending payments&quot;, tripId, pendingPayments);</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (pendingPayments &gt; 0) {</span>
+<span class="fc" id="L51">            log.warn(&quot;Trip {} completed but has {} pending payments&quot;, tripId, pendingPayments);</span>
         }
 
-<span class="nc" id="L57">        return completedPayments;</span>
+<span class="fc" id="L54">        return completedPayments;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

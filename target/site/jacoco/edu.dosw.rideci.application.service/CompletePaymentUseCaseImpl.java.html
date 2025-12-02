@@ -17,41 +17,33 @@ public class CompletePaymentUseCaseImpl implements CompletePaymentUseCase {
     @Override
     public Transaction complete(String id) {
 
-<span class="nc" id="L20">        Transaction tx = repository.findById(id)</span>
-<span class="nc" id="L21">                .orElseThrow(() -&gt; new RuntimeException(&quot;Payment not found&quot;));</span>
+<span class="fc" id="L20">        Transaction tx = repository.findById(id)</span>
+<span class="fc" id="L21">                .orElseThrow(() -&gt; new RuntimeException(&quot;Payment not found&quot;));</span>
 
-        // 1. Debe estar APPROVED
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (tx.getStatus() != TransactionStatus.APPROVED) {</span>
-<span class="nc" id="L25">            throw new IllegalStateException(&quot;Solo se pueden completar pagos en estado APPROVED&quot;);</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (tx.getStatus() == TransactionStatus.COMPLETED) {</span>
+<span class="fc" id="L24">            throw new IllegalStateException(&quot;El pago ya fue completado previamente&quot;);</span>
         }
 
-        // 2. El monto debe ser vÃ¡lido
-<span class="nc bnc" id="L29" title="All 4 branches missed.">        if (tx.getAmount() == null || tx.getAmount() &lt;= 0) {</span>
-<span class="nc" id="L30">            throw new IllegalArgumentException(&quot;Monto invÃ¡lido para completar el pago&quot;);</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (tx.getStatus() != TransactionStatus.APPROVED) {</span>
+<span class="fc" id="L28">            throw new IllegalStateException(&quot;Solo se pueden completar pagos en estado APPROVED&quot;);</span>
         }
 
-        // 3. CASH requiere lÃ³gica especial
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (tx.getPaymentMethod() == PaymentMethodType.CASH) {</span>
-            // CASH no usa receiptCode
+<span class="pc bpc" id="L31" title="1 of 4 branches missed.">        if (tx.getAmount() == null || tx.getAmount() &lt;= 0) {</span>
+<span class="fc" id="L32">            throw new IllegalArgumentException(&quot;Monto inválido para completar el pago&quot;);</span>
+        }
+
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (tx.getPaymentMethod() == PaymentMethodType.CASH) {</span>
         } else {
-            // 4. Digitales requieren receiptCode vÃ¡lido
-<span class="nc bnc" id="L38" title="All 4 branches missed.">            if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {</span>
-<span class="nc" id="L39">                throw new IllegalArgumentException(&quot;receiptCode requerido para pagos digitales&quot;);</span>
+<span class="pc bpc" id="L37" title="1 of 4 branches missed.">            if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {</span>
+<span class="fc" id="L38">                throw new IllegalArgumentException(&quot;receiptCode requerido para pagos digitales&quot;);</span>
             }
         }
 
-        // 5. Evitar completar dos veces
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (tx.getStatus() == TransactionStatus.COMPLETED) {</span>
-<span class="nc" id="L45">            throw new IllegalStateException(&quot;El pago ya fue completado previamente&quot;);</span>
-        }
+<span class="fc" id="L42">        tx.setStatus(TransactionStatus.COMPLETED);</span>
 
-        // 6. Finalmente actualizar estado
-<span class="nc" id="L49">        tx.setStatus(TransactionStatus.COMPLETED);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        tx.setExtra((tx.getExtra() != null ? tx.getExtra() : &quot;&quot;) + &quot;|COMPLETED:true&quot;);</span>
 
-        // AÃ±adimos metadata
-<span class="nc bnc" id="L52" title="All 2 branches missed.">        tx.setExtra((tx.getExtra() != null ? tx.getExtra() : &quot;&quot;) + &quot;|COMPLETED:true&quot;);</span>
-
-<span class="nc" id="L54">        return repository.save(tx);</span>
+<span class="fc" id="L46">        return repository.save(tx);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

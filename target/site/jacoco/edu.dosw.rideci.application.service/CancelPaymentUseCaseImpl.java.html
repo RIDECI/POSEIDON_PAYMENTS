@@ -24,45 +24,44 @@ public class CancelPaymentUseCaseImpl implements CancelPaymentUseCase {
     @Override
     public Transaction cancel(String paymentId) {
 
-<span class="nc" id="L27">        Transaction payment = paymentRepositoryPort.findById(paymentId)</span>
-<span class="nc" id="L28">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Payment not found: &quot; + paymentId));</span>
+<span class="fc" id="L27">        Transaction payment = paymentRepositoryPort.findById(paymentId)</span>
+<span class="fc" id="L28">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Payment not found: &quot; + paymentId));</span>
 
-<span class="nc" id="L30">        TransactionStatus previousStatus = payment.getStatus();</span>
+<span class="fc" id="L30">        TransactionStatus previousStatus = payment.getStatus();</span>
 
-<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (payment.getStatus() == TransactionStatus.COMPLETED) {</span>
-<span class="nc" id="L33">            throw new RideciBusinessException(&quot;Cannot cancel a completed payment&quot;);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (payment.getStatus() == TransactionStatus.COMPLETED) {</span>
+<span class="fc" id="L33">            throw new RideciBusinessException(&quot;Cannot cancel a completed payment&quot;);</span>
         }
 
-<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (payment.getStatus() == TransactionStatus.CANCELLED) {</span>
-<span class="nc" id="L37">            throw new RideciBusinessException(&quot;Payment is already cancelled&quot;);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (payment.getStatus() == TransactionStatus.CANCELLED) {</span>
+<span class="fc" id="L37">            throw new RideciBusinessException(&quot;Payment is already cancelled&quot;);</span>
         }
 
-<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (payment.getStatus() == TransactionStatus.REFUNDED) {</span>
-<span class="nc" id="L41">            throw new RideciBusinessException(&quot;Cannot cancel a refunded payment&quot;);</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (payment.getStatus() == TransactionStatus.REFUNDED) {</span>
+<span class="fc" id="L41">            throw new RideciBusinessException(&quot;Cannot cancel a refunded payment&quot;);</span>
         }
 
-<span class="nc" id="L44">        payment.setStatus(TransactionStatus.CANCELLED);</span>
+<span class="fc" id="L44">        payment.setStatus(TransactionStatus.CANCELLED);</span>
 
-<span class="nc" id="L46">        Transaction cancelledPayment = paymentRepositoryPort.save(payment);</span>
+<span class="fc" id="L46">        Transaction cancelledPayment = paymentRepositoryPort.save(payment);</span>
         
-        // Registrar auditoría
         try {
-<span class="nc" id="L50">            createAuditLogUseCase.createAuditLog(AuditLog.builder()</span>
-<span class="nc" id="L51">                    .entityType(&quot;Transaction&quot;)</span>
-<span class="nc" id="L52">                    .entityId(cancelledPayment.getId())</span>
-<span class="nc" id="L53">                    .action(AuditAction.CANCEL)</span>
-<span class="nc" id="L54">                    .userId(cancelledPayment.getPassengerId())</span>
-<span class="nc" id="L55">                    .userName(&quot;User&quot;)</span>
-<span class="nc" id="L56">                    .description(String.format(&quot;Payment cancelled for booking %s&quot;, </span>
-<span class="nc" id="L57">                                              cancelledPayment.getBookingId()))</span>
-<span class="nc" id="L58">                    .previousState(String.format(&quot;Status: %s&quot;, previousStatus))</span>
-<span class="nc" id="L59">                    .newState(String.format(&quot;Status: %s&quot;, cancelledPayment.getStatus()))</span>
-<span class="nc" id="L60">                    .build());</span>
-<span class="nc" id="L61">        } catch (Exception e) {</span>
-<span class="nc" id="L62">            log.error(&quot;Failed to create audit log for payment cancellation: {}&quot;, cancelledPayment.getId(), e);</span>
-<span class="nc" id="L63">        }</span>
+<span class="fc" id="L49">            createAuditLogUseCase.createAuditLog(AuditLog.builder()</span>
+<span class="fc" id="L50">                    .entityType(&quot;Transaction&quot;)</span>
+<span class="fc" id="L51">                    .entityId(cancelledPayment.getId())</span>
+<span class="fc" id="L52">                    .action(AuditAction.CANCEL)</span>
+<span class="fc" id="L53">                    .userId(cancelledPayment.getPassengerId())</span>
+<span class="fc" id="L54">                    .userName(&quot;User&quot;)</span>
+<span class="fc" id="L55">                    .description(String.format(&quot;Payment cancelled for booking %s&quot;, </span>
+<span class="fc" id="L56">                                              cancelledPayment.getBookingId()))</span>
+<span class="fc" id="L57">                    .previousState(String.format(&quot;Status: %s&quot;, previousStatus))</span>
+<span class="fc" id="L58">                    .newState(String.format(&quot;Status: %s&quot;, cancelledPayment.getStatus()))</span>
+<span class="fc" id="L59">                    .build());</span>
+<span class="fc" id="L60">        } catch (Exception e) {</span>
+<span class="fc" id="L61">            log.error(&quot;Failed to create audit log for payment cancellation: {}&quot;, cancelledPayment.getId(), e);</span>
+<span class="fc" id="L62">        }</span>
 
-<span class="nc" id="L65">        return cancelledPayment;</span>
+<span class="fc" id="L64">        return cancelledPayment;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -18,12 +18,12 @@ public class GetAllAuditLogsUseCaseImpl implements GetAllAuditLogsUseCase {
 
     @Override
     public List&lt;AuditLog&gt; getAllAuditLogs() {
-<span class="nc" id="L21">        log.info(&quot;Retrieving all audit logs&quot;);</span>
+<span class="fc" id="L21">        log.info(&quot;Retrieving all audit logs&quot;);</span>
         
-<span class="nc" id="L23">        List&lt;AuditLog&gt; auditLogs = auditLogRepositoryPort.findAll();</span>
+<span class="fc" id="L23">        List&lt;AuditLog&gt; auditLogs = auditLogRepositoryPort.findAll();</span>
         
-<span class="nc" id="L25">        log.info(&quot;Retrieved {} audit logs&quot;, auditLogs.size());</span>
-<span class="nc" id="L26">        return auditLogs;</span>
+<span class="fc" id="L25">        log.info(&quot;Retrieved {} audit logs&quot;, auditLogs.size());</span>
+<span class="fc" id="L26">        return auditLogs;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

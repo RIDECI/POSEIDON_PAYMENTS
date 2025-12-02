@@ -18,20 +18,20 @@ public class CancelRefundUseCaseImpl implements CancelRefundUseCase {
     @Override
     public Refund cancel(String refundId) {
 
-<span class="nc" id="L21">        Refund refund = refundRepositoryPort.findById(refundId)</span>
-<span class="nc" id="L22">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Refund not found: &quot; + refundId));</span>
+<span class="fc" id="L21">        Refund refund = refundRepositoryPort.findById(refundId)</span>
+<span class="fc" id="L22">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Refund not found: &quot; + refundId));</span>
 
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (refund.getStatus() == RefundStatus.COMPLETED) {</span>
-<span class="nc" id="L25">            throw new RideciBusinessException(&quot;Cannot cancel a completed refund&quot;);</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (refund.getStatus() == RefundStatus.COMPLETED) {</span>
+<span class="fc" id="L25">            throw new RideciBusinessException(&quot;Cannot cancel a completed refund&quot;);</span>
         }
 
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (refund.getStatus() == RefundStatus.CANCELLED) {</span>
-<span class="nc" id="L29">            throw new RideciBusinessException(&quot;Refund is already cancelled&quot;);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (refund.getStatus() == RefundStatus.CANCELLED) {</span>
+<span class="fc" id="L29">            throw new RideciBusinessException(&quot;Refund is already cancelled&quot;);</span>
         }
 
-<span class="nc" id="L32">        refund.setStatus(RefundStatus.CANCELLED);</span>
+<span class="fc" id="L32">        refund.setStatus(RefundStatus.CANCELLED);</span>
 
-<span class="nc" id="L34">        return refundRepositoryPort.save(refund);</span>
+<span class="fc" id="L34">        return refundRepositoryPort.save(refund);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

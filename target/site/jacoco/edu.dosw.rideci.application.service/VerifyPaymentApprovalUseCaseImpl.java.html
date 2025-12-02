@@ -19,17 +19,17 @@ public class VerifyPaymentApprovalUseCaseImpl implements VerifyPaymentApprovalUs
 
     @Override
     public Optional&lt;Transaction&gt; verifyApproval(String paymentId) {
-<span class="nc" id="L22">        log.info(&quot;Verifying approval status for payment: {}&quot;, paymentId);</span>
+<span class="fc" id="L22">        log.info(&quot;Verifying approval status for payment: {}&quot;, paymentId);</span>
         
-<span class="nc" id="L24">        Optional&lt;Transaction&gt; payment = paymentRepositoryPort.findById(paymentId);</span>
+<span class="fc" id="L24">        Optional&lt;Transaction&gt; payment = paymentRepositoryPort.findById(paymentId);</span>
         
-<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (payment.isPresent()) {</span>
-<span class="nc" id="L27">            log.info(&quot;Payment {} found with status: {}&quot;, paymentId, payment.get().getStatus());</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (payment.isPresent()) {</span>
+<span class="fc" id="L27">            log.info(&quot;Payment {} found with status: {}&quot;, paymentId, payment.get().getStatus());</span>
         } else {
-<span class="nc" id="L29">            log.warn(&quot;Payment {} not found&quot;, paymentId);</span>
+<span class="fc" id="L29">            log.warn(&quot;Payment {} not found&quot;, paymentId);</span>
         }
         
-<span class="nc" id="L32">        return payment;</span>
+<span class="fc" id="L32">        return payment;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

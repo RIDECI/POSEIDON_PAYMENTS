@@ -24,30 +24,25 @@ public class ProcessPaymentUseCaseImpl implements ProcessPaymentUseCase {
     @Override
     public Transaction process(String id) {
 
-       
         if (!authorizationPort.isAuthorized(id)) {
-            throw new RideciBusinessException("Payment must be authorized before processing");
+            throw new IllegalStateException("Payment must be authorized before processing");
         }
 
-       
         Transaction tx = repository.findById(id)
-                .orElseThrow(() -> new RideciBusinessException("Payment not found"));
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
 
-        
-        if (tx.getStatus() != TransactionStatus.AUTHORIZED) {
-            throw new RideciBusinessException("Only AUTHORIZED payments can be processed");
-        }
-
-        
         if (paymentSuspensionRepositoryPort.findActiveByTransactionId(tx.getId()).isPresent()) {
-            throw new RideciBusinessException("Payment suspended. Cannot process until suspension is revoked or expired.");
+            throw new RideciBusinessException(
+                    "Payment suspended. Cannot process until suspension is revoked or expired.");
         }
 
-        
+        if (tx.getStatus() != TransactionStatus.AUTHORIZED) {
+            throw new IllegalStateException("Solo se pueden procesar pagos AUTHORIZED");
+        }
+
         tx.setStatus(TransactionStatus.PROCESSING);
         repository.save(tx);
 
-    
         PaymentStrategy strategy = factory.createStrategy(tx.getPaymentMethod());
         tx = strategy.processPayment(tx);
 

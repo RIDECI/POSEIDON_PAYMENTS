@@ -20,78 +20,77 @@ public class UpdatePaymentByWebhookUseCaseImpl implements UpdatePaymentByWebhook
     @Override
     public Transaction updateByWebhook(String provider, String paymentId, String status,
                                       String receiptCode, String errorMessage, String metadata) {
-<span class="nc" id="L23">        log.info(&quot;Updating payment {} via webhook from provider: {}&quot;, paymentId, provider);</span>
+<span class="fc" id="L23">        log.info(&quot;Updating payment {} via webhook from provider: {}&quot;, paymentId, provider);</span>
         
-<span class="nc" id="L25">        Transaction payment = paymentRepositoryPort.findById(paymentId)</span>
-<span class="nc" id="L26">                .orElseThrow(() -&gt; {</span>
-<span class="nc" id="L27">                    log.error(&quot;Payment not found for webhook update: {}&quot;, paymentId);</span>
-<span class="nc" id="L28">                    return new RideciBusinessException(&quot;Payment not found: &quot; + paymentId);</span>
+<span class="fc" id="L25">        Transaction payment = paymentRepositoryPort.findById(paymentId)</span>
+<span class="fc" id="L26">                .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L27">                    log.error(&quot;Payment not found for webhook update: {}&quot;, paymentId);</span>
+<span class="fc" id="L28">                    return new RideciBusinessException(&quot;Payment not found: &quot; + paymentId);</span>
                 });
 
-<span class="nc" id="L31">        log.info(&quot;Current payment status: {}, requested status: {}&quot;, payment.getStatus(), status);</span>
+<span class="fc" id="L31">        log.info(&quot;Current payment status: {}, requested status: {}&quot;, payment.getStatus(), status);</span>
 
-        // Validar que el pago no esté en estado final
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (payment.getStatus() == TransactionStatus.COMPLETED) {</span>
-<span class="nc" id="L35">            log.warn(&quot;Cannot update completed payment: {}&quot;, paymentId);</span>
-<span class="nc" id="L36">            throw new RideciBusinessException(&quot;Cannot update completed payment&quot;);</span>
+        
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (payment.getStatus() == TransactionStatus.COMPLETED) {</span>
+<span class="fc" id="L35">            log.warn(&quot;Cannot update completed payment: {}&quot;, paymentId);</span>
+<span class="fc" id="L36">            throw new RideciBusinessException(&quot;Cannot update completed payment&quot;);</span>
         }
 
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (payment.getStatus() == TransactionStatus.REFUNDED) {</span>
-<span class="nc" id="L40">            log.warn(&quot;Cannot update refunded payment: {}&quot;, paymentId);</span>
-<span class="nc" id="L41">            throw new RideciBusinessException(&quot;Cannot update refunded payment&quot;);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (payment.getStatus() == TransactionStatus.REFUNDED) {</span>
+<span class="fc" id="L40">            log.warn(&quot;Cannot update refunded payment: {}&quot;, paymentId);</span>
+<span class="fc" id="L41">            throw new RideciBusinessException(&quot;Cannot update refunded payment&quot;);</span>
         }
 
-        // Actualizar estado si se proporciona
-<span class="nc bnc" id="L45" title="All 4 branches missed.">        if (status != null &amp;&amp; !status.isEmpty()) {</span>
-<span class="nc" id="L46">            TransactionStatus newStatus = mapProviderStatus(provider, status);</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">            if (newStatus != null) {</span>
-<span class="nc" id="L48">                payment.setStatus(newStatus);</span>
-<span class="nc" id="L49">                log.info(&quot;Payment status updated: {} -&gt; {}&quot;, paymentId, newStatus);</span>
+<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        if (status != null &amp;&amp; !status.isEmpty()) {</span>
+<span class="fc" id="L45">            TransactionStatus newStatus = mapProviderStatus(provider, status);</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">            if (newStatus != null) {</span>
+<span class="fc" id="L47">                payment.setStatus(newStatus);</span>
+<span class="fc" id="L48">                log.info(&quot;Payment status updated: {} -&gt; {}&quot;, paymentId, newStatus);</span>
             }
         }
 
-        // Actualizar código de recibo si se proporciona
-<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (receiptCode != null &amp;&amp; !receiptCode.isEmpty()) {</span>
-<span class="nc" id="L55">            payment.setReceiptCode(receiptCode);</span>
-<span class="nc" id="L56">            log.info(&quot;Receipt code updated for payment: {}&quot;, paymentId);</span>
-        }
-
-        // Actualizar mensaje de error si se proporciona
-<span class="nc bnc" id="L60" title="All 4 branches missed.">        if (errorMessage != null &amp;&amp; !errorMessage.isEmpty()) {</span>
-<span class="nc" id="L61">            payment.setErrorMessage(errorMessage);</span>
-<span class="nc" id="L62">            log.warn(&quot;Error message set for payment {}: {}&quot;, paymentId, errorMessage);</span>
-        }
-
-        // Actualizar metadata adicional
-<span class="nc bnc" id="L66" title="All 4 branches missed.">        if (metadata != null &amp;&amp; !metadata.isEmpty()) {</span>
-<span class="nc" id="L67">            payment.setExtra(metadata);</span>
-        }
-
-<span class="nc" id="L70">        Transaction updatedPayment = paymentRepositoryPort.save(payment);</span>
-<span class="nc" id="L71">        log.info(&quot;Payment {} updated successfully via webhook&quot;, paymentId);</span>
         
-<span class="nc" id="L73">        return updatedPayment;</span>
+<span class="pc bpc" id="L53" title="2 of 4 branches missed.">        if (receiptCode != null &amp;&amp; !receiptCode.isEmpty()) {</span>
+<span class="fc" id="L54">            payment.setReceiptCode(receiptCode);</span>
+<span class="fc" id="L55">            log.info(&quot;Receipt code updated for payment: {}&quot;, paymentId);</span>
+        }
+
+        
+<span class="pc bpc" id="L59" title="2 of 4 branches missed.">        if (errorMessage != null &amp;&amp; !errorMessage.isEmpty()) {</span>
+<span class="fc" id="L60">            payment.setErrorMessage(errorMessage);</span>
+<span class="fc" id="L61">            log.warn(&quot;Error message set for payment {}: {}&quot;, paymentId, errorMessage);</span>
+        }
+
+        
+<span class="pc bpc" id="L65" title="2 of 4 branches missed.">        if (metadata != null &amp;&amp; !metadata.isEmpty()) {</span>
+<span class="fc" id="L66">            payment.setExtra(metadata);</span>
+        }
+
+<span class="fc" id="L69">        Transaction updatedPayment = paymentRepositoryPort.save(payment);</span>
+<span class="fc" id="L70">        log.info(&quot;Payment {} updated successfully via webhook&quot;, paymentId);</span>
+        
+<span class="fc" id="L72">        return updatedPayment;</span>
     }
 
     private TransactionStatus mapProviderStatus(String provider, String status) {
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (status == null) {</span>
-<span class="nc" id="L78">            return null;</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (status == null) {</span>
+<span class="nc" id="L77">            return null;</span>
         }
 
-<span class="nc" id="L81">        String normalizedStatus = status.toUpperCase();</span>
+<span class="fc" id="L80">        String normalizedStatus = status.toUpperCase();</span>
         
-<span class="nc bnc" id="L83" title="All 9 branches missed.">        return switch (normalizedStatus) {</span>
-<span class="nc" id="L84">            case &quot;PENDING&quot;, &quot;PENDING_PAYMENT&quot;, &quot;WAITING&quot; -&gt; TransactionStatus.PENDING;</span>
-<span class="nc" id="L85">            case &quot;AUTHORIZED&quot;, &quot;PRE_AUTHORIZED&quot; -&gt; TransactionStatus.AUTHORIZED;</span>
-<span class="nc" id="L86">            case &quot;PROCESSING&quot;, &quot;IN_PROCESS&quot; -&gt; TransactionStatus.PROCESSING;</span>
-<span class="nc" id="L87">            case &quot;APPROVED&quot;, &quot;ACCEPTED&quot; -&gt; TransactionStatus.APPROVED;</span>
-<span class="nc" id="L88">            case &quot;COMPLETED&quot;, &quot;SUCCESS&quot;, &quot;PAID&quot; -&gt; TransactionStatus.COMPLETED;</span>
-<span class="nc" id="L89">            case &quot;FAILED&quot;, &quot;REJECTED&quot;, &quot;ERROR&quot; -&gt; TransactionStatus.FAILED;</span>
-<span class="nc" id="L90">            case &quot;REFUNDED&quot;, &quot;REFUND&quot; -&gt; TransactionStatus.REFUNDED;</span>
-<span class="nc" id="L91">            case &quot;CANCELLED&quot;, &quot;CANCELED&quot; -&gt; TransactionStatus.CANCELLED;</span>
+<span class="pc bpc" id="L82" title="8 of 9 branches missed.">        return switch (normalizedStatus) {</span>
+<span class="nc" id="L83">            case &quot;PENDING&quot;, &quot;PENDING_PAYMENT&quot;, &quot;WAITING&quot; -&gt; TransactionStatus.PENDING;</span>
+<span class="fc" id="L84">            case &quot;AUTHORIZED&quot;, &quot;PRE_AUTHORIZED&quot; -&gt; TransactionStatus.AUTHORIZED;</span>
+<span class="nc" id="L85">            case &quot;PROCESSING&quot;, &quot;IN_PROCESS&quot; -&gt; TransactionStatus.PROCESSING;</span>
+<span class="nc" id="L86">            case &quot;APPROVED&quot;, &quot;ACCEPTED&quot; -&gt; TransactionStatus.APPROVED;</span>
+<span class="nc" id="L87">            case &quot;COMPLETED&quot;, &quot;SUCCESS&quot;, &quot;PAID&quot; -&gt; TransactionStatus.COMPLETED;</span>
+<span class="nc" id="L88">            case &quot;FAILED&quot;, &quot;REJECTED&quot;, &quot;ERROR&quot; -&gt; TransactionStatus.FAILED;</span>
+<span class="nc" id="L89">            case &quot;REFUNDED&quot;, &quot;REFUND&quot; -&gt; TransactionStatus.REFUNDED;</span>
+<span class="nc" id="L90">            case &quot;CANCELLED&quot;, &quot;CANCELED&quot; -&gt; TransactionStatus.CANCELLED;</span>
             default -&gt; {
-<span class="nc" id="L93">                log.warn(&quot;Unknown status from provider {}: {}&quot;, provider, status);</span>
-<span class="nc" id="L94">                yield null;</span>
+<span class="nc" id="L92">                log.warn(&quot;Unknown status from provider {}: {}&quot;, provider, status);</span>
+<span class="nc" id="L93">                yield null;</span>
             }
         };
     }

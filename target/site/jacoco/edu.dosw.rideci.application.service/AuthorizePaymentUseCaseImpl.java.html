@@ -14,8 +14,8 @@ public class AuthorizePaymentUseCaseImpl implements AuthorizePaymentUseCase {
 
     @Override
     public Transaction authorize(String id, boolean authorized) {
-<span class="nc" id="L17">        return authorizationPort.authorizePayment(id, authorized)</span>
-<span class="nc" id="L18">                .orElseThrow(() -&gt; new RuntimeException(&quot;Authorization failed&quot;));</span>
+<span class="fc" id="L17">        return authorizationPort.authorizePayment(id, authorized)</span>
+<span class="fc" id="L18">                .orElseThrow(() -&gt; new RuntimeException(&quot;Authorization failed&quot;));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

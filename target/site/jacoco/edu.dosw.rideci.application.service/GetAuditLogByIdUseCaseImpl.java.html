@@ -18,17 +18,17 @@ public class GetAuditLogByIdUseCaseImpl implements GetAuditLogByIdUseCase {
 
     @Override
     public Optional&lt;AuditLog&gt; getAuditLogById(String auditId) {
-<span class="nc" id="L21">        log.info(&quot;Retrieving audit log with id: {}&quot;, auditId);</span>
+<span class="fc" id="L21">        log.info(&quot;Retrieving audit log with id: {}&quot;, auditId);</span>
         
-<span class="nc" id="L23">        Optional&lt;AuditLog&gt; auditLog = auditLogRepositoryPort.findById(auditId);</span>
+<span class="fc" id="L23">        Optional&lt;AuditLog&gt; auditLog = auditLogRepositoryPort.findById(auditId);</span>
         
-<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (auditLog.isPresent()) {</span>
-<span class="nc" id="L26">            log.info(&quot;Audit log found: {}&quot;, auditId);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (auditLog.isPresent()) {</span>
+<span class="fc" id="L26">            log.info(&quot;Audit log found: {}&quot;, auditId);</span>
         } else {
-<span class="nc" id="L28">            log.warn(&quot;Audit log not found: {}&quot;, auditId);</span>
+<span class="fc" id="L28">            log.warn(&quot;Audit log not found: {}&quot;, auditId);</span>
         }
         
-<span class="nc" id="L31">        return auditLog;</span>
+<span class="fc" id="L31">        return auditLog;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

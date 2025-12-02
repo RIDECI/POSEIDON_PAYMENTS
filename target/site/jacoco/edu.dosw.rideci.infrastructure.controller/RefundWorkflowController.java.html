@@ -25,29 +25,29 @@ public class RefundWorkflowController {
 
     @PatchMapping(&quot;/{id}/authorizeR&quot;)
     public ResponseEntity&lt;RefundResponse&gt; authorize(@PathVariable String id) {
-<span class="nc" id="L28">        return ResponseEntity.ok(</span>
-<span class="nc" id="L29">                RefundResponse.fromDomain(authorizeUseCase.authorize(id))</span>
+<span class="fc" id="L28">        return ResponseEntity.ok(</span>
+<span class="fc" id="L29">                RefundResponse.fromDomain(authorizeUseCase.authorize(id))</span>
         );
     }
 
     @PatchMapping(&quot;/{id}/processR&quot;)
     public ResponseEntity&lt;RefundResponse&gt; process(@PathVariable String id) {
-<span class="nc" id="L35">        return ResponseEntity.ok(</span>
-<span class="nc" id="L36">                RefundResponse.fromDomain(processUseCase.process(id))</span>
+<span class="fc" id="L35">        return ResponseEntity.ok(</span>
+<span class="fc" id="L36">                RefundResponse.fromDomain(processUseCase.process(id))</span>
         );
     }
 
     @PatchMapping(&quot;/{id}/approveR&quot;)
     public ResponseEntity&lt;RefundResponse&gt; approve(@PathVariable String id) {
-<span class="nc" id="L42">        return ResponseEntity.ok(</span>
-<span class="nc" id="L43">                RefundResponse.fromDomain(approveUseCase.approve(id))</span>
+<span class="fc" id="L42">        return ResponseEntity.ok(</span>
+<span class="fc" id="L43">                RefundResponse.fromDomain(approveUseCase.approve(id))</span>
         );
     }
 
     @PatchMapping(&quot;/{id}/completeR&quot;)
     public ResponseEntity&lt;RefundResponse&gt; complete(@PathVariable String id) {
-<span class="nc" id="L49">        return ResponseEntity.ok(</span>
-<span class="nc" id="L50">                RefundResponse.fromDomain(completeUseCase.complete(id))</span>
+<span class="fc" id="L49">        return ResponseEntity.ok(</span>
+<span class="fc" id="L50">                RefundResponse.fromDomain(completeUseCase.complete(id))</span>
         );
     }
 }

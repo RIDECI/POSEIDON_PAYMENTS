@@ -14,12 +14,12 @@ public class DeleteRefundUseCaseImpl implements DeleteRefundUseCase {
     @Override
     public boolean deleteById(String id) {
 
-<span class="nc bnc" id="L17" title="All 2 branches missed.">        if (!refundRepositoryPort.existsById(id)) {</span>
-<span class="nc" id="L18">            return false; // igual que tu delete de pagos</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (!refundRepositoryPort.existsById(id)) {</span>
+<span class="fc" id="L18">            return false; </span>
         }
 
-<span class="nc" id="L21">        refundRepositoryPort.deleteById(id);</span>
-<span class="nc" id="L22">        return true;</span>
+<span class="fc" id="L21">        refundRepositoryPort.deleteById(id);</span>
+<span class="fc" id="L22">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

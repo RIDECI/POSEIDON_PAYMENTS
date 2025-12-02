@@ -22,32 +22,32 @@ public class CancelTripPaymentsUseCaseImpl implements CancelTripPaymentsUseCase 
 
     @Override
     public List&lt;Transaction&gt; cancelTripPayments(String tripId) {
-<span class="nc" id="L25">        log.info(&quot;Cancelling payments for trip: {}&quot;, tripId);</span>
+<span class="fc" id="L25">        log.info(&quot;Cancelling payments for trip: {}&quot;, tripId);</span>
         
-        // Buscar todos los pagos del viaje
-<span class="nc" id="L28">        List&lt;Transaction&gt; tripPayments = paymentRepositoryPort.findByBookingId(tripId);</span>
         
-<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (tripPayments.isEmpty()) {</span>
-<span class="nc" id="L31">            log.warn(&quot;No payments found for trip: {}&quot;, tripId);</span>
-<span class="nc" id="L32">            throw new RideciBusinessException(&quot;No payments found for trip: &quot; + tripId);</span>
+<span class="fc" id="L28">        List&lt;Transaction&gt; tripPayments = paymentRepositoryPort.findByBookingId(tripId);</span>
+        
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (tripPayments.isEmpty()) {</span>
+<span class="fc" id="L31">            log.warn(&quot;No payments found for trip: {}&quot;, tripId);</span>
+<span class="fc" id="L32">            throw new RideciBusinessException(&quot;No payments found for trip: &quot; + tripId);</span>
         }
 
-        // Cancelar solo los pagos que no estén en estado final
-<span class="nc" id="L36">        List&lt;Transaction&gt; cancelledPayments = tripPayments.stream()</span>
-<span class="nc" id="L37">                .filter(payment -&gt; canBeCancelled(payment.getStatus()))</span>
-<span class="nc" id="L38">                .map(payment -&gt; {</span>
-<span class="nc" id="L39">                    payment.setStatus(TransactionStatus.CANCELLED);</span>
-<span class="nc" id="L40">                    payment.setErrorMessage(&quot;Trip was cancelled&quot;);</span>
-<span class="nc" id="L41">                    return paymentRepositoryPort.save(payment);</span>
+        
+<span class="fc" id="L36">        List&lt;Transaction&gt; cancelledPayments = tripPayments.stream()</span>
+<span class="fc" id="L37">                .filter(payment -&gt; canBeCancelled(payment.getStatus()))</span>
+<span class="fc" id="L38">                .map(payment -&gt; {</span>
+<span class="fc" id="L39">                    payment.setStatus(TransactionStatus.CANCELLED);</span>
+<span class="fc" id="L40">                    payment.setErrorMessage(&quot;Trip was cancelled&quot;);</span>
+<span class="fc" id="L41">                    return paymentRepositoryPort.save(payment);</span>
                 })
-<span class="nc" id="L43">                .collect(Collectors.toList());</span>
+<span class="fc" id="L43">                .collect(Collectors.toList());</span>
 
-<span class="nc" id="L45">        log.info(&quot;Cancelled {} payments for trip: {}&quot;, cancelledPayments.size(), tripId);</span>
-<span class="nc" id="L46">        return cancelledPayments;</span>
+<span class="fc" id="L45">        log.info(&quot;Cancelled {} payments for trip: {}&quot;, cancelledPayments.size(), tripId);</span>
+<span class="fc" id="L46">        return cancelledPayments;</span>
     }
 
     private boolean canBeCancelled(TransactionStatus status) {
-<span class="nc bnc" id="L50" title="All 8 branches missed.">        return status != TransactionStatus.COMPLETED </span>
+<span class="pc bpc" id="L50" title="2 of 8 branches missed.">        return status != TransactionStatus.COMPLETED </span>
             &amp;&amp; status != TransactionStatus.CANCELLED 
             &amp;&amp; status != TransactionStatus.FAILED
             &amp;&amp; status != TransactionStatus.REFUNDED;

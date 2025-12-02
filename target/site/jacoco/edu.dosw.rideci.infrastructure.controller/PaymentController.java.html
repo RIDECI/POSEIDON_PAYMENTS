@@ -48,82 +48,82 @@ public class PaymentController {
 
     @PostMapping(&quot;/create&quot;)
     public ResponseEntity&lt;TransactionResponse&gt; create(@RequestBody CreatePaymentRequest request) {
-<span class="nc" id="L51">        Transaction tx = createPaymentUseCase.create(request.toDomain());</span>
-<span class="nc" id="L52">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+<span class="fc" id="L51">        Transaction tx = createPaymentUseCase.create(request.toDomain());</span>
+<span class="fc" id="L52">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
     }
 
     @GetMapping(&quot;/{id}&quot;)
     public ResponseEntity&lt;TransactionResponse&gt; getById(@PathVariable String id) {
-<span class="nc" id="L57">        return getPaymentUseCase.getById(id)</span>
-<span class="nc" id="L58">                .map(tx -&gt; ResponseEntity.ok(TransactionResponse.fromDomain(tx)))</span>
-<span class="nc" id="L59">                .orElse(ResponseEntity.notFound().build());</span>
+<span class="fc" id="L57">        return getPaymentUseCase.getById(id)</span>
+<span class="fc" id="L58">                .map(tx -&gt; ResponseEntity.ok(TransactionResponse.fromDomain(tx)))</span>
+<span class="fc" id="L59">                .orElse(ResponseEntity.notFound().build());</span>
     }
 
     @GetMapping(&quot;/{id}/status&quot;)
     public ResponseEntity&lt;PaymentStatusResponse&gt; getPaymentStatus(@PathVariable String id) {
-<span class="nc" id="L64">        return getPaymentUseCase.getById(id)</span>
-<span class="nc" id="L65">                .map(tx -&gt; ResponseEntity.ok(PaymentStatusResponse.fromDomain(tx)))</span>
-<span class="nc" id="L66">                .orElse(ResponseEntity.notFound().build());</span>
+<span class="fc" id="L64">        return getPaymentUseCase.getById(id)</span>
+<span class="fc" id="L65">                .map(tx -&gt; ResponseEntity.ok(PaymentStatusResponse.fromDomain(tx)))</span>
+<span class="fc" id="L66">                .orElse(ResponseEntity.notFound().build());</span>
     }
 
     @GetMapping(&quot;/trips/{id}&quot;)
     public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getPaymentsByTrip(@PathVariable String id) {
-<span class="nc" id="L71">        List&lt;Transaction&gt; payments = getPaymentsByTripUseCase.getByTripId(id);</span>
+<span class="fc" id="L71">        List&lt;Transaction&gt; payments = getPaymentsByTripUseCase.getByTripId(id);</span>
 
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (payments.isEmpty()) {</span>
-<span class="nc" id="L74">            return ResponseEntity.noContent().build();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (payments.isEmpty()) {</span>
+<span class="fc" id="L74">            return ResponseEntity.noContent().build();</span>
         }
 
-<span class="nc" id="L77">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
-<span class="nc" id="L78">                .map(TransactionResponse::fromDomain)</span>
-<span class="nc" id="L79">                .toList();</span>
+<span class="fc" id="L77">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
+<span class="fc" id="L78">                .map(TransactionResponse::fromDomain)</span>
+<span class="fc" id="L79">                .toList();</span>
 
-<span class="nc" id="L81">        return ResponseEntity.ok(response);</span>
+<span class="fc" id="L81">        return ResponseEntity.ok(response);</span>
     }
 
     @GetMapping(&quot;/user/{id}&quot;)
     public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getPaymentsByUser(@PathVariable String id) {
-<span class="nc" id="L86">        List&lt;Transaction&gt; payments = getPaymentsByUserUseCase.getByUserId(id);</span>
+<span class="fc" id="L86">        List&lt;Transaction&gt; payments = getPaymentsByUserUseCase.getByUserId(id);</span>
 
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (payments.isEmpty()) {</span>
-<span class="nc" id="L89">            return ResponseEntity.noContent().build();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (payments.isEmpty()) {</span>
+<span class="fc" id="L89">            return ResponseEntity.noContent().build();</span>
         }
 
-<span class="nc" id="L92">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
-<span class="nc" id="L93">                .map(TransactionResponse::fromDomain)</span>
-<span class="nc" id="L94">                .toList();</span>
+<span class="fc" id="L92">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
+<span class="fc" id="L93">                .map(TransactionResponse::fromDomain)</span>
+<span class="fc" id="L94">                .toList();</span>
 
-<span class="nc" id="L96">        return ResponseEntity.ok(response);</span>
+<span class="fc" id="L96">        return ResponseEntity.ok(response);</span>
     }
 
     @GetMapping(&quot;/history&quot;)
     public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; findAll() {
-<span class="nc" id="L101">        List&lt;Transaction&gt; txList = getPaymentUseCase.findAll();</span>
+<span class="fc" id="L101">        List&lt;Transaction&gt; txList = getPaymentUseCase.findAll();</span>
 
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (txList.isEmpty()) {</span>
-<span class="nc" id="L104">            return ResponseEntity.noContent().build();</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (txList.isEmpty()) {</span>
+<span class="fc" id="L104">            return ResponseEntity.noContent().build();</span>
         }
 
-<span class="nc" id="L107">        List&lt;TransactionResponse&gt; response = txList.stream()</span>
-<span class="nc" id="L108">                .map(TransactionResponse::fromDomain)</span>
-<span class="nc" id="L109">                .toList();</span>
+<span class="fc" id="L107">        List&lt;TransactionResponse&gt; response = txList.stream()</span>
+<span class="fc" id="L108">                .map(TransactionResponse::fromDomain)</span>
+<span class="fc" id="L109">                .toList();</span>
 
-<span class="nc" id="L111">        return ResponseEntity.ok(response);</span>
+<span class="fc" id="L111">        return ResponseEntity.ok(response);</span>
     }
 
     @GetMapping(&quot;/history/{date}&quot;)
     public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getPaymentsByDate(@PathVariable String date) {
         LocalDate localDate;
         try {
-<span class="nc" id="L118">            localDate = LocalDate.parse(date);</span>
-<span class="nc" id="L119">        } catch (Exception e) {</span>
-<span class="nc" id="L120">            return ResponseEntity.badRequest().build();</span>
-<span class="nc" id="L121">        }</span>
+<span class="fc" id="L118">            localDate = LocalDate.parse(date);</span>
+<span class="fc" id="L119">        } catch (Exception e) {</span>
+<span class="fc" id="L120">            return ResponseEntity.badRequest().build();</span>
+<span class="fc" id="L121">        }</span>
 
-<span class="nc" id="L123">        List&lt;Transaction&gt; payments = getPaymentsByDateUseCase.getByDate(localDate);</span>
+<span class="fc" id="L123">        List&lt;Transaction&gt; payments = getPaymentsByDateUseCase.getByDate(localDate);</span>
 
-<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (payments.isEmpty()) {</span>
-<span class="nc" id="L126">            return ResponseEntity.noContent().build();</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (payments.isEmpty()) {</span>
+<span class="fc" id="L126">            return ResponseEntity.noContent().build();</span>
         }
 
 <span class="nc" id="L129">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
@@ -135,28 +135,28 @@ public class PaymentController {
 
     @GetMapping(&quot;/active&quot;)
     public ResponseEntity&lt;List&lt;TransactionResponse&gt;&gt; getActivePayments() {
-<span class="nc" id="L138">        List&lt;Transaction&gt; payments = getActivePaymentsUseCase.getActivePayments();</span>
+<span class="fc" id="L138">        List&lt;Transaction&gt; payments = getActivePaymentsUseCase.getActivePayments();</span>
 
-<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (payments.isEmpty()) {</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (payments.isEmpty()) {</span>
 <span class="nc" id="L141">            return ResponseEntity.noContent().build();</span>
         }
 
-<span class="nc" id="L144">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
-<span class="nc" id="L145">                .map(TransactionResponse::fromDomain)</span>
-<span class="nc" id="L146">                .toList();</span>
+<span class="fc" id="L144">        List&lt;TransactionResponse&gt; response = payments.stream()</span>
+<span class="fc" id="L145">                .map(TransactionResponse::fromDomain)</span>
+<span class="fc" id="L146">                .toList();</span>
 
-<span class="nc" id="L148">        return ResponseEntity.ok(response);</span>
+<span class="fc" id="L148">        return ResponseEntity.ok(response);</span>
     }
 
     @DeleteMapping(&quot;/{id}&quot;)
     public ResponseEntity&lt;Void&gt; deletePayment(@PathVariable String id) {
 
-<span class="nc" id="L154">        boolean deleted = deletePaymentUseCase.deleteById(id);</span>
+<span class="fc" id="L154">        boolean deleted = deletePaymentUseCase.deleteById(id);</span>
 
-<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (deleted) {</span>
-<span class="nc" id="L157">            return ResponseEntity.noContent().build(); // 204</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (deleted) {</span>
+<span class="fc" id="L157">            return ResponseEntity.noContent().build(); </span>
         } else {
-<span class="nc" id="L159">            return ResponseEntity.notFound().build(); // 404</span>
+<span class="fc" id="L159">            return ResponseEntity.notFound().build(); </span>
         }
     }
 
@@ -164,43 +164,43 @@ public class PaymentController {
     public ResponseEntity&lt;TransactionResponse&gt; updatePayment(
             @PathVariable String id,
             @RequestBody UpdatePaymentRequest request) {
-<span class="nc" id="L167">        Transaction updated = updatePaymentUseCase.updatePartial(id, request);</span>
-<span class="nc" id="L168">        return ResponseEntity.ok(TransactionResponse.fromDomain(updated));</span>
+<span class="fc" id="L167">        Transaction updated = updatePaymentUseCase.updatePartial(id, request);</span>
+<span class="fc" id="L168">        return ResponseEntity.ok(TransactionResponse.fromDomain(updated));</span>
     }
 
     @PatchMapping(&quot;/{id}/authorize&quot;)
     public ResponseEntity&lt;TransactionResponse&gt; authorizePayment(
             @PathVariable String id,
             @RequestParam boolean authorized) {
-<span class="nc" id="L175">        Transaction tx = authorizePaymentUseCase.authorize(id, authorized);</span>
-<span class="nc" id="L176">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+<span class="fc" id="L175">        Transaction tx = authorizePaymentUseCase.authorize(id, authorized);</span>
+<span class="fc" id="L176">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
     }
 
     @PatchMapping(&quot;/{id}/process&quot;)
     public ResponseEntity&lt;TransactionResponse&gt; processPayment(
             @PathVariable String id) {
-<span class="nc" id="L182">        Transaction tx = processPaymentUseCase.process(id);</span>
-<span class="nc" id="L183">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+<span class="fc" id="L182">        Transaction tx = processPaymentUseCase.process(id);</span>
+<span class="fc" id="L183">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
     }
 
     @PatchMapping(&quot;/{id}/approve&quot;)
     public ResponseEntity&lt;TransactionResponse&gt; approvePayment(
             @PathVariable String id) {
-<span class="nc" id="L189">        Transaction tx = approvePaymentUseCase.approve(id);</span>
-<span class="nc" id="L190">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+<span class="fc" id="L189">        Transaction tx = approvePaymentUseCase.approve(id);</span>
+<span class="fc" id="L190">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
     }
 
     @PatchMapping(&quot;/{id}/complete&quot;)
     public ResponseEntity&lt;TransactionResponse&gt; completePayment(
             @PathVariable String id) {
-<span class="nc" id="L196">        Transaction tx = completePaymentUseCase.complete(id);</span>
-<span class="nc" id="L197">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+<span class="fc" id="L196">        Transaction tx = completePaymentUseCase.complete(id);</span>
+<span class="fc" id="L197">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
     }
 
     @PatchMapping(&quot;/{id}/cancel&quot;)
     public ResponseEntity&lt;TransactionResponse&gt; cancelPayment(@PathVariable String id) {
-<span class="nc" id="L202">        Transaction tx = cancelPaymentUseCase.cancel(id);</span>
-<span class="nc" id="L203">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
+<span class="fc" id="L202">        Transaction tx = cancelPaymentUseCase.cancel(id);</span>
+<span class="fc" id="L203">        return ResponseEntity.ok(TransactionResponse.fromDomain(tx));</span>
     }
 
     @GetMapping(&quot;/status/{status}&quot;)
@@ -208,19 +208,19 @@ public class PaymentController {
         TransactionStatus st;
 
         try {
-<span class="nc" id="L211">            st = TransactionStatus.valueOf(status.toUpperCase());</span>
-<span class="nc" id="L212">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L213">            return ResponseEntity.badRequest().build();</span>
-<span class="nc" id="L214">        }</span>
+<span class="fc" id="L211">            st = TransactionStatus.valueOf(status.toUpperCase());</span>
+<span class="fc" id="L212">        } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L213">            return ResponseEntity.badRequest().build();</span>
+<span class="fc" id="L214">        }</span>
 
-<span class="nc" id="L216">        List&lt;Transaction&gt; list = getPaymentStatusUseCase.findByStatus(st);</span>
+<span class="fc" id="L216">        List&lt;Transaction&gt; list = getPaymentStatusUseCase.findByStatus(st);</span>
 
-<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (list.isEmpty()) {</span>
-<span class="nc" id="L219">            return ResponseEntity.noContent().build();</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (list.isEmpty()) {</span>
+<span class="fc" id="L219">            return ResponseEntity.noContent().build();</span>
         }
 
-<span class="nc" id="L222">        return ResponseEntity.ok(</span>
-<span class="nc" id="L223">                list.stream().map(TransactionResponse::fromDomain).toList());</span>
+<span class="fc" id="L222">        return ResponseEntity.ok(</span>
+<span class="fc" id="L223">                list.stream().map(TransactionResponse::fromDomain).toList());</span>
     }
 
 }
