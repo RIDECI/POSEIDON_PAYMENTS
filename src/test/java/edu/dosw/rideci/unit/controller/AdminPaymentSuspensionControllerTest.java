@@ -45,7 +45,7 @@ class AdminPaymentSuspensionControllerTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.openMocks(this); // inicializa los mocks
+        MockitoAnnotations.openMocks(this);
 
         AdminPaymentSuspensionController controller = new AdminPaymentSuspensionController(
                 createSuspensionUseCase,

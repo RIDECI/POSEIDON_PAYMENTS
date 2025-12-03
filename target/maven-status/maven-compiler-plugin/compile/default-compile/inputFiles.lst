@@ -30,11 +30,13 @@ C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastru
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\GetRefundStatusUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\RefundWorkflowController.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\UpdatePaymentByWebhookUseCaseImpl.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\out\PaymentMethodRepositoryPort.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\ProcessRefundUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\service\NequiPayment.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\AuthorizePaymentUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\service\PaymentStrategy.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\model\enums\RefundStatus.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\SetDefaultPaymentMethodUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\model\PaymentMethod.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\RevokeSuspensionUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\persistence\Entity\PaymentReceiptEntity.java
@@ -45,6 +47,8 @@ C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastru
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\out\AuthorizePaymentPort.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\CompletePaymentUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\GetPaymentsByTripUseCase.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\CreatePaymentMethodUseCaseImpl.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\SetDefaultPaymentMethodUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\out\PaymentSuspensionRepositoryPort.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\WebhookController.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\persistence\Entity\CashPaymentConfirmationEntity.java
@@ -53,6 +57,7 @@ C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastru
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\UpdateSuspensionUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\PoseidonPaymentsApplication.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\PaymentController.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\dto\Request\CreatePaymentMethodRequest.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\CompleteRefundUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\out\AuditLogRepositoryPort.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\ApproveRefundUseCaseImpl.java
@@ -83,6 +88,8 @@ C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastru
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\CompletePaymentUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\CreatePaymentUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\ApproveRefundUseCase.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\adapters\persistence\PaymentMethodRepositoryAdapter.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\DeletePaymentMethodUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\model\PaymentSuspension.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\model\enums\TransactionStatus.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\ApprovePaymentUseCaseImpl.java
@@ -93,7 +100,9 @@ C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\applicati
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\ProcessPaymentUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\AuditLogController.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\persistence\Repository\TransactionJpaRepository.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\CreatePaymentMethodUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\persistence\Entity\PaymentMethodEntity.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\PaymentMethodController.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\UpdatePaymentUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\GetAuditLogByIdUseCaseImpl.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\GetPaymentStatusUseCase.java
@@ -108,6 +117,7 @@ C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\mo
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\RefundController.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\RefundPaymentUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\CreateSuspensionUseCaseImpl.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\dto\Response\PaymentMethodResponse.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\persistence\Repository\mapper\AuditLogMapper.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\persistence\Repository\RefundJpaRepository.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\dto\Request\RefundRequest.java
@@ -125,6 +135,7 @@ C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\applicati
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\GetAuditLogByIdUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\model\enums\PaymentMethodType.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\model\Refund.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\dto\Request\UpdatePaymentMethodRequest.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastructure\controller\dto\Request\UpdatePaymentRequest.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\GetRefundUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\CreateAuditLogUseCaseImpl.java
@@ -142,5 +153,6 @@ C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\infrastru
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\ProcessWebhookUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\domain\service\BrebPayment.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\GetPaymentStatusUseCaseImpl.java
+C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\DeletePaymentMethodUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\port\in\AuthorizeRefundUseCase.java
 C:\Users\pacoa\Desktop\POSEIDON_PAYMENTS\src\main\java\edu\dosw\rideci\application\service\GetAllAuditLogsUseCaseImpl.java
