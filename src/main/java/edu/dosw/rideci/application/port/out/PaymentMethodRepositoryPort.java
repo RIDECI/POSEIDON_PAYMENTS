@@ -13,6 +13,8 @@ public interface PaymentMethodRepositoryPort {
 
     List<PaymentMethod> findByUserId(String userId);
 
+    List<PaymentMethod> findAll();
+
     Optional<PaymentMethod> findDefaultForUser(String userId);
 
     void deleteById(String id);

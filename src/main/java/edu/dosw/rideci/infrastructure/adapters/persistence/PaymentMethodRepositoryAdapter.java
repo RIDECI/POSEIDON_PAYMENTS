@@ -43,4 +43,12 @@ public class PaymentMethodRepositoryAdapter implements PaymentMethodRepositoryPo
     public void deleteById(String id) {
         repo.deleteById(id);
     }
+
+    @Override
+    public List<PaymentMethod> findAll() {
+        return repo.findAll().stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
 }

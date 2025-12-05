@@ -13,6 +13,8 @@ public interface PaymentMethodJpaRepository
 
     List<PaymentMethodEntity> findByUserId(String userId);
 
+    List<PaymentMethodEntity> findAll();
+
     @Query("SELECT pm FROM PaymentMethodEntity pm WHERE pm.userId = :userId AND pm.isDefault = true")
     Optional<PaymentMethodEntity> findDefaultByUserId(String userId);
 }

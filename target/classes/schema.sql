@@ -106,4 +106,23 @@ CREATE TABLE IF NOT EXISTS payment_suspensions (
     CONSTRAINT fk_payment_suspension_transaction
         FOREIGN KEY (transaction_id) REFERENCES transactions(id)
 );
+CREATE TABLE IF NOT EXISTS credit_cards (
+    id VARCHAR(100) PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    card_holder VARCHAR(200) NOT NULL,
+    card_number VARCHAR(50) NOT NULL,     
+    expiration VARCHAR(10) NOT NULL,       
+    cvv VARCHAR(10) NOT NULL,              
+    alias VARCHAR(100),
+    is_default BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE
+);
+CREATE TABLE IF NOT EXISTS breb_keys (
+    id VARCHAR(100) PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    value VARCHAR(255) NOT NULL,
+    type VARCHAR(20) NOT NULL,   
+    is_default BOOLEAN DEFAULT FALSE,
 
+    CONSTRAINT uk_breb_value UNIQUE (value, user_id)
+);
