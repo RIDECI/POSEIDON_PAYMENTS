@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompletePaymentUseCaseImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">POSEIDON_PAYMENTS</a> &gt; <a href="index.source.html" class="el_package">edu.dosw.rideci.application.service</a> &gt; <span class="el_source">CompletePaymentUseCaseImpl.java</span></div><h1>CompletePaymentUseCaseImpl.java</h1><pre class="source lang-java linenums">package edu.dosw.rideci.application.service;
+
+import edu.dosw.rideci.application.port.in.CompletePaymentUseCase;
+import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
+import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
+import edu.dosw.rideci.domain.model.enums.TransactionStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="fc" id="L12">@RequiredArgsConstructor</span>
+public class CompletePaymentUseCaseImpl implements CompletePaymentUseCase {
+
+    private final PaymentRepositoryPort repository;
+
+    @Override
+    public Transaction complete(String id) {
+
+<span class="fc" id="L20">        Transaction tx = repository.findById(id)</span>
+<span class="fc" id="L21">                .orElseThrow(() -&gt; new RuntimeException(&quot;Payment not found&quot;));</span>
+
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (tx.getStatus() == TransactionStatus.COMPLETED) {</span>
+<span class="fc" id="L24">            throw new IllegalStateException(&quot;El pago ya fue completado previamente&quot;);</span>
+        }
+
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (tx.getStatus() != TransactionStatus.APPROVED) {</span>
+<span class="fc" id="L28">            throw new IllegalStateException(&quot;Solo se pueden completar pagos en estado APPROVED&quot;);</span>
+        }
+
+<span class="pc bpc" id="L31" title="1 of 4 branches missed.">        if (tx.getAmount() == null || tx.getAmount() &lt;= 0) {</span>
+<span class="fc" id="L32">            throw new IllegalArgumentException(&quot;Monto inválido para completar el pago&quot;);</span>
+        }
+
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (tx.getPaymentMethod() == PaymentMethodType.CASH) {</span>
+        } else {
+<span class="pc bpc" id="L37" title="1 of 4 branches missed.">            if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {</span>
+<span class="fc" id="L38">                throw new IllegalArgumentException(&quot;receiptCode requerido para pagos digitales&quot;);</span>
+            }
+        }
+
+<span class="fc" id="L42">        tx.setStatus(TransactionStatus.COMPLETED);</span>
+
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        tx.setExtra((tx.getExtra() != null ? tx.getExtra() : &quot;&quot;) + &quot;|COMPLETED:true&quot;);</span>
+
+<span class="fc" id="L46">        return repository.save(tx);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

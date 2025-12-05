@@ -30,24 +30,20 @@ public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
     @Override
     public Refund refundPayment(String transactionId, Double amount, String reason) {
 
-        // 1. Verificar si existe la transacciÃ³n
         Transaction tx = paymentRepositoryPort.findById(transactionId)
                 .orElseThrow(() -> new RideciBusinessException("Transaction not found: " + transactionId));
 
-        // 2. Solo se reembolsan transacciones COMPLETED
         if (tx.getStatus() != TransactionStatus.COMPLETED) {
             throw new RideciBusinessException(
                     "Only COMPLETED transactions can be refunded. Current status: " + tx.getStatus()
             );
         }
 
-        // 3. Validar si ya existe un refund para esa transacciÃ³n
         Refund existing = refundRepositoryPort.findByTransactionId(transactionId);
         if (existing != null) {
             throw new RideciBusinessException("This transaction already has a refund request");
         }
 
-        // 4. Validar que no exceda el monto pagado
         if (amount <= 0) {
             throw new RideciBusinessException("Refund amount must be greater than zero");
         }
@@ -58,7 +54,6 @@ public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
             );
         }
 
-        // 5. Crear Refund domain
         Refund refund = Refund.builder()
                 .id("REF-" + UUID.randomUUID())
                 .transactionId(tx.getId())
@@ -70,10 +65,8 @@ public class RefundPaymentUseCaseImpl implements RefundPaymentUseCase {
                 .requestAt(LocalDateTime.now())
                 .build();
 
-        // 6. Guardar refund
         Refund savedRefund = refundRepositoryPort.save(refund);
         
-        // Registrar auditorÃ­a
         try {
             createAuditLogUseCase.createAuditLog(AuditLog.builder()
                     .entityType("Refund")

@@ -15,7 +15,7 @@ public class DeleteRefundUseCaseImpl implements DeleteRefundUseCase {
     public boolean deleteById(String id) {
 
         if (!refundRepositoryPort.existsById(id)) {
-            return false; // igual que tu delete de pagos
+            return false; 
         }
 
         refundRepositoryPort.deleteById(id);

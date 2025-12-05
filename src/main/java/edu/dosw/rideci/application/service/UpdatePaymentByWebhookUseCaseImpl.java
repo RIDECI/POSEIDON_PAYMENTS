@@ -30,7 +30,7 @@ public class UpdatePaymentByWebhookUseCaseImpl implements UpdatePaymentByWebhook
 
         log.info("Current payment status: {}, requested status: {}", payment.getStatus(), status);
 
-        // Validar que el pago no esté en estado final
+        
         if (payment.getStatus() == TransactionStatus.COMPLETED) {
             log.warn("Cannot update completed payment: {}", paymentId);
             throw new RideciBusinessException("Cannot update completed payment");
@@ -41,7 +41,6 @@ public class UpdatePaymentByWebhookUseCaseImpl implements UpdatePaymentByWebhook
             throw new RideciBusinessException("Cannot update refunded payment");
         }
 
-        // Actualizar estado si se proporciona
         if (status != null && !status.isEmpty()) {
             TransactionStatus newStatus = mapProviderStatus(provider, status);
             if (newStatus != null) {
@@ -50,19 +49,19 @@ public class UpdatePaymentByWebhookUseCaseImpl implements UpdatePaymentByWebhook
             }
         }
 
-        // Actualizar código de recibo si se proporciona
+        
         if (receiptCode != null && !receiptCode.isEmpty()) {
             payment.setReceiptCode(receiptCode);
             log.info("Receipt code updated for payment: {}", paymentId);
         }
 
-        // Actualizar mensaje de error si se proporciona
+        
         if (errorMessage != null && !errorMessage.isEmpty()) {
             payment.setErrorMessage(errorMessage);
             log.warn("Error message set for payment {}: {}", paymentId, errorMessage);
         }
 
-        // Actualizar metadata adicional
+        
         if (metadata != null && !metadata.isEmpty()) {
             payment.setExtra(metadata);
         }

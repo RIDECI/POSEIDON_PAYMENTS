@@ -8,26 +8,26 @@ public class NequiPayment implements PaymentStrategy {
     @Override
     public Transaction processPayment(Transaction tx) {
 
-        String phone = tx.getReceiptCode(); // recibimos nÃºmero de celular simulado
+        String phone = tx.getReceiptCode(); 
 
         switch (phone) {
 
-            case "3001234567": // Ã©xito
+            case "3001234567": 
                 tx.setStatus(TransactionStatus.PROCESSING);
                 tx.setReceiptCode("NEQUI-" + tx.getId());
                 break;
 
-            case "3999999999": // sin fondos
+            case "3999999999":
                 tx.setStatus(TransactionStatus.FAILED);
                 tx.setErrorMessage("INSUFFICIENT_FUNDS");
                 break;
 
-            case "3111111111": // token invÃ¡lido
+            case "3111111111": 
                 tx.setStatus(TransactionStatus.FAILED);
                 tx.setErrorMessage("INVALID_TOKEN");
                 break;
 
-            default: // rechazado
+            default: 
                 tx.setStatus(TransactionStatus.FAILED);
                 tx.setErrorMessage("REJECTED");
                 break;

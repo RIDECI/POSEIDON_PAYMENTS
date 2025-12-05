@@ -8,32 +8,31 @@ public class PayuCardPayment implements PaymentStrategy {
     @Override
     public Transaction processPayment(Transaction tx) {
 
-        String cardNumber = tx.getReceiptCode(); // reutilizamos receiptCode para almacenar temporalmente el nÃºmero de tarjeta
-
+        String cardNumber = tx.getReceiptCode(); 
         if (cardNumber == null) {
             tx.setStatus(TransactionStatus.FAILED);
             tx.setErrorMessage("Card number missing");
             return tx;
         }
 
-        // REGLAS OFICIALES PAYU SANDBOX
+        
         switch (cardNumber) {
-            case "4030 0000 1000 0009": // Aprobado
+            case "4030 0000 1000 0009": 
                 tx.setStatus(TransactionStatus.PROCESSING);
                 tx.setReceiptCode("PAYU-" + tx.getId());
                 break;
 
-            case "5431111111111111": // Fondos insuficientes
+            case "5431111111111111":
                 tx.setStatus(TransactionStatus.FAILED);
                 tx.setErrorMessage("INSUFFICIENT_FUNDS");
                 break;
 
-            case "5123456789012346": // Tarjeta expirada
+            case "5123456789012346": 
                 tx.setStatus(TransactionStatus.FAILED);
                 tx.setErrorMessage("EXPIRED_CARD");
                 break;
 
-            case "4111111111111111": // Rechazo general
+            case "4111111111111111": 
                 tx.setStatus(TransactionStatus.FAILED);
                 tx.setErrorMessage("REJECTED");
                 break;

@@ -45,7 +45,6 @@ public class CancelPaymentUseCaseImpl implements CancelPaymentUseCase {
 
         Transaction cancelledPayment = paymentRepositoryPort.save(payment);
         
-        // Registrar auditoría
         try {
             createAuditLogUseCase.createAuditLog(AuditLog.builder()
                     .entityType("Transaction")
