@@ -13,6 +13,6 @@ public interface BrebKeyJpaRepository
 
     List<BrebKeyEntity> findByUserId(String userId);
 
-    @Query("SELECT b FROM BrebKeyEntity b WHERE b.userId = :userId AND b.isDefault = true")
+    @Query("SELECT b FROM BrebKeyEntity b WHERE b.userId = :userId AND b.isDefault = false")
     Optional<BrebKeyEntity> findDefaultByUserId(String userId);
 }

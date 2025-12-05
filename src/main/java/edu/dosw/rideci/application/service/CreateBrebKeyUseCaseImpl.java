@@ -20,9 +20,7 @@ public class CreateBrebKeyUseCaseImpl implements CreateBrebKeyUseCase {
 
         key.setId("BREB-" + UUID.randomUUID());
 
-        if (repo.findByUserId(key.getUserId()).isEmpty()) {
-            key.setDefault(true);
-        }
+        key.setDefault(false);
 
         return repo.save(key);
     }
