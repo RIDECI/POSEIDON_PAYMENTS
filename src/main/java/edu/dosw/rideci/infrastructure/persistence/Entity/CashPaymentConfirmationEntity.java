@@ -37,6 +37,5 @@ public class CashPaymentConfirmationEntity {
     @Column(name = "confirmed_at")
     private LocalDateTime confirmedAt;
 
-    @Column(columnDefinition = "TEXT")
     private String observations;
 }
