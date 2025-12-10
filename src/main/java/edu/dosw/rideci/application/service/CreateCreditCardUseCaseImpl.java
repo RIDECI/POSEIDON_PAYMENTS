@@ -22,7 +22,7 @@ public class CreateCreditCardUseCaseImpl implements CreateCreditCardUseCase {
         card.setActive(true);
 
         if (repo.findByUserId(card.getUserId()).isEmpty()) {
-            card.setDefault(true);
+            card.setDefault(false);
         }
 
         return repo.save(card);
