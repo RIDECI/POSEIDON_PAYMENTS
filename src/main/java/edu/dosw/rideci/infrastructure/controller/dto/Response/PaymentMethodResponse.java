@@ -1,5 +1,7 @@
 package edu.dosw.rideci.infrastructure.controller.dto.Response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import edu.dosw.rideci.domain.model.PaymentMethod;
 import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import lombok.Builder;
@@ -12,8 +14,13 @@ public class PaymentMethodResponse {
     private String id;
     private String userId;
     private String alias;
+
+    @JsonProperty("isDefault")
     private boolean isDefault;
+
+    @JsonProperty("isActive")
     private boolean isActive;
+
     private PaymentMethodType type;
 
     public static PaymentMethodResponse fromDomain(PaymentMethod pm) {
