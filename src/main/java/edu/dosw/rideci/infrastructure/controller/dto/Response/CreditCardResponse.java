@@ -4,6 +4,8 @@ import edu.dosw.rideci.domain.model.CreditCard;
 import lombok.Builder;
 import lombok.Data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Data
 @Builder
 public class CreditCardResponse {
@@ -14,7 +16,11 @@ public class CreditCardResponse {
     private String cardHolder;
     private String cardNumber; 
     private String expiration;
+
+    @JsonProperty("isDefault")
     private boolean isDefault;
+
+    @JsonProperty("isActive")
     private boolean isActive;
 
     public static CreditCardResponse fromDomain(CreditCard c) {
