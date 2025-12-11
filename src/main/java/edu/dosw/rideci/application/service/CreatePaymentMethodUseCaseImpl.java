@@ -22,7 +22,7 @@ public class CreatePaymentMethodUseCaseImpl implements CreatePaymentMethodUseCas
         method.setActive(true);
 
         if (repo.findByUserId(method.getUserId()).isEmpty()) {
-            method.setDefault(true);
+            method.setDefault(false);
         }
 
         return repo.save(method);

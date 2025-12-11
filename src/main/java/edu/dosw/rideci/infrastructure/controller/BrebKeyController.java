@@ -50,6 +50,12 @@ public class BrebKeyController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<BrebKeyResponse> findById(@PathVariable String id) {
+        var brebKey = getUseCase.findById(id);
+        return ResponseEntity.ok(BrebKeyResponse.fromDomain(brebKey));
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<BrebKeyResponse>> findByUser(@PathVariable String userId) {
         var list = getUseCase.findByUser(userId)
