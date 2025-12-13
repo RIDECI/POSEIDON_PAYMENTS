@@ -33,7 +33,7 @@ class SetDefaultBrebKeyUseCaseImplTest {
                 .id("123")
                 .userId("u1")
                 .value("AAA-BBB")
-                .type(BrebKeyType.DOCUMENTO)
+                .type(BrebKeyType.DOCUMENT)
                 .isDefault(false)
                 .build();
 

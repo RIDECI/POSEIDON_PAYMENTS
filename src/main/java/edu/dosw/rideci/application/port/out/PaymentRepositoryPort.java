@@ -1,6 +1,7 @@
 package edu.dosw.rideci.application.port.out;
 
 import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 
 import java.time.LocalDate;
@@ -15,6 +16,8 @@ public interface PaymentRepositoryPort {
     List<Transaction> findAll();
 
     List<Transaction> findByStatus(TransactionStatus status);
+
+    List<Transaction> findByPaymentMethod(PaymentMethodType paymentMethodType);
 
     List<Transaction> findByBookingId(String bookingId);
 

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -23,10 +24,14 @@ public class CreatePaymentUseCaseImpl implements CreatePaymentUseCase {
 
     @Override
     public Transaction create(Transaction tx) {
+        String generatedId = "TR-" + UUID.randomUUID();
+        tx.setId(generatedId);
+
         tx.setStatus(TransactionStatus.PENDING);
         tx.setCreatedAt(LocalDateTime.now());
+
         Transaction savedTransaction = paymentRepositoryPort.save(tx);
-        
+
         try {
             createAuditLogUseCase.createAuditLog(AuditLog.builder()
                     .entityType("Transaction")
@@ -34,19 +39,20 @@ public class CreatePaymentUseCaseImpl implements CreatePaymentUseCase {
                     .action(AuditAction.CREATE)
                     .userId(savedTransaction.getPassengerId())
                     .userName("Passenger")
-                    .description(String.format("Payment created for booking %s - Amount: %.2f", 
-                                              savedTransaction.getBookingId(), 
-                                              savedTransaction.getAmount()))
-                    .newState(String.format("Status: %s, Amount: %.2f, Method: %s", 
-                                           savedTransaction.getStatus(), 
-                                           savedTransaction.getAmount(),
-                                           savedTransaction.getPaymentMethod()))
+                    .description(String.format(
+                            "Payment created for booking %s - Amount: %.2f",
+                            savedTransaction.getBookingId(),
+                            savedTransaction.getAmount()))
+                    .newState(String.format(
+                            "Status: %s, Amount: %.2f, Method: %s",
+                            savedTransaction.getStatus(),
+                            savedTransaction.getAmount(),
+                            savedTransaction.getPaymentMethod()))
                     .build());
         } catch (Exception e) {
             log.error("Failed to create audit log for payment creation: {}", savedTransaction.getId(), e);
         }
-        
+
         return savedTransaction;
     }
-    
 }

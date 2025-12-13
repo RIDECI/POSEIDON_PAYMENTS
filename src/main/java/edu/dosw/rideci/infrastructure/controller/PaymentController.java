@@ -14,7 +14,9 @@ import edu.dosw.rideci.application.port.in.GetPaymentsByTripUseCase;
 import edu.dosw.rideci.application.port.in.GetPaymentsByUserUseCase;
 import edu.dosw.rideci.application.port.in.GetPaymentsByDateUseCase;
 import edu.dosw.rideci.application.port.in.GetActivePaymentsUseCase;
+import edu.dosw.rideci.application.port.in.GetTransactionsByPaymentMethodUseCase;
 import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import edu.dosw.rideci.infrastructure.controller.dto.Request.CreatePaymentRequest;
 import edu.dosw.rideci.infrastructure.controller.dto.Request.UpdatePaymentRequest;
@@ -45,6 +47,7 @@ public class PaymentController {
     private final GetPaymentsByUserUseCase getPaymentsByUserUseCase;
     private final GetPaymentsByDateUseCase getPaymentsByDateUseCase;
     private final GetActivePaymentsUseCase getActivePaymentsUseCase;
+    private final GetTransactionsByPaymentMethodUseCase getTransactionsByPaymentMethodUseCase;
 
     @PostMapping("/create")
     public ResponseEntity<TransactionResponse> create(@RequestBody CreatePaymentRequest request) {
@@ -154,9 +157,9 @@ public class PaymentController {
         boolean deleted = deletePaymentUseCase.deleteById(id);
 
         if (deleted) {
-            return ResponseEntity.noContent().build(); 
+            return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build(); 
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -221,6 +224,11 @@ public class PaymentController {
 
         return ResponseEntity.ok(
                 list.stream().map(TransactionResponse::fromDomain).toList());
+    }
+
+    @GetMapping("/method/{paymentMethodType}")
+    public List<Transaction> getTransactionsByPaymentMethod(@PathVariable PaymentMethodType paymentMethodType) {
+        return getTransactionsByPaymentMethodUseCase.findByPaymentMethod(paymentMethodType);
     }
 
 }
