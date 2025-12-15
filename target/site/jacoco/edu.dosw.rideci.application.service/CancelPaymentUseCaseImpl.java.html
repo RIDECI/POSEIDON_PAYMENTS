@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CancelPaymentUseCaseImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">POSEIDON_PAYMENTS</a> &gt; <a href="index.source.html" class="el_package">edu.dosw.rideci.application.service</a> &gt; <span class="el_source">CancelPaymentUseCaseImpl.java</span></div><h1>CancelPaymentUseCaseImpl.java</h1><pre class="source lang-java linenums">package edu.dosw.rideci.application.service;
+
+import org.springframework.stereotype.Service;
+
+import edu.dosw.rideci.application.port.in.CancelPaymentUseCase;
+import edu.dosw.rideci.application.port.in.CreateAuditLogUseCase;
+import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
+import edu.dosw.rideci.domain.model.AuditLog;
+import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.AuditAction;
+import edu.dosw.rideci.domain.model.enums.TransactionStatus;
+import edu.dosw.rideci.exceptions.RideciBusinessException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+<span class="fc" id="L16">@Slf4j</span>
+@Service
+<span class="fc" id="L18">@RequiredArgsConstructor</span>
+public class CancelPaymentUseCaseImpl implements CancelPaymentUseCase {
+
+    private final PaymentRepositoryPort paymentRepositoryPort;
+    private final CreateAuditLogUseCase createAuditLogUseCase;
+
+    @Override
+    public Transaction cancel(String paymentId) {
+
+<span class="fc" id="L27">        Transaction payment = paymentRepositoryPort.findById(paymentId)</span>
+<span class="fc" id="L28">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Payment not found: &quot; + paymentId));</span>
+
+<span class="fc" id="L30">        TransactionStatus previousStatus = payment.getStatus();</span>
+
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (payment.getStatus() == TransactionStatus.COMPLETED) {</span>
+<span class="fc" id="L33">            throw new RideciBusinessException(&quot;Cannot cancel a completed payment&quot;);</span>
+        }
+
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (payment.getStatus() == TransactionStatus.CANCELLED) {</span>
+<span class="fc" id="L37">            throw new RideciBusinessException(&quot;Payment is already cancelled&quot;);</span>
+        }
+
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (payment.getStatus() == TransactionStatus.REFUNDED) {</span>
+<span class="fc" id="L41">            throw new RideciBusinessException(&quot;Cannot cancel a refunded payment&quot;);</span>
+        }
+
+<span class="fc" id="L44">        payment.setStatus(TransactionStatus.CANCELLED);</span>
+
+<span class="fc" id="L46">        Transaction cancelledPayment = paymentRepositoryPort.save(payment);</span>
+        
+        try {
+<span class="fc" id="L49">            createAuditLogUseCase.createAuditLog(AuditLog.builder()</span>
+<span class="fc" id="L50">                    .entityType(&quot;Transaction&quot;)</span>
+<span class="fc" id="L51">                    .entityId(cancelledPayment.getId())</span>
+<span class="fc" id="L52">                    .action(AuditAction.CANCEL)</span>
+<span class="fc" id="L53">                    .userId(cancelledPayment.getPassengerId())</span>
+<span class="fc" id="L54">                    .userName(&quot;User&quot;)</span>
+<span class="fc" id="L55">                    .description(String.format(&quot;Payment cancelled for booking %s&quot;, </span>
+<span class="fc" id="L56">                                              cancelledPayment.getBookingId()))</span>
+<span class="fc" id="L57">                    .previousState(String.format(&quot;Status: %s&quot;, previousStatus))</span>
+<span class="fc" id="L58">                    .newState(String.format(&quot;Status: %s&quot;, cancelledPayment.getStatus()))</span>
+<span class="fc" id="L59">                    .build());</span>
+<span class="fc" id="L60">        } catch (Exception e) {</span>
+<span class="fc" id="L61">            log.error(&quot;Failed to create audit log for payment cancellation: {}&quot;, cancelledPayment.getId(), e);</span>
+<span class="fc" id="L62">        }</span>
+
+<span class="fc" id="L64">        return cancelledPayment;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

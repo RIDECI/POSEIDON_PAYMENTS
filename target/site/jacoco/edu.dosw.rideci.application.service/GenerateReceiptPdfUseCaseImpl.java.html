@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenerateReceiptPdfUseCaseImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">POSEIDON_PAYMENTS</a> &gt; <a href="index.source.html" class="el_package">edu.dosw.rideci.application.service</a> &gt; <span class="el_source">GenerateReceiptPdfUseCaseImpl.java</span></div><h1>GenerateReceiptPdfUseCaseImpl.java</h1><pre class="source lang-java linenums">package edu.dosw.rideci.application.service;
+
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.draw.LineSeparator;
+
+import edu.dosw.rideci.application.port.in.GenerateReceiptPdfUseCase;
+import edu.dosw.rideci.application.port.out.PaymentReceiptRepositoryPort;
+import edu.dosw.rideci.domain.model.PaymentReceipt;
+import edu.dosw.rideci.exceptions.RideciBusinessException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayOutputStream;
+
+@Service
+<span class="fc" id="L18">@RequiredArgsConstructor</span>
+public class GenerateReceiptPdfUseCaseImpl implements GenerateReceiptPdfUseCase {
+
+    private final PaymentReceiptRepositoryPort receiptRepo;
+
+    @Override
+    public byte[] generatePdf(String receiptId) {
+
+<span class="fc" id="L26">        PaymentReceipt receipt = receiptRepo.findById(receiptId)</span>
+<span class="fc" id="L27">                .orElseThrow(() -&gt; new RideciBusinessException(&quot;Receipt not found: &quot; + receiptId));</span>
+
+<span class="fc" id="L29">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+
+        try {
+<span class="fc" id="L32">            Document document = new Document(PageSize.A4, 40, 40, 40, 40);</span>
+<span class="fc" id="L33">            PdfWriter.getInstance(document, baos);</span>
+<span class="fc" id="L34">            document.open();</span>
+
+            // Header
+<span class="fc" id="L37">            Paragraph title = new Paragraph(&quot;PAYMENT RECEIPT&quot;,</span>
+<span class="fc" id="L38">                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22));</span>
+<span class="fc" id="L39">            title.setAlignment(Element.ALIGN_CENTER);</span>
+<span class="fc" id="L40">            document.add(title);</span>
+
+<span class="fc" id="L42">            document.add(new Paragraph(&quot; &quot;));</span>
+<span class="fc" id="L43">            document.add(new LineSeparator());</span>
+
+            // Table
+<span class="fc" id="L46">            PdfPTable table = new PdfPTable(2);</span>
+<span class="fc" id="L47">            table.setWidthPercentage(100);</span>
+<span class="fc" id="L48">            table.setSpacingBefore(20);</span>
+<span class="fc" id="L49">            table.setSpacingAfter(20);</span>
+<span class="fc" id="L50">            table.setWidths(new float[]{2, 4});</span>
+
+<span class="fc" id="L52">            addRow(table, &quot;Receipt ID:&quot;, receipt.getId());</span>
+<span class="fc" id="L53">            addRow(table, &quot;Receipt Code:&quot;, receipt.getReceiptCode());</span>
+<span class="fc" id="L54">            addRow(table, &quot;Transaction ID:&quot;, receipt.getTransactionId());</span>
+<span class="fc" id="L55">            addRow(table, &quot;Passenger ID:&quot;, receipt.getPassengerId());</span>
+<span class="fc" id="L56">            addRow(table, &quot;Driver ID:&quot;, receipt.getDriverId());</span>
+<span class="fc" id="L57">            addRow(table, &quot;Booking ID:&quot;, receipt.getBookingId());</span>
+<span class="fc" id="L58">            addRow(table, &quot;Payment Method:&quot;, receipt.getPaymentMethod());</span>
+<span class="fc" id="L59">            addRow(table, &quot;Issued At:&quot;, String.valueOf(receipt.getIssuedAt()));</span>
+
+<span class="fc" id="L61">            document.add(table);</span>
+
+            // Amount box
+<span class="fc" id="L64">            Paragraph amountTitle = new Paragraph(&quot;TOTAL PAID:&quot;,</span>
+<span class="fc" id="L65">                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14));</span>
+<span class="fc" id="L66">            document.add(amountTitle);</span>
+
+<span class="fc" id="L68">            Paragraph amountValue = new Paragraph(&quot;$ &quot; + receipt.getAmount(),</span>
+<span class="fc" id="L69">                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 28));</span>
+<span class="fc" id="L70">            amountValue.setSpacingBefore(5);</span>
+<span class="fc" id="L71">            amountValue.setAlignment(Element.ALIGN_LEFT);</span>
+<span class="fc" id="L72">            document.add(amountValue);</span>
+
+<span class="fc" id="L74">            document.add(new Paragraph(&quot;\n\n&quot;));</span>
+
+            // Footer
+<span class="fc" id="L77">            Paragraph footer = new Paragraph(</span>
+                    &quot;This receipt is a legal proof of payment for the associated transaction.\n&quot; +
+                            &quot;Thank you for using our service.&quot;,
+<span class="fc" id="L80">                    FontFactory.getFont(FontFactory.HELVETICA, 10)</span>
+            );
+<span class="fc" id="L82">            footer.setAlignment(Element.ALIGN_CENTER);</span>
+<span class="fc" id="L83">            document.add(footer);</span>
+
+<span class="fc" id="L85">            document.close();</span>
+
+<span class="nc" id="L87">        } catch (Exception e) {</span>
+<span class="nc" id="L88">            throw new RideciBusinessException(&quot;Error generating PDF: &quot; + e.getMessage());</span>
+<span class="fc" id="L89">        }</span>
+
+<span class="fc" id="L91">        return baos.toByteArray();</span>
+    }
+
+    private void addRow(PdfPTable table, String label, String value) {
+<span class="fc" id="L95">        Phrase labelPhrase = new Phrase(label, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12));</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        Phrase valuePhrase = new Phrase(value != null ? value : &quot;-&quot;, FontFactory.getFont(FontFactory.HELVETICA, 12));</span>
+
+<span class="fc" id="L98">        table.addCell(labelPhrase);</span>
+<span class="fc" id="L99">        table.addCell(valuePhrase);</span>
+<span class="fc" id="L100">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
