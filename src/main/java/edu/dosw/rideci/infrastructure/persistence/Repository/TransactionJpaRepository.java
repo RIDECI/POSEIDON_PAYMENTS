@@ -1,5 +1,6 @@
 package edu.dosw.rideci.infrastructure.persistence.Repository;
 
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import edu.dosw.rideci.infrastructure.persistence.Entity.TransactionEntity;
 
@@ -16,6 +17,7 @@ public interface TransactionJpaRepository extends JpaRepository<TransactionEntit
     List<TransactionEntity> findByStatus(TransactionStatus status);
     List<TransactionEntity> findByBookingId(String bookingId);
     List<TransactionEntity> findByPassengerId(String passengerId);
+    List<TransactionEntity> findByPaymentMethod(PaymentMethodType paymentMethodType);
     
     @Query("SELECT t FROM TransactionEntity t WHERE DATE(t.createdAt) = :date")
     List<TransactionEntity> findByCreatedAtDate(@Param("date") LocalDateTime date);

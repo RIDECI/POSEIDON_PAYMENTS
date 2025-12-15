@@ -2,6 +2,7 @@ package edu.dosw.rideci.infrastructure.adapters.persistence;
 
 import edu.dosw.rideci.application.port.out.PaymentRepositoryPort;
 import edu.dosw.rideci.domain.model.Transaction;
+import edu.dosw.rideci.domain.model.enums.PaymentMethodType;
 import edu.dosw.rideci.domain.model.enums.TransactionStatus;
 import edu.dosw.rideci.infrastructure.persistence.Entity.TransactionEntity;
 import edu.dosw.rideci.infrastructure.persistence.Repository.mapper.TransactionMapper;
@@ -90,6 +91,14 @@ public class PaymentRepositoryAdapter implements PaymentRepositoryPort {
     @Override
     public List<Transaction> findActivePayments() {
         return repository.findActivePayments()
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Transaction> findByPaymentMethod(PaymentMethodType paymentMethodType) {
+        return repository.findByPaymentMethod(paymentMethodType)
                 .stream()
                 .map(mapper::toDomain)
                 .toList();
