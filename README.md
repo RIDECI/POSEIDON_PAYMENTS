@@ -637,7 +637,7 @@ The sequence diagrams follow the clean architecture structure of the project, fo
 
 ## 🌐 Context Diagram
 
-![Context Diagram](docs/uml/DiagramaContexto.png)
+![Context Diagram](docs/uml/diagramaContexto.png)
 
 The **Payment Module** enables passengers to manage their trips from the payment perspective.
 
