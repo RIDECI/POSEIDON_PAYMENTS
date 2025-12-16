@@ -709,11 +709,11 @@ Testing is an essential part of project functionality. This section shows code c
 
 [View JaCoCo coverage video]()
 
-![JaCoCo Overview](docs/imagenes/jacoco.png)
+![JaCoCo Overview](docs/imagenes/Jacoco.png)
 
-![JaCoCo Use Cases](docs/imagenes/jacocoCaseUse.png)
+![JaCoCo Use Cases](docs/imagenes/JacocoCaseUse.png)
 
-![JaCoCo Controllers](docs/imagenes/jacocoController.png)
+![JaCoCo Controllers](docs/imagenes/JacocoController.png)
 
 ### 🔍 Static Analysis (SonarQube)
 
@@ -721,7 +721,7 @@ Testing is an essential part of project functionality. This section shows code c
 
 ![SonarQube Analysis](docs/imagenes/sonarQube.png)
 
-![SonarQube Details](docs/imagenes/sonarQubec.png)
+![SonarQube Details](docs/imagenes/SonarQubec.png)
 
 ### 💻 Postman Evidence
 
