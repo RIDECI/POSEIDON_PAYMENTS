@@ -12,8 +12,6 @@ This module is designed to manage all financial operations within RidECI. It han
 
 ## 📑 Content Table
 
-
-
 1. [Project Architecture](#-project-architecture)
     - [Hexagonal Structure](#-clean---hexagonal-structure)
 2. [API Documentation](#-api-endpoints)
@@ -486,7 +484,7 @@ PostgreSQL ensures **consistency, referential integrity, and traceability**, ess
 
 ### 🏛️ General Component Diagram
 
-![General Component Diagram](docs/uml/DiagramaComponentesGeneral.png)
+![General Component Diagram](docs/uml/diagramaComponentesGeneral.png)
 
 #### **Frontend**
 Developed in TypeScript and deployed on Vercel for fast, responsive user experience.
@@ -547,7 +545,7 @@ It also allows querying payment history, generating digital receipts, detecting 
 
 ## 🏗️ Class Diagram
 
-![Class Diagram](docs/uml/DiagramaClases.png)
+![Class Diagram](docs/uml/diagramaClases.png)
 
 ### **Design Patterns**
 
@@ -595,7 +593,7 @@ This allows changing technology, persistence, or framework without touching the 
 
 ## 💾 Database Diagram
 
-![Database Diagram](docs/uml/diagramaBaseDeDatos.png)
+![Database Diagram](docs/uml/DiagramaBaseDeDatos.png)
 
 The relational structure normalized to Third Normal Form (3NF) allows:
 
@@ -639,7 +637,7 @@ The sequence diagrams follow the clean architecture structure of the project, fo
 
 ## 🌐 Context Diagram
 
-![Context Diagram](docs/uml/DiagramaContexto.png)
+![Context Diagram](docs/uml/diagramaContexto.png)
 
 The **Payment Module** enables passengers to manage their trips from the payment perspective.
 
@@ -711,11 +709,11 @@ Testing is an essential part of project functionality. This section shows code c
 
 [View JaCoCo coverage video]()
 
-![JaCoCo Overview](docs/imagenes/jacoco.png)
+![JaCoCo Overview](docs/imagenes/Jacoco.png)
 
-![JaCoCo Use Cases](docs/imagenes/jacocoCaseUse.png)
+![JaCoCo Use Cases](docs/imagenes/JacocoCaseUse.png)
 
-![JaCoCo Controllers](docs/imagenes/jacocoController.png)
+![JaCoCo Controllers](docs/imagenes/JacocoController.png)
 
 ### 🔍 Static Analysis (SonarQube)
 
@@ -723,7 +721,7 @@ Testing is an essential part of project functionality. This section shows code c
 
 ![SonarQube Analysis](docs/imagenes/sonarQube.png)
 
-![SonarQube Details](docs/imagenes/sonarQubec.png)
+![SonarQube Details](docs/imagenes/SonarQubec.png)
 
 ### 💻 Postman Evidence
 
