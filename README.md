@@ -12,6 +12,7 @@ This module is designed to manage all financial operations within RidECI. It han
 
 ## 📑 Content Table
 
+
 1. [Project Architecture](#-project-architecture)
     - [Hexagonal Structure](#-clean---hexagonal-structure)
 2. [API Documentation](#-api-endpoints)
