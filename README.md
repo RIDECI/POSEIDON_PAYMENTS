@@ -531,7 +531,7 @@ When processing a payment, the flow goes from frontend to controller to use case
 
 ## 📋 Use Case Diagram
 
-![Use Case Diagram](docs/uml/diagramaCasosUso.png)
+![Use Case Diagram](docs/uml/DiagramaCasosUso.png)
 
 Transactions in the **RIDECI Payment Module** allow passengers to make secure payments for their trips through Nequi, cards, Bre-B Keys, or cash, and enable drivers to receive payments reliably.
 
@@ -593,7 +593,7 @@ This allows changing technology, persistence, or framework without touching the 
 
 ## 💾 Database Diagram
 
-![Database Diagram](docs/uml/diagramaBaseDeDatos.png)
+![Database Diagram](docs/uml/DiagramaBaseDeDatos.png)
 
 The relational structure normalized to Third Normal Form (3NF) allows:
 
