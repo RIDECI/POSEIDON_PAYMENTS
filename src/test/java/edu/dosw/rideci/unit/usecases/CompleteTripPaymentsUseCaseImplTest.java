@@ -48,7 +48,6 @@ class CompleteTripPaymentsUseCaseImplTest {
 
         List<Transaction> completed = completeTripPaymentsUseCase.completeTripPayments("trip1");
 
-        // Solo los pagos APPROVED se completan
         assertEquals(2, completed.size());
         assertTrue(completed.stream().allMatch(p -> p.getStatus() == TransactionStatus.COMPLETED));
         verify(paymentRepositoryPort, times(2)).save(any(Transaction.class));
@@ -81,7 +80,6 @@ class CompleteTripPaymentsUseCaseImplTest {
 
         List<Transaction> completed = completeTripPaymentsUseCase.completeTripPayments("trip3");
 
-        // Ninguno se debe completar
         assertTrue(completed.isEmpty());
         verify(paymentRepositoryPort, never()).save(any(Transaction.class));
     }

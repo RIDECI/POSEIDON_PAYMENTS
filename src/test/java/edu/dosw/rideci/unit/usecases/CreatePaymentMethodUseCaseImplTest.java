@@ -60,7 +60,7 @@ class CreatePaymentMethodUseCaseImplTest {
     @Test
     void shouldNotOverrideDefaultIfUserAlreadyHasMethods() {
         PaymentMethod input = sample();
-        input.setDefault(true); // user forces default for example
+        input.setDefault(true); 
 
         when(repo.findByUserId("U100")).thenReturn(List.of(new PaymentMethod()));
         when(repo.save(any())).thenAnswer(i -> i.getArgument(0));

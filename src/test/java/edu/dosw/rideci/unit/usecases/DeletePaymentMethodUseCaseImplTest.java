@@ -26,7 +26,7 @@ class DeletePaymentMethodUseCaseImplTest {
     void shouldDeleteWhenPaymentMethodExists() {
         String id = "PM-1";
 
-        PaymentMethod dummy = new PaymentMethod(); // ajuste si tu modelo usa constructor/builder
+        PaymentMethod dummy = new PaymentMethod(); 
         dummy.setId(id);
 
         when(repo.findById(id)).thenReturn(Optional.of(dummy));

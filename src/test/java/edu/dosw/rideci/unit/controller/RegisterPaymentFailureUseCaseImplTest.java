@@ -56,7 +56,7 @@ class RegisterPaymentFailureUseCaseImplTest {
         Transaction tx = Transaction.builder()
                 .id("tx1")
                 .status(TransactionStatus.PROCESSING)
-                .attempts(2) // MAX_ATTEMPTS = 3
+                .attempts(2) 
                 .build();
         when(paymentRepositoryPort.findById("tx1")).thenReturn(Optional.of(tx));
         when(paymentRepositoryPort.save(any(Transaction.class))).thenAnswer(i -> i.getArguments()[0]);

@@ -30,7 +30,7 @@ class BrebKeyControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean   // <-- REEMPLAZA @MockBean
+    @MockitoBean   
     private CreateBrebKeyUseCase createUseCase;
 
     @MockitoBean

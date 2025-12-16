@@ -123,8 +123,7 @@ class CompletePaymentUseCaseImplTest {
         tx.setStatus(TransactionStatus.APPROVED);
         tx.setAmount(100.0);
         tx.setPaymentMethod(PaymentMethodType.CREDIT_CARD_PAYU);
-        tx.setReceiptCode(" "); // blank
-
+        tx.setReceiptCode(" "); 
         when(repository.findById("tx6")).thenReturn(Optional.of(tx));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {

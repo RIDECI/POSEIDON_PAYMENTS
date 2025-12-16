@@ -3,7 +3,7 @@ package edu.dosw.rideci.unit.usecases;
 
 import edu.dosw.rideci.application.port.out.CreditCardRepositoryPort;
 import edu.dosw.rideci.application.service.DeleteCreditCardUseCaseImpl;
-import edu.dosw.rideci.domain.model.CreditCard; // Ajusta si tu modelo está en otro paquete
+import edu.dosw.rideci.domain.model.CreditCard; 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ class DeleteCreditCardUseCaseImplTest {
     void shouldDeleteWhenCreditCardExists() {
         String id = "CC-1";
 
-        CreditCard card = new CreditCard(); // si tu modelo tiene builder, lo ajusto
+        CreditCard card = new CreditCard(); 
         card.setId(id);
 
         when(repo.findById(id)).thenReturn(Optional.of(card));

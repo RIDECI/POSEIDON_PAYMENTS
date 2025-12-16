@@ -33,9 +33,6 @@ class GetBrebKeyUseCaseImplTest {
         return key;
     }
 
-    // -----------------------------
-    // findAll()
-    // -----------------------------
     @Test
     void shouldReturnAllBrebKeys() {
         when(repo.findAll()).thenReturn(List.of(sample(), sample()));
@@ -45,9 +42,6 @@ class GetBrebKeyUseCaseImplTest {
         assertEquals(2, result.size());
     }
 
-    // -----------------------------
-    // findByUser()
-    // -----------------------------
     @Test
     void shouldReturnKeysByUser() {
         when(repo.findByUserId("USER-1")).thenReturn(List.of(sample()));
@@ -58,9 +52,6 @@ class GetBrebKeyUseCaseImplTest {
         assertEquals("USER-1", result.get(0).getUserId());
     }
 
-    // -----------------------------
-    // findById()
-    // -----------------------------
     @Test
     void shouldReturnKeyById() {
         BrebKey key = sample();
@@ -79,9 +70,7 @@ class GetBrebKeyUseCaseImplTest {
                 () -> useCase.findById("BREB-404"));
     }
 
-    // -----------------------------
-    // findDefault()
-    // -----------------------------
+   
     @Test
     void shouldReturnDefaultKey() {
         BrebKey key = sample();

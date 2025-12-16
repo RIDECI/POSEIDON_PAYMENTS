@@ -72,12 +72,10 @@ class RefundPaymentUseCaseImplTest {
         when(paymentRepositoryPort.findById("tx1")).thenReturn(Optional.of(tx));
         when(refundRepositoryPort.findByTransactionId("tx1")).thenReturn(null);
 
-        // Amount <= 0
         RideciBusinessException ex1 = assertThrows(RideciBusinessException.class,
                 () -> useCase.refundPayment("tx1", 0.0, "Reason"));
         assertEquals("Refund amount must be greater than zero", ex1.getMessage());
 
-        // Amount > transaction
         RideciBusinessException ex2 = assertThrows(RideciBusinessException.class,
                 () -> useCase.refundPayment("tx1", 500.0, "Reason"));
         assertTrue(ex2.getMessage().contains("Refund amount (500.0) exceeds transaction amount (200.0)"));

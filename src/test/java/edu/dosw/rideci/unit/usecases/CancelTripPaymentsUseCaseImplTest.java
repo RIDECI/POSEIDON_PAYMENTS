@@ -39,8 +39,7 @@ class CancelTripPaymentsUseCaseImplTest {
 
         Transaction t3 = new Transaction();
         t3.setId("t3");
-        t3.setStatus(TransactionStatus.COMPLETED); // no se debe cancelar
-
+        t3.setStatus(TransactionStatus.COMPLETED); 
         List<Transaction> payments = Arrays.asList(t1, t2, t3);
 
         when(paymentRepositoryPort.findByBookingId("trip1")).thenReturn(payments);

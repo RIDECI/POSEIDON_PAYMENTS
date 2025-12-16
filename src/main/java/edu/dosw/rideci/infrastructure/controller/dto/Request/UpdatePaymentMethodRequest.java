@@ -12,7 +12,6 @@ public class UpdatePaymentMethodRequest {
     private Boolean isDefault;
     private PaymentMethodType type;
 
-    // Map partial into existing domain instance (helper)
     public void applyTo(PaymentMethod target) {
         if (alias != null) target.setAlias(alias);
         if (isActive != null) target.setActive(isActive);

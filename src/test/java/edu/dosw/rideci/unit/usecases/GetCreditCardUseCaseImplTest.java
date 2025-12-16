@@ -38,9 +38,6 @@ class GetCreditCardUseCaseImplTest {
         return card;
     }
 
-    // ---------------------------
-    // findAll()
-    // ---------------------------
 
     @Test
     void shouldReturnAllCreditCards() {
@@ -53,9 +50,6 @@ class GetCreditCardUseCaseImplTest {
         assertEquals(2, result.size());
     }
 
-    // ---------------------------
-    // findByUser()
-    // ---------------------------
 
     @Test
     void shouldReturnCardsForUser() {
@@ -69,9 +63,6 @@ class GetCreditCardUseCaseImplTest {
         assertEquals("USER-1", result.get(0).getUserId());
     }
 
-    // ---------------------------
-    // findById()
-    // ---------------------------
 
     @Test
     void shouldReturnCardById() {
@@ -92,10 +83,6 @@ class GetCreditCardUseCaseImplTest {
         assertThrows(RuntimeException.class,
                 () -> useCase.findById("CC-404"));
     }
-
-    // ---------------------------
-    // findDefault()
-    // ---------------------------
 
     @Test
     void shouldReturnDefaultCard() {

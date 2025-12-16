@@ -18,21 +18,6 @@ public class DeletePaymentUseCaseImpl implements DeletePaymentUseCase {
             return false;
         }
 
-        // FUTURA VALIDACIÃ“N (solo eliminar transacciones FAILED)
-        //
-        // Transaction tx = repository.findById(id)
-        //         .orElse(null);
-        //
-        // if (tx == null) {
-        //     return false;
-        // }
-        //
-        // if (tx.getStatus() != TransactionStatus.FAILED) {
-        //     throw new RideciBusinessException(
-        //             "Solo se pueden eliminar pagos con estado FAILED"
-        //     );
-        // }
-
         repository.deleteById(id);
         return true;
     }

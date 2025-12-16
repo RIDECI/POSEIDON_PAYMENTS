@@ -59,7 +59,7 @@ class CreateCreditCardUseCaseImplTest {
     @Test
     void shouldNotModifyDefaultWhenUserAlreadyHasCards() {
         CreditCard input = sample();
-        input.setDefault(true);  // if user already has cards, should remain
+        input.setDefault(true);  
 
         when(repo.findByUserId("U1")).thenReturn(List.of(new CreditCard()));
         when(repo.save(any())).thenAnswer(i -> i.getArgument(0));

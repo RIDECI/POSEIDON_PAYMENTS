@@ -44,7 +44,7 @@ class RefundControllerTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.openMocks(this); // Inicializa los @Mock
+        MockitoAnnotations.openMocks(this); 
 
         RefundController controller = new RefundController(
                 refundPaymentUseCase,

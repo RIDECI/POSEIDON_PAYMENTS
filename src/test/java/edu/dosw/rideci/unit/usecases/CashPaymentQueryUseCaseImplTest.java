@@ -34,10 +34,6 @@ class CashPaymentQueryUseCaseImplTest {
         return c;
     }
 
-    // ---------------------------
-    // getById()
-    // ---------------------------
-
     @Test
     void shouldReturnCashConfirmationById() {
         CashPaymentConfirmation mockData = sample();
@@ -61,11 +57,6 @@ class CashPaymentQueryUseCaseImplTest {
 
         assertEquals("Cash confirmation not found: CASH-404", ex.getMessage());
     }
-
-    // ---------------------------
-    // getByTransactionId()
-    // ---------------------------
-
     @Test
     void shouldReturnCashConfirmationByTransactionId() {
         CashPaymentConfirmation mockData = sample();
@@ -89,10 +80,6 @@ class CashPaymentQueryUseCaseImplTest {
 
         assertEquals("No confirmation found for transaction: TX-404", ex.getMessage());
     }
-
-    // ---------------------------
-    // getAll()
-    // ---------------------------
 
     @Test
     void shouldReturnAllCashConfirmations() {

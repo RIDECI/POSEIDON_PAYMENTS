@@ -79,7 +79,6 @@ class ProcessWebhookUseCaseImplTest {
                 null
         );
 
-        // Status no cambia
         assertEquals(TransactionStatus.PENDING, result.getStatus());
         verify(paymentRepositoryPort).save(any(Transaction.class));
     }

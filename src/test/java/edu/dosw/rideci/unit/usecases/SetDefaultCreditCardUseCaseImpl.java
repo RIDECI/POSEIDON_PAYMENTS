@@ -26,7 +26,6 @@ class SetDefaultCreditCardUseCaseImplTest {
 
     @Test
     void setDefault_ShouldSetCardAsDefault() {
-        // Arrange
         CreditCard card = CreditCard.builder()
                 .id("CC-1")
                 .userId("user123")
@@ -42,10 +41,8 @@ class SetDefaultCreditCardUseCaseImplTest {
         when(repo.findById("CC-1")).thenReturn(Optional.of(card));
         when(repo.save(any(CreditCard.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        // Act
         CreditCard result = useCase.setDefault("CC-1");
 
-        // Assert
         assertTrue(result.isDefault(), "La tarjeta debe quedar como predeterminada");
 
         verify(repo).findById("CC-1");
@@ -55,10 +52,8 @@ class SetDefaultCreditCardUseCaseImplTest {
 
     @Test
     void setDefault_ShouldThrow_WhenCardNotFound() {
-        // Arrange
         when(repo.findById("XXX")).thenReturn(Optional.empty());
 
-        // Act + Assert
         assertThrows(RuntimeException.class, () -> useCase.setDefault("XXX"));
 
         verify(repo).findById("XXX");

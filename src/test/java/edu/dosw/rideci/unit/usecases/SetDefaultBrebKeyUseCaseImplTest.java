@@ -28,7 +28,6 @@ class SetDefaultBrebKeyUseCaseImplTest {
 
     @Test
     void setDefault_ShouldSetKeyAsDefault() {
-        // Arrange
         BrebKey key = BrebKey.builder()
                 .id("123")
                 .userId("u1")
@@ -40,10 +39,8 @@ class SetDefaultBrebKeyUseCaseImplTest {
         when(repo.findById("123")).thenReturn(Optional.of(key));
         when(repo.save(any(BrebKey.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        // Act
         BrebKey result = useCase.setDefault("123");
 
-        // Assert
         assertTrue(result.isDefault(), "La llave debe quedar como default");
 
         verify(repo).findById("123");
@@ -53,10 +50,10 @@ class SetDefaultBrebKeyUseCaseImplTest {
 
     @Test
     void setDefault_ShouldThrow_WhenNotFound() {
-        // Arrange
+        
         when(repo.findById("999")).thenReturn(Optional.empty());
 
-        // Act + Assert
+        
         assertThrows(RuntimeException.class, () -> useCase.setDefault("999"));
 
         verify(repo).findById("999");

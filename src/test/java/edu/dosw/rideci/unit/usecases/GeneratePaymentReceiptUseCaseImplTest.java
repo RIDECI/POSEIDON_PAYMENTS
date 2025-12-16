@@ -31,7 +31,6 @@ class GeneratePaymentReceiptUseCaseImplTest {
 
     @Test
     void shouldGenerateReceiptSuccessfully() {
-        // Arrange
         String txId = "TX-1";
         String driverId = "DRV-9";
 
@@ -48,10 +47,10 @@ class GeneratePaymentReceiptUseCaseImplTest {
         when(receiptRepo.findByTransactionId(txId)).thenReturn(Optional.empty());
         when(receiptRepo.save(any())).thenAnswer(i -> i.getArguments()[0]);
 
-        // Act
+        
         PaymentReceipt receipt = useCase.generate(txId, driverId);
 
-        // Assert
+        
         assertNotNull(receipt);
         assertEquals(txId, receipt.getTransactionId());
         assertEquals(driverId, receipt.getDriverId());

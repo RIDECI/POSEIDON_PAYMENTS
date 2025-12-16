@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class CreatePaymentMethodRequest {
 
-    private String id; // opcional, lo genera el servidor si viene vacío
+    private String id; 
 
     @NotBlank
     private String userId;

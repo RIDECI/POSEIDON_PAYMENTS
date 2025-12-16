@@ -29,11 +29,11 @@ public class CreditCardEntity {
     @Column(name = "card_number", nullable = false)
     private String cardNumber;
 
-    @Column(name = "expiration", nullable = false) // formato MM/YY
+    @Column(name = "expiration", nullable = false) 
     private String expiration;
 
     @Column(nullable = false)
-    private String cvv; // académico
+    private String cvv; 
 
     private String alias;
 

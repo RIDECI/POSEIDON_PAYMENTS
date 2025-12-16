@@ -33,7 +33,7 @@ public class CompletePaymentUseCaseImpl implements CompletePaymentUseCase {
         }
 
         if (tx.getPaymentMethod() == PaymentMethodType.CASH) {
-            tx.setReceiptCode(null); // Asegura consistencia
+            tx.setReceiptCode(null); 
         } else {
             if (tx.getReceiptCode() == null || tx.getReceiptCode().isBlank()) {
                 throw new IllegalArgumentException("receiptCode requerido para pagos digitales");

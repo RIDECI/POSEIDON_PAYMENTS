@@ -484,7 +484,7 @@ PostgreSQL ensures **consistency, referential integrity, and traceability**, ess
 
 ### 🏛️ General Component Diagram
 
-![General Component Diagram](docs/uml/DiagramaComponentesGeneral.png)
+![General Component Diagram](docs/uml/diagramaComponentesGeneral.png)
 
 #### **Frontend**
 Developed in TypeScript and deployed on Vercel for fast, responsive user experience.
@@ -531,7 +531,7 @@ When processing a payment, the flow goes from frontend to controller to use case
 
 ## 📋 Use Case Diagram
 
-![Use Case Diagram](docs/uml/DiagramaCasosUso.png)
+![Use Case Diagram](docs/uml/diagramaCasosUso.png)
 
 Transactions in the **RIDECI Payment Module** allow passengers to make secure payments for their trips through Nequi, cards, Bre-B Keys, or cash, and enable drivers to receive payments reliably.
 
@@ -545,7 +545,7 @@ It also allows querying payment history, generating digital receipts, detecting 
 
 ## 🏗️ Class Diagram
 
-![Class Diagram](docs/uml/DiagramaClases.png)
+![Class Diagram](docs/uml/diagramaClases.png)
 
 ### **Design Patterns**
 

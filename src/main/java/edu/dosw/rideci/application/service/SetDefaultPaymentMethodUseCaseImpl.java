@@ -20,14 +20,12 @@ public class SetDefaultPaymentMethodUseCaseImpl implements SetDefaultPaymentMeth
         var method = repo.findById(id)
                 .orElseThrow(() -> new RideciBusinessException("Method not found"));
 
-        // quitar default al anterior
         repo.findDefaultForUser(method.getUserId())
                 .ifPresent(defaultMethod -> {
                     defaultMethod.setDefault(false);
                     repo.save(defaultMethod);
                 });
 
-        // marcar este como default
         method.setDefault(true);
         return repo.save(method);
     }

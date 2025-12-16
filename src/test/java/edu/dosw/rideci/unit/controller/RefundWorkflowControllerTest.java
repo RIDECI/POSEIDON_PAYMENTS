@@ -44,10 +44,8 @@ class RefundWorkflowControllerTest {
 
     @BeforeEach
     void setup() {
-        // Inicializa los @Mock
         MockitoAnnotations.openMocks(this);
 
-        // Crea el controlador con los mocks
         RefundWorkflowController controller = new RefundWorkflowController(
                 authorizeUseCase,
                 processUseCase,
@@ -55,10 +53,7 @@ class RefundWorkflowControllerTest {
                 completeUseCase
         );
 
-        // Configura MockMvc standalone
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
-        // Inicializa objeto Refund
         refund = Refund.builder()
                 .id("RFD-100")
                 .transactionId("TX-10")

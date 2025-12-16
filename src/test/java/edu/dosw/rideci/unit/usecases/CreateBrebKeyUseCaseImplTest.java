@@ -25,20 +25,17 @@ class CreateBrebKeyUseCaseImplTest {
 
     @Test
     void shouldCreateBrebKeySuccessfully() {
-        // Arrange
         BrebKey key = BrebKey.builder()
                 .userId("U1")
                 .value("test@example.com")
                 .type(BrebKeyType.EMAIL)
                 .build();
 
-        // Capturar el objeto que se guardará para verificarlo después
         when(repo.save(any(BrebKey.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
         BrebKey result = useCase.create(key);
 
-        // Assert
+
         assertNotNull(result.getId());
         assertTrue(result.getId().startsWith("BREB-"));
 

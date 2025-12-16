@@ -24,26 +24,25 @@ public class ConfirmCashPaymentUseCaseImpl implements ConfirmCashPaymentUseCase 
     @Override
     public CashPaymentConfirmation confirm(String transactionId, String driverId, String observations) {
 
-        // 1. Buscar transacción
         var tx = paymentRepositoryPort.findById(transactionId)
                 .orElseThrow(() -> new RideciBusinessException("Transaction not found"));
 
-        // 2. Solo pagos CASH
+    
         if (tx.getPaymentMethod() != PaymentMethodType.CASH) {
             throw new RideciBusinessException("Only CASH payments can be confirmed");
         }
 
-        // 3. Debe estar en PENDING_CASH
+    
         if (tx.getStatus() != TransactionStatus.PENDING_CASH) {
             throw new RideciBusinessException("Cash payment is not pending confirmation");
         }
 
-        // 4. Evitar confirmación duplicada
+     
         if (cashRepo.findByTransactionId(transactionId).isPresent()) {
             throw new RideciBusinessException("Cash payment already confirmed");
         }
 
-        // 5. Crear confirmación
+     
         CashPaymentConfirmation confirmation = CashPaymentConfirmation.builder()
                 .id("CASH-" + UUID.randomUUID())
                 .transactionId(tx.getId())
@@ -56,10 +55,10 @@ public class ConfirmCashPaymentUseCaseImpl implements ConfirmCashPaymentUseCase 
                 .observations(observations)
                 .build();
 
-        // 6. Guardar confirmación
+
         cashRepo.save(confirmation);
 
-        // 7. Actualizar transacción → COMPLETED
+ 
         tx.setStatus(TransactionStatus.COMPLETED);
         paymentRepositoryPort.save(tx);
 

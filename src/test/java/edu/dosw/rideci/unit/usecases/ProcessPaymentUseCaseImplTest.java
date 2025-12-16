@@ -101,6 +101,6 @@ class ProcessPaymentUseCaseImplTest {
         Transaction result = useCase.process("tx1");
 
         assertEquals(TransactionStatus.COMPLETED, result.getStatus());
-        verify(repository, times(2)).save(any(Transaction.class)); // PROCESSING + resultado final
+        verify(repository, times(2)).save(any(Transaction.class)); 
     }
 }

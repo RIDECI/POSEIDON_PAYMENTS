@@ -33,7 +33,6 @@ public class GenerateReceiptPdfUseCaseImpl implements GenerateReceiptPdfUseCase 
             PdfWriter.getInstance(document, baos);
             document.open();
 
-            // Header
             Paragraph title = new Paragraph("PAYMENT RECEIPT",
                     FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22));
             title.setAlignment(Element.ALIGN_CENTER);
@@ -42,7 +41,6 @@ public class GenerateReceiptPdfUseCaseImpl implements GenerateReceiptPdfUseCase 
             document.add(new Paragraph(" "));
             document.add(new LineSeparator());
 
-            // Table
             PdfPTable table = new PdfPTable(2);
             table.setWidthPercentage(100);
             table.setSpacingBefore(20);
@@ -60,7 +58,6 @@ public class GenerateReceiptPdfUseCaseImpl implements GenerateReceiptPdfUseCase 
 
             document.add(table);
 
-            // Amount box
             Paragraph amountTitle = new Paragraph("TOTAL PAID:",
                     FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14));
             document.add(amountTitle);
@@ -72,8 +69,7 @@ public class GenerateReceiptPdfUseCaseImpl implements GenerateReceiptPdfUseCase 
             document.add(amountValue);
 
             document.add(new Paragraph("\n\n"));
-
-            // Footer
+            
             Paragraph footer = new Paragraph(
                     "This receipt is a legal proof of payment for the associated transaction.\n" +
                             "Thank you for using our service.",

@@ -26,7 +26,6 @@ class DeleteBrebKeyUseCaseImplTest {
     void shouldDeleteWhenKeyExists() {
         String id = "KEY-1";
 
-        // Usa un BrebKey real o un dummy
         BrebKey dummyKey = new BrebKey();
         dummyKey.setId(id);
 
